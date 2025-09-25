@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme{
+    --font-sans: system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --font-script: Great Vibes, cursive;
+
+    --color-bg:#fafafa;
+    --color-primary:#e4e5f1;
+    --color-secondary:#d2d3db;
+    --color-dark:#9394a5;
+    --color-darker:#484b6a;
+    --color-darkest:#1e2139;
+    --color-accent:#3b82f6;
+}
