@@ -59,7 +59,7 @@ export default function HeroSection() {
         <h1 className="px-2 text-3xl sm:text-4xl md:text-6xl text-center font-bold text-[var(--color-bg)]">
           Welcome to PropertyRent
         </h1>
-        <button className="px-8 py-2 text-xl font-semibold text-[var(--color-bg)] bg-transparent border-2 border-[var(--color-primary)] rounded-full cursor-pointer">
+        <button className="px-8 py-2 text-xl font-semibold text-[var(--color-bg)] bg-transparent hover:bg-[var(--color-bg)] hover:text-[var(--color-darkest)] transition duration-300 border-2 border-[var(--color-primary)] rounded-full cursor-pointer">
           Get Started
         </button>
       </div>

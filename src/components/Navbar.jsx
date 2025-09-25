@@ -22,27 +22,22 @@ export default function Navbar() {
       label: "Availability",
       items: [
         { to: "/availability", label: "All Properties" },
-        { to: "/availability/apartments", label: "Apartments" },
-        { to: "/availability/houses", label: "Houses" },
-        { to: "/availability/map", label: "Map View" },
       ],
     },
     {
       key: "apply",
       label: "Apply Now",
       items: [
-        { to: "/apply-now", label: "New Application" },
-        { to: "/apply-now/status", label: "Application Status" },
-        { to: "/apply-now/checklist", label: "Checklist" },
+        { to: "/apply-now", label: "Pre-Screening Questions" },
+        { to: "/apply-now/status", label: "Pet-Screening Status" },
       ],
     },
     {
       key: "services",
       label: "Services",
       items: [
-        { to: "/services/maintenance", label: "Maintenance" },
-        { to: "/services/housekeeping", label: "Housekeeping" },
-        { to: "/services/parking", label: "Parking" },
+        { to: "/services/maintenance", label: "Maintenance Service" },
+        { to: "/services/housekeeping", label: "Other Services" },
       ],
     },
   ];
@@ -81,9 +76,6 @@ export default function Navbar() {
             >
               Pay Rent
             </Link>
-            <Link to="/blog" className="px-4 py-2 rounded-md text-sm font-medium hover:underline">
-              Blog
-            </Link>
           </div>
 
           {/* Mobile hamburger */}
@@ -91,7 +83,7 @@ export default function Navbar() {
             <button
               aria-label="Toggle menu"
               onClick={() => setMobileOpen((s) => !s)}
-              className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-darker)]"
+              className="p-2 rounded-md focus:outline-none"
             >
               {/* simple hamburger icon */}
               <svg

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/fa";
 
 export default function Footer() {
@@ -35,44 +36,50 @@ export default function Footer() {
           <h3 className="text-lg font-semibold mb-3">Quick Links</h3>
           <ul className="space-y-2 text-sm">
             <li>
-              <a href="/" className="hover:underline">
+              <Link to="/" className="hover:underline">
                 Home
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/services" className="hover:underline">
+              <Link to="/services" className="hover:underline">
                 Services
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/properties" className="hover:underline">
+              <Link to="/properties" className="hover:underline">
                 Properties
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/contact" className="hover:underline">
+              <Link to="/contact" className="hover:underline">
                 Contact
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
 
         {/* Social Links */}
         <div>
-          <h3 className="text-lg font-semibold mb-3">Follow Us</h3>
+          <h3 className="text-2xl font-semibold mt-1">Owner Portal</h3>
+          <div>
+            <Link to="/owner-login" className=" text-[var(--color-accent)] px-4 py-2 underline hover:opacity-80 text-sm">
+              Owner Login
+            </Link>
+          </div>
+          <h3 className="text-lg font-semibold my-3">Follow Us</h3>
           <div className="flex gap-3">
-            <a href="#" className="p-2 bg-[var(--color-darker)] rounded-full hover:opacity-80">
+            <Link to="#" className="p-2 bg-[var(--color-darker)] rounded-full hover:opacity-80">
               <FaFacebookF className="text-[var(--color-bg)]" />
-            </a>
-            <a href="#" className="p-2 bg-[var(--color-darker)] rounded-full hover:opacity-80">
+            </Link>
+            <Link to="#" className="p-2 bg-[var(--color-darker)] rounded-full hover:opacity-80">
               <FaTwitter className="text-[var(--color-bg)]" />
-            </a>
-            <a href="#" className="p-2 bg-[var(--color-darker)] rounded-full hover:opacity-80">
+            </Link>
+            <Link to="#" className="p-2 bg-[var(--color-darker)] rounded-full hover:opacity-80">
               <FaLinkedinIn className="text-[var(--color-bg)]" />
-            </a>
-            <a href="#" className="p-2 bg-[var(--color-darker)] rounded-full hover:opacity-80">
+            </Link>
+            <Link to="#" className="p-2 bg-[var(--color-darker)] rounded-full hover:opacity-80">
               <FaInstagram className="text-[var(--color-bg)]" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>
