@@ -1,16 +1,15 @@
+import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import {
   FiHome,
   FiPlusCircle,
-  FiUsers,
   FiLogOut,
   FiImage,
   FiSearch,
   FiSettings,
 } from "react-icons/fi";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
-import { IoCloseOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -30,6 +29,32 @@ export default function AdminDashboard() {
   const [imagePreviews, setImagePreviews] = useState([]);
   const fileInputRef = useRef(null);
   const [query, setQuery] = useState("");
+
+  const appURL = import.meta.env.VITE_APP_URL;
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
+
+  const logoutAdmin = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await axios.post(
+        `${appURL}/api/auth/logout`,
+        {},
+        { withCredentials: true }
+      );
+      localStorage.removeItem("adminUser");
+      console.log("Logout successful:", res.data);
+      navigate("/owner-login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      setError("Logout failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const urls = images.map((file) => URL.createObjectURL(file));
@@ -136,7 +161,7 @@ export default function AdminDashboard() {
               {sidebarOpen && <span className="text-lg">Home</span>}
             </Link>
             <div className="mt-auto pt-6">
-              <Link to="#" className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-darker)] cursor-pointer">
+              <Link to="#" onClick={logoutAdmin} className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-darker)] cursor-pointer">
                 <FiLogOut className="text-xl" />{" "}
                 {sidebarOpen && <span className="text-lg">Sign out</span>}
               </Link>

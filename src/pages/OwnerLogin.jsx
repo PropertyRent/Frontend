@@ -1,18 +1,63 @@
-import React, { useState } from 'react';
-import {FaArrowLeft} from 'react-icons/fa'
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const appURL = import.meta.env.VITE_APP_URL;
 
 export default function OwnerPortalAuth() {
-  const [mode, setMode] = useState("login"); // "login" | "signup" | "reset"
+  const [mode, setMode] = useState("login");
+  const [user, setUser] = useState(
+    localStorage.getItem("adminUser")
+      ? JSON.parse(localStorage.getItem("adminUser"))
+      : null
+  );
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
+  const loginAdmin = async (userData) => {
+    // console.log("Logging in with:", userData);
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await axios.post(`${appURL}/api/auth/login`, userData, {
+        withCredentials: true,
+      });
+      setUser(res.data.data);
+      localStorage.setItem("adminUser", JSON.stringify(res.data.data));
+      console.log("Login successful:", res.data);
+      navigate("/admin");
+    } catch (error) {
+      console.error("Login failed:", error);
+      setError("Login failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`${mode} submitted`);
+    const email = e.target.email.value;
+    const password = e.target.password ? e.target.password.value : null;
+    if (mode === "login") {
+      console.log("Form submitted!!");
+      loginAdmin({ email, password });
+    }
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/admin");
+    }
+  }, [user, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-6">
-        <Link to="/"><FaArrowLeft className='absolute top-4 left-4 text-[var(--color-darker)] cursor-pointer hover:text-[var(--color-darkest)]' /></Link>
+      <Link to="/">
+        <FaArrowLeft className="absolute top-4 left-4 text-[var(--color-darker)] cursor-pointer hover:text-[var(--color-darkest)]" />
+      </Link>
       <div className="w-full max-w-lg bg-white rounded-xl shadow-2xl p-10">
         {/* Logo */}
         <div className="flex justify-center mb-6">
@@ -27,7 +72,8 @@ export default function OwnerPortalAuth() {
         </h1>
         <p className="text-sm text-gray-500 text-center mb-6">
           {mode === "login" && "Log in with your account credentials below."}
-          {mode === "signup" && "Fill in the form to create a new password and register."}
+          {mode === "signup" &&
+            "Fill in the form to create a new password and register."}
           {mode === "reset" && "Enter your email to reset your password."}
         </p>
 
@@ -52,20 +98,25 @@ export default function OwnerPortalAuth() {
           {(mode === "login" || mode === "signup") && (
             <>
               <div>
-                <label htmlFor="password" className="block text-sm text-gray-600 mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm text-gray-600 mb-2"
+                >
                   Password
                 </label>
                 <input
                   id="password"
                   type="password"
                   required
-                  autoComplete={mode === "login" ? "current-password" : "new-password"}
+                  autoComplete={
+                    mode === "login" ? "current-password" : "new-password"
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500"
                   placeholder="••••••••"
                 />
               </div>
 
-              {mode === "signup" && (
+              {/* {mode === "signup" && (
                 <div>
                   <label htmlFor="confirm" className="block text-sm text-gray-600 mb-2">
                     Confirm Password
@@ -79,17 +130,18 @@ export default function OwnerPortalAuth() {
                     placeholder="••••••••"
                   />
                 </div>
-              )}
+              )} */}
             </>
           )}
 
           <div className="pt-2">
             <button
               type="submit"
+              disabled={loading}
               className="w-full inline-flex items-center justify-center px-5 py-2 rounded-md bg-[var(--color-darker)] text-white font-medium hover:bg-[var(--color-dark)] cursor-pointer transition duration-300"
             >
-              {mode === "login" && "Log in"}
-              {mode === "signup" && "Sign up"}
+              {mode === "login" && loading ? "Logging in..." : "Log in"}
+              {/* {mode === "signup" && "Sign up"} */}
               {mode === "reset" && "Send reset link"}
             </button>
           </div>
@@ -99,12 +151,12 @@ export default function OwnerPortalAuth() {
         <div className="text-center text-sm mt-4 space-y-2">
           {mode === "login" && (
             <>
-              <button
+              {/* <button
                 onClick={() => setMode("signup")}
                 className="text-gray-800 underline block w-full"
               >
                 Create a password
-              </button>
+              </button> */}
               <button
                 onClick={() => setMode("reset")}
                 className="text-gray-800 underline block w-full"
