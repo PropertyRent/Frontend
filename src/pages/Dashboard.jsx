@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import {
   FiHome,
   FiPlusCircle,
@@ -10,6 +10,7 @@ import {
 } from "react-icons/fi";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../stores/authStore";
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -30,31 +31,39 @@ export default function AdminDashboard() {
   const fileInputRef = useRef(null);
   const [query, setQuery] = useState("");
 
-  const appURL = import.meta.env.VITE_APP_URL;
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  //   const appURL = import.meta.env.VITE_APP_URL;
+  //   const [loading, setLoading] = useState(false);
+  //   const [error, setError] = useState(null);
 
-  const navigate = useNavigate();
+  //   const navigate = useNavigate();
 
-  const logoutAdmin = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await axios.post(
-        `${appURL}/api/auth/logout`,
-        {},
-        { withCredentials: true }
-      );
-      localStorage.removeItem("adminUser");
-      console.log("Logout successful:", res.data);
+  //   const logoutAdmin = async () => {
+  //     setLoading(true);
+  //     setError(null);
+  //     try {
+  //       const res = await axios.post(
+  //         `${appURL}/api/auth/logout`,
+  //         {},
+  //         { withCredentials: true }
+  //       );
+  //       localStorage.removeItem("adminUser");
+  //       console.log("Logout successful:", res.data);
+  //       navigate("/owner-login");
+  //     } catch (error) {
+  //       console.error("Logout failed:", error);
+  //       setError("Logout failed. Please try again.");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  const { logoutAdmin, navigate, user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!user) {
       navigate("/owner-login");
-    } catch (error) {
-      console.error("Logout failed:", error);
-      setError("Logout failed. Please try again.");
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     const urls = images.map((file) => URL.createObjectURL(file));
@@ -156,12 +165,19 @@ export default function AdminDashboard() {
               <FiPlusCircle className="text-xl" />{" "}
               {sidebarOpen && <span className="text-lg">Add Property</span>}
             </a>
-            <Link to="/" className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-darker)] cursor-pointer">
+            <Link
+              to="/"
+              className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-darker)] cursor-pointer"
+            >
               <FiHome className="text-xl" />{" "}
               {sidebarOpen && <span className="text-lg">Home</span>}
             </Link>
             <div className="mt-auto pt-6">
-              <Link to="#" onClick={logoutAdmin} className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-darker)] cursor-pointer">
+              <Link
+                to="#"
+                onClick={logoutAdmin}
+                className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-darker)] cursor-pointer"
+              >
                 <FiLogOut className="text-xl" />{" "}
                 {sidebarOpen && <span className="text-lg">Sign out</span>}
               </Link>

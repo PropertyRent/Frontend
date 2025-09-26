@@ -2,39 +2,42 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../stores/authStore";
 
 const appURL = import.meta.env.VITE_APP_URL;
 
 export default function OwnerPortalAuth() {
   const [mode, setMode] = useState("login");
-  const [user, setUser] = useState(
-    localStorage.getItem("adminUser")
-      ? JSON.parse(localStorage.getItem("adminUser"))
-      : null
-  );
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  // const [user, setUser] = useState(
+  //   localStorage.getItem("adminUser")
+  //     ? JSON.parse(localStorage.getItem("adminUser"))
+  //     : null
+  // );
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState(null);
+  // const navigate = useNavigate();
 
-  const loginAdmin = async (userData) => {
-    // console.log("Logging in with:", userData);
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await axios.post(`${appURL}/api/auth/login`, userData, {
-        withCredentials: true,
-      });
-      setUser(res.data.data);
-      localStorage.setItem("adminUser", JSON.stringify(res.data.data));
-      console.log("Login successful:", res.data);
-      navigate("/admin");
-    } catch (error) {
-      console.error("Login failed:", error);
-      setError("Login failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const loginAdmin = async (userData) => {
+  //   // console.log("Logging in with:", userData);
+  //   setLoading(true);
+  //   setError(null);
+  //   try {
+  //     const res = await axios.post(`${appURL}/api/auth/login`, userData, {
+  //       withCredentials: true,
+  //     });
+  //     setUser(res.data.data);
+  //     localStorage.setItem("adminUser", JSON.stringify(res.data.data));
+  //     console.log("Login successful:", res.data);
+  //     navigate("/admin");
+  //   } catch (error) {
+  //     console.error("Login failed:", error);
+  //     setError("Login failed. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const { user, loading, error, loginAdmin, navigate } = useContext(AuthContext);
 
   
   const handleSubmit = (e) => {

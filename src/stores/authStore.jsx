@@ -2,66 +2,65 @@ import axios from "axios";
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const appURL = import.meta.env.VITE_APP_URL;
+const apiUrl = import.meta.env.VITE_APP_URL;
 
 export const AuthContext = createContext({
   user: null,
-  loading: true,
   setUser: () => {},
-  setLoading: () => {},
   loginAdmin: () => {},
   logoutAdmin: () => {},
+  navigate: () => {},
   error: null,
-  setError: () => {},
+  loading: false,
 });
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(
-    localStorage.getItem("adminUser")
-      ? JSON.parse(localStorage.getItem("adminUser"))
-      : null
+    JSON.parse(localStorage.getItem("adminUser")) || null
   );
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const loginAdmin = async (userData) => {
-    console.log("Logging in with:", userData);
-    setLoading(true);
-    setError(null);
     try {
-      const res = await axios.post(`${appURL}/auth/login`, userData, {
-        withCredentials: true,
-      });
-      setUser(res.data.user);
-      localStorage.setItem("adminUser", JSON.stringify(res.data.user));
-      console.log("Login successful:", res.data);
-      navigate("/admin");
+      setLoading(true);
+      const response = await axios.post(
+        `${apiUrl}/api/auth/login`,
+        userData,
+        { withCredentials: true }
+      );
+      console.log(response.data);
+      if (response.data) {
+        setUser(response.data.data);
+        localStorage.setItem("adminUser", JSON.stringify(response.data.data));
+        navigate("/");
+      }
     } catch (error) {
-      console.error("Login failed:", error);
-      setError("Login failed. Please try again.");
+      console.error(error);
+      setError(
+        error.response ? error.response.data.message : "An error occurred"
+      );
     } finally {
       setLoading(false);
     }
   };
 
+
   const logoutAdmin = async () => {
-    setLoading(true);
-    setError(null);
     try {
-      const res = await axios.post(
-        `${appURL}/auth/logout`,
-        {},
-        { withCredentials: true }
-      );
+      setLoading(true);
+      const response = await axios.post(`${apiUrl}/api/auth/logout`, {}, { withCredentials: true });
+      console.log(response.data);
       setUser(null);
       localStorage.removeItem("adminUser");
-      console.log("Logout successful:", res.data);
-      navigate("/owner-login");
+      navigate("/");
     } catch (error) {
-      console.error("Logout failed:", error);
-      setError("Logout failed. Please try again.");
+      console.error(error);
+      setError(
+        error.response ? error.response.data.message : "An error occurred"
+      );
     } finally {
       setLoading(false);
     }
@@ -71,13 +70,12 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        loading,
-        setUser,
-        setLoading,
         loginAdmin,
         logoutAdmin,
+        setUser,
         error,
-        setError,
+        loading,
+        navigate,
       }}
     >
       {children}

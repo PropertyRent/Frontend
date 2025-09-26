@@ -7,6 +7,11 @@ import HomePage from "./pages/HomePage.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import OwnerPortalAuth from "./pages/OwnerLogin.jsx";
 import AdminDashboard from "./pages/Dashboard.jsx";
+import AuthProvider from "./stores/authStore.jsx";
+
+const AuthWrapper = ({ children }) => {
+  return <AuthProvider>{children}</AuthProvider>;
+};
 
 const router = createBrowserRouter([
   {
@@ -25,11 +30,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminDashboard />,
+    element: <AuthWrapper><AdminDashboard /></AuthWrapper>,
   },
   {
     path: "/owner-login",
-    element: <OwnerPortalAuth />,
+    element: <AuthWrapper><OwnerPortalAuth /></AuthWrapper>,
   },
 ]);
 

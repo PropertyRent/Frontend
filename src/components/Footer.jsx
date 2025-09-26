@@ -62,9 +62,15 @@ export default function Footer() {
         <div>
           <h3 className="text-2xl font-semibold mt-1">Owner Portal</h3>
           <div>
-            <Link to="/owner-login" className=" text-[var(--color-accent)] px-4 py-2 underline hover:opacity-80 text-sm">
-              Owner Login
-            </Link>
+            {localStorage.getItem("adminUser") ? (
+              <Link to="/admin" className="text-sm text-[var(--color-darker)] hover:underline">
+                Go to Dashboard
+              </Link>
+            ) : (
+              <Link to="/owner-login" className="text-sm text-[var(--color-darker)] hover:underline">
+                Owner Login
+              </Link>
+            )}
           </div>
           <h3 className="text-lg font-semibold my-3">Follow Us</h3>
           <div className="flex gap-3">
