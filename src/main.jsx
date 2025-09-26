@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import OwnerPortalAuth from "./pages/OwnerLogin.jsx";
+import AdminDashboard from "./pages/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,9 +24,13 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "/admin",
+    element: <AdminDashboard />,
+  },
+  {
     path: "/owner-login",
     element: <OwnerPortalAuth />,
-  }
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(

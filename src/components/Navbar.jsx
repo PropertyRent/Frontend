@@ -76,6 +76,12 @@ export default function Navbar() {
             >
               Pay Rent
             </Link>
+            <Link
+              to="/admin"
+              className="px-3 py-1 text-md bg-[var(--color-darker)] text-[var(--color-bg)] rounded-full font-medium hover:opacity-95 transition"
+            >
+              Dashboard
+            </Link>
           </div>
 
           {/* Mobile hamburger */}
