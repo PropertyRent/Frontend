@@ -60,15 +60,15 @@ export default function Footer() {
 
         {/* Social Links */}
         <div>
-          <h3 className="text-2xl font-semibold mt-1">Owner Portal</h3>
+          <h3 className="text-2xl font-semibold mt-1">Admin Portal</h3>
           <div>
             {localStorage.getItem("adminUser") ? (
               <Link to="/admin" className="text-sm text-[var(--color-darker)] hover:underline">
                 Go to Dashboard
               </Link>
             ) : (
-              <Link to="/owner-login" className="text-sm text-[var(--color-darker)] hover:underline">
-                Owner Login
+              <Link to="/admin-login" className="text-sm text-[var(--color-darker)] hover:underline">
+                Admin Login
               </Link>
             )}
           </div>

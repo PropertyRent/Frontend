@@ -31,37 +31,11 @@ export default function AdminDashboard() {
   const fileInputRef = useRef(null);
   const [query, setQuery] = useState("");
 
-  //   const appURL = import.meta.env.VITE_APP_URL;
-  //   const [loading, setLoading] = useState(false);
-  //   const [error, setError] = useState(null);
-
-  //   const navigate = useNavigate();
-
-  //   const logoutAdmin = async () => {
-  //     setLoading(true);
-  //     setError(null);
-  //     try {
-  //       const res = await axios.post(
-  //         `${appURL}/api/auth/logout`,
-  //         {},
-  //         { withCredentials: true }
-  //       );
-  //       localStorage.removeItem("adminUser");
-  //       console.log("Logout successful:", res.data);
-  //       navigate("/owner-login");
-  //     } catch (error) {
-  //       console.error("Logout failed:", error);
-  //       setError("Logout failed. Please try again.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
   const { logoutAdmin, navigate, user } = useContext(AuthContext);
 
   useEffect(() => {
     if (!user) {
-      navigate("/owner-login");
+      navigate("/admin-login");
     }
   }, [navigate]);
 
@@ -143,7 +117,7 @@ export default function AdminDashboard() {
         <aside
           className={`transition-all duration-200 p-6 h-screen ${
             sidebarOpen ? "w-62" : "w-22"
-          } bg-[var(--color-darkest)] text-[var(--color-bg)] font-semibold font-code`}
+          } bg-[var(--color-darker)] text-[var(--color-bg)] font-semibold font-code`}
         >
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
@@ -157,17 +131,17 @@ export default function AdminDashboard() {
           </div>
 
           <nav className="flex flex-col gap-2">
-            <a className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-darker)] cursor-pointer">
+            <a className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-dark)] cursor-pointer">
               <FiSettings className="text-xl" />{" "}
               {sidebarOpen && <span className="text-lg">Dashboard</span>}
             </a>
-            <a className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-darker)] cursor-pointer">
+            <a className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-dark)] cursor-pointer">
               <FiPlusCircle className="text-xl" />{" "}
               {sidebarOpen && <span className="text-lg">Add Property</span>}
             </a>
             <Link
               to="/"
-              className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-darker)] cursor-pointer"
+              className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-dark)] cursor-pointer"
             >
               <FiHome className="text-xl" />{" "}
               {sidebarOpen && <span className="text-lg">Home</span>}
@@ -176,7 +150,7 @@ export default function AdminDashboard() {
               <Link
                 to="#"
                 onClick={logoutAdmin}
-                className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-darker)] cursor-pointer"
+                className="flex items-center gap-3 p-2 rounded hover:bg-[var(--color-dark)] cursor-pointer"
               >
                 <FiLogOut className="text-xl" />{" "}
                 {sidebarOpen && <span className="text-lg">Sign out</span>}
@@ -185,7 +159,7 @@ export default function AdminDashboard() {
           </nav>
         </aside>
         <button
-          className="p-1 h-10 rounded-br hover:opacity-90 bg-[var(--color-darkest)] text-[var(--color-bg)] cursor-pointer"
+          className="p-1 h-10 rounded-br hover:opacity-90 bg-[var(--color-darker)] text-[var(--color-bg)] cursor-pointer"
           onClick={() => setSidebarOpen((s) => !s)}
           title="Toggle sidebar"
         >

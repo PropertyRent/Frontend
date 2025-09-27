@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {IoMdArrowDropdown} from "react-icons/io";
+import {IoMdArrowDropdown, IoMdLocate} from "react-icons/io";
 
 export default function PropertySearchSection({
   onSearch,
@@ -87,12 +87,9 @@ export default function PropertySearchSection({
         >
           <div className="lg:col-span-5" ref={locRef}>
             <label className="block text-xs text-[var(--color-dark)] mb-2">Location</label>
-            <div className="relative flex items-center bg-white border border-[var(--color-primary)] rounded-md overflow-hidden">
-              <div className="px-3 py-2 text-[var(--color-accent)]">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="12" cy="9" r="2" fill="currentColor" />
-                </svg>
+            <div className="relative flex items-center bg-white border border-[var(--color-dark)] rounded-md overflow-hidden">
+              <div className="px-3 py-2 text-[var(--color-dark)]">
+                <IoMdLocate className="h-5 w-5"/>
               </div>
 
               <input
@@ -123,7 +120,7 @@ export default function PropertySearchSection({
             </div>
 
             {showLoc && filteredLocations.length > 0 && (
-              <ul className="absolute max-w-115 z-30 left-50 right-0 mt-2 bg-white border border-[var(--color-primary)] rounded-md shadow-md max-h-48 overflow-auto">
+              <ul className="absolute max-w-115 z-30 left-50 right-0 mt-2 bg-white border border-[var(--color-dark)] rounded-md shadow-md max-h-48 overflow-auto">
                 {filteredLocations.map((loc) => (
                   <li
                     key={loc}
@@ -131,7 +128,7 @@ export default function PropertySearchSection({
                       setLocation(loc);
                       setShowLoc(false);
                     }}
-                    className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-dark)] hover:text-white cursor-pointer"
+                    className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-primary)] hover:text-white cursor-pointer"
                   >
                     {loc}
                   </li>
@@ -150,19 +147,19 @@ export default function PropertySearchSection({
                     setShowPriceMin((s) => !s);
                     setShowPriceMax(false);
                   }}
-                  className={`w-full text-left px-3 py-2 rounded-md border border-[var(--color-primary)] ${inputBase}`}
+                  className={`w-full text-left px-3 py-2 rounded-md border border-[var(--color-dark)] ${inputBase}`}
                 >
                   {formatPrice(priceMin)}
                 </button>
 
                 {showPriceMin && (
-                  <ul className="absolute z-30 left-0 right-0 mt-2 bg-white border border-[var(--color-primary)] rounded-md shadow-md max-h-44 overflow-auto">
+                  <ul className="absolute z-30 left-0 right-0 mt-2 bg-white border border-[var(--color-dark)] rounded-md shadow-md max-h-44 overflow-auto">
                     <li
                       onClick={() => {
                         setPriceMin("");
                         setShowPriceMin(false);
                       }}
-                      className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-dark)] hover:text-white cursor-pointer"
+                      className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-primary)] hover:text-white cursor-pointer"
                     >
                       Any
                     </li>
@@ -174,7 +171,7 @@ export default function PropertySearchSection({
                           if (priceMax !== "" && p > Number(priceMax)) setPriceMax("");
                           setShowPriceMin(false);
                         }}
-                        className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-dark)] hover:text-white cursor-pointer"
+                        className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-primary)] hover:text-white cursor-pointer"
                       >
                         {formatPrice(p)}
                       </li>
@@ -193,19 +190,19 @@ export default function PropertySearchSection({
                     setShowPriceMax((s) => !s);
                     setShowPriceMin(false);
                   }}
-                  className={`w-full text-left px-3 py-2 rounded-md border border-[var(--color-primary)] ${inputBase}`}
+                  className={`w-full text-left px-3 py-2 rounded-md border border-[var(--color-dark)] ${inputBase}`}
                 >
                   {formatPrice(priceMax)}
                 </button>
 
                 {showPriceMax && (
-                  <ul className="absolute z-30 left-0 right-0 mt-2 bg-white border border-[var(--color-primary)] rounded-md shadow-md max-h-44 overflow-auto">
+                  <ul className="absolute z-30 left-0 right-0 mt-2 bg-white border border-[var(--color-dark)] rounded-md shadow-md max-h-44 overflow-auto">
                     <li
                       onClick={() => {
                         setPriceMax("");
                         setShowPriceMax(false);
                       }}
-                      className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-dark)] hover:text-white cursor-pointer"
+                      className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-primary)] hover:text-white cursor-pointer"
                     >
                       Any
                     </li>
@@ -217,7 +214,7 @@ export default function PropertySearchSection({
                           if (priceMin !== "" && p < Number(priceMin)) setPriceMin("");
                           setShowPriceMax(false);
                         }}
-                        className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-dark)] hover:text-white cursor-pointer"
+                        className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-primary)] hover:text-white cursor-pointer"
                       >
                         {formatPrice(p)}
                       </li>
@@ -234,13 +231,13 @@ export default function PropertySearchSection({
               <button
                 type="button"
                 onClick={() => setShowBeds((s) => !s)}
-                className={`w-full text-left px-3 py-2 rounded-md border border-[var(--color-primary)] ${inputBase}`}
+                className={`w-full text-left px-3 py-2 rounded-md border border-[var(--color-dark)] ${inputBase}`}
               >
                 {beds}
               </button>
 
               {showBeds && (
-                <ul className="absolute z-30 left-0 right-0 mt-2 bg-white border border-[var(--color-primary)] rounded-md shadow-md max-h-40 overflow-auto">
+                <ul className="absolute z-30 left-0 right-0 mt-2 bg-white border border-[var(--color-dark)] rounded-md shadow-md max-h-40 overflow-auto">
                   {["Any", "1+", "2+", "3+", "4+"].map((b) => (
                     <li
                       key={`b-${b}`}
@@ -248,7 +245,7 @@ export default function PropertySearchSection({
                         setBeds(b);
                         setShowBeds(false);
                       }}
-                      className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-dark)] hover:text-white cursor-pointer"
+                      className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-primary)] hover:text-white cursor-pointer"
                     >
                       {b}
                     </li>
@@ -264,13 +261,13 @@ export default function PropertySearchSection({
               <button
                 type="button"
                 onClick={() => setShowBaths((s) => !s)}
-                className={`w-full text-left px-3 py-2 rounded-md border border-[var(--color-primary)] ${inputBase}`}
+                className={`w-full text-left px-3 py-2 rounded-md border border-[var(--color-dark)] ${inputBase}`}
               >
                 {baths}
               </button>
 
               {showBaths && (
-                <ul className="absolute z-30 left-0 right-0 mt-2 bg-white border border-[var(--color-primary)] rounded-md shadow-md max-h-40 overflow-auto">
+                <ul className="absolute z-30 left-0 right-0 mt-2 bg-white border border-[var(--color-dark)] rounded-md shadow-md max-h-40 overflow-auto">
                   {["Any", "1+", "2+", "3+"].map((bt) => (
                     <li
                       key={`bt-${bt}`}
@@ -278,7 +275,7 @@ export default function PropertySearchSection({
                         setBaths(bt);
                         setShowBaths(false);
                       }}
-                      className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-dark)] hover:text-white cursor-pointer"
+                      className="px-4 py-2 text-[var(--color-darkest)] hover:bg-[var(--color-primary)] hover:text-white cursor-pointer"
                     >
                       {bt}
                     </li>
@@ -288,18 +285,18 @@ export default function PropertySearchSection({
             </div>
           </div>
 
-          <div className="lg:col-span-12 flex justify-end gap-3 mt-2">
+          <div className="lg:col-span-12 flex justify-center gap-3 mt-2">
             <button
               type="button"
               onClick={clear}
-              className="px-4 py-2 rounded-md bg-white border border-[var(--color-secondary)] text-[var(--color-darkest)] cursor-pointer"
+              className="px-4 py-2 rounded-full bg-white border border-[var(--color-dark)] text-[var(--color-darkest)] cursor-pointer"
             >
               Clear
             </button>
 
             <button
               type="submit"
-              className="px-5 py-2 rounded-md bg-[var(--color-darker)] text-white font-medium shadow hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] cursor-pointer"
+              className="px-7 py-2 rounded-full bg-[var(--color-dark)] text-white font-medium shadow hover:brightness-150 focus:outline-none cursor-pointer"
             >
               Search
             </button>

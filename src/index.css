@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme{
+@theme {
     --font-sans: system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -8,11 +8,14 @@
     --font-hand: "Comic Sans MS";
     --font-code: "Fira Code", monospace;
 
-    --color-bg:#fafafa;
-    --color-primary:#e4e5f1;
-    --color-secondary:#d2d3db;
-    --color-dark:#9394a5;
-    --color-darker:#484b6a;
-    --color-darkest:#1e2139;
-    --color-accent:#2a4a8a;
+    /* Nature-inspired colors */
+    --color-bg: #fdfdfd;          /* Cloud white */
+    --color-primary: #4da6ff;     /* Fresh water blue */
+    --color-secondary: #87ceeb;   /* Sky blue */
+    --color-light-brown: #d2b48c; /* Light wood brown */
+    --color-medium: #a0522d;      /* Warm wood brown */
+    --color-dark: #6b4226;        /* Medium wood brown */
+    --color-darker: #4e2f1a;      /* Dark wood brown */
+    --color-darkest: #2b1b0f;     /* Deep earthy brown */
+    --color-accent: #2f5faf;      /* Deep blue accent (lake/river) */
 }

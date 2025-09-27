@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import {IoMdArrowDropdown, IoMdMenu, IoMdClose} from "react-icons/io";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -72,14 +73,14 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             <Link
               to="/pay-rent"
-              className="px-3 py-1 text-md text-[var(--color-accent)] border border-[var(--color-accent)] rounded-full font-medium hover:bg-[var(--color-accent)] hover:text-[var(--color-bg)] transition"
+              className="px-3 py-1 text-md text-[var(--color-primary)] border border-[var(--color-primary)] rounded-full font-medium hover:bg-[var(--color-primary)] hover:text-[var(--color-bg)] transition"
             >
               Pay Rent
             </Link>
             {localStorage.getItem("adminUser") && (
               <Link
                 to="/admin"
-                className="px-3 py-1 text-md bg-[var(--color-darker)] text-[var(--color-bg)] rounded-full font-medium hover:opacity-95 transition"
+                className="px-3 py-1 text-md bg-[var(--color-dark)] text-[var(--color-bg)] rounded-full font-medium hover:opacity-95 transition"
               >
                 Dashboard
               </Link>
@@ -94,39 +95,30 @@ export default function Navbar() {
               className="p-2 rounded-md focus:outline-none"
             >
               {/* simple hamburger icon */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                {mobileOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+              {mobileOpen ? (
+                <IoMdClose className="h-6 w-6 text-[var(--color-darker)]" />
+              ) : (
+                <IoMdMenu className="h-6 w-6 text-[var(--color-darker)]" />
+              )}
             </button>
           </div>
         </div>
       </div>
 
       {/* Navigation bar (dark row) */}
-      <div className="bg-[var(--color-darker)] text-[var(--color-bg)]">
+      <div className="bg-[var(--color-dark)] text-[var(--color-bg)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center gap-6">
             {/* Desktop menu */}
             <ul className="hidden md:flex items-center gap-6 py-3">
               <li>
-                <Link to="/" className="text-base font-medium hover:underline">
+                <Link to="/" className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-[var(--color-bg)] after:transition-all after:duration-300 after:w-0">
                   Home
                 </Link>
               </li>
 
               {menus.map((m) => (
-                <li key={m.key} className="relative ">
+                <li key={m.key} className="relative">
                   <button
                     onClick={() => setOpenMenu((cur) => (cur === m.key ? null : m.key))}
                     onKeyDown={(e) => {
@@ -134,19 +126,10 @@ export default function Navbar() {
                     }}
                     aria-expanded={openMenu === m.key}
                     aria-controls={`${m.key}-menu`}
-                    className="flex items-center gap-2 text-base font-medium px-3 py-2 rounded-md hover:bg-[var(--color-darker)]"
+                    className="flex items-center gap-2 text-base font-medium px-3 py-2 rounded-full hover:bg-[var(--color-darker)]/40 cursor-pointer"
                   >
                     {m.label}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={`h-4 w-4 transform transition-transform ${openMenu === m.key ? "rotate-180" : "rotate-0"}`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <IoMdArrowDropdown className={`h-4 w-4 transform transition-transform duration-300 ${openMenu === m.key ? "rotate-180" : "rotate-0"}`} />
                   </button>
 
                   {/* dropdown */}
@@ -173,13 +156,13 @@ export default function Navbar() {
               ))}
 
               <li>
-                <Link to="/resident" className="text-base font-medium hover:underline">
+                <Link to="/resident" className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-[var(--color-bg)] after:transition-all after:duration-300 after:w-0">
                   Resident
                 </Link>
               </li>
 
               <li>
-                <Link to="/about" className="text-base font-medium hover:underline">
+                <Link to="/about" className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-[var(--color-bg)] after:transition-all after:duration-300 after:w-0">
                   About
                 </Link>
               </li>
@@ -189,7 +172,7 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-3">
               <Link
                 to="/contact"
-                className="text-sm px-4 py-2 rounded-md bg-[var(--color-bg)] text-[var(--color-darker)] font-semibold shadow-sm hover:opacity-95"
+                className="text-sm px-4 py-2 rounded-full bg-[var(--color-bg)] text-[var(--color-darker)] font-semibold shadow-sm hover:opacity-95"
               >
                 Contact
               </Link>
@@ -214,16 +197,7 @@ export default function Navbar() {
                     aria-expanded={openMenu === m.key}
                   >
                     {m.label}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={`h-5 w-5 transform transition-transform ${openMenu === m.key ? "rotate-180" : "rotate-0"}`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <IoMdArrowDropdown className={`h-5 w-5 transform transition-transform duration-300 ${openMenu === m.key ? "rotate-180" : "rotate-0"}`} />
                   </button>
 
                   {openMenu === m.key && (

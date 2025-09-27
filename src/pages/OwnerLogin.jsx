@@ -8,34 +8,6 @@ const appURL = import.meta.env.VITE_APP_URL;
 
 export default function OwnerPortalAuth() {
   const [mode, setMode] = useState("login");
-  // const [user, setUser] = useState(
-  //   localStorage.getItem("adminUser")
-  //     ? JSON.parse(localStorage.getItem("adminUser"))
-  //     : null
-  // );
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState(null);
-  // const navigate = useNavigate();
-
-  // const loginAdmin = async (userData) => {
-  //   // console.log("Logging in with:", userData);
-  //   setLoading(true);
-  //   setError(null);
-  //   try {
-  //     const res = await axios.post(`${appURL}/api/auth/login`, userData, {
-  //       withCredentials: true,
-  //     });
-  //     setUser(res.data.data);
-  //     localStorage.setItem("adminUser", JSON.stringify(res.data.data));
-  //     console.log("Login successful:", res.data);
-  //     navigate("/admin");
-  //   } catch (error) {
-  //     console.error("Login failed:", error);
-  //     setError("Login failed. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const { user, loading, error, loginAdmin, navigate } = useContext(AuthContext);
 
@@ -69,7 +41,7 @@ export default function OwnerPortalAuth() {
 
         {/* Title */}
         <h1 className="text-3xl font-light text-center text-gray-700 mb-2">
-          {mode === "login" && "Welcome to the Owner Portal"}
+          {mode === "login" && "Welcome to the Admin Portal"}
           {mode === "signup" && "Create your account"}
           {mode === "reset" && "Reset your password"}
         </h1>
@@ -141,7 +113,7 @@ export default function OwnerPortalAuth() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full inline-flex items-center justify-center px-5 py-2 rounded-md bg-[var(--color-darker)] text-white font-medium hover:bg-[var(--color-dark)] cursor-pointer transition duration-300"
+              className="w-full inline-flex items-center justify-center px-5 py-2 rounded-full bg-[var(--color-light-brown)] text-white font-medium hover:bg-[var(--color-dark)] cursor-pointer transition duration-300"
             >
               {mode === "login" && loading ? "Logging in..." : "Log in"}
               {/* {mode === "signup" && "Sign up"} */}
