@@ -10,6 +10,9 @@ import AdminDashboard from "./pages/Dashboard.jsx";
 import AuthProvider from "./stores/authStore.jsx";
 import ContactPage from "./pages/Contact.jsx";
 import AboutPage from "./pages/About.jsx";
+import ManagementPage from "./pages/ManagementService.jsx";
+import Properties from "./pages/Properties.jsx";
+import PropertyDetail from "./pages/PropertyDetail.jsx";
 
 const AuthWrapper = ({ children }) => {
   return <AuthProvider>{children}</AuthProvider>;
@@ -31,6 +34,18 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <AboutPage />,
+      },
+      {
+        path: "/services/maintenance",
+        element: <ManagementPage />,
+      },
+      {
+        path: "/properties",
+        element: <Properties />,
+      },
+      {
+        path: "/properties/:id",
+        element: <PropertyDetail />,
       },
       {
         path: "*",

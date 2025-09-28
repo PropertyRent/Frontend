@@ -20,9 +20,9 @@ export default function Navbar() {
   const menus = [
     {
       key: "availability",
-      label: "Availability",
+      label: "Properties",
       items: [
-        { to: "/availability", label: "All Properties" },
+        { to: "/properties", label: "All Properties" },
       ],
     },
     {
@@ -38,7 +38,6 @@ export default function Navbar() {
       label: "Services",
       items: [
         { to: "/services/maintenance", label: "Maintenance Service" },
-        { to: "/services/housekeeping", label: "Other Services" },
       ],
     },
   ];
