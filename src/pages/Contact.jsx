@@ -199,8 +199,8 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={status.loading}
-                    className="inline-flex items-center gap-2 px-5 py-2 rounded-full font-semibold transition-shadow
-                               bg-[var(--color-accent)] text-white shadow-lg hover:shadow-xl disabled:opacity-70 cursor-pointer"
+                    className="inline-flex items-center gap-2 px-5 py-2 rounded-full font-semibold transition-all
+                               bg-[var(--color-secondary)] hover:bg-[var(--color-darker)] text-white shadow-lg hover:shadow-xl disabled:opacity-70 cursor-pointer"
                     aria-busy={status.loading}
                   >
                     <FiSend className="w-4 h-4" />
@@ -214,7 +214,7 @@ export default function ContactPage() {
                       setErrors({});
                       setStatus({ loading: false, ok: null, msg: "" });
                     }}
-                    className="px-4 py-2 rounded-full border font-medium border-[var(--color-dark)] text-[var(--color-dark)] bg-white cursor-pointer"
+                    className="px-4 py-2 rounded-full border font-medium border-[var(--color-secondary)] text-[var(--color-secondary)] bg-white hover:bg-[var(--color-light)] transition-colors cursor-pointer"
                   >
                     Reset
                   </button>

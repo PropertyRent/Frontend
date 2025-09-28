@@ -27,14 +27,14 @@ export default function NotFound() {
             <button
               ref={primaryBtnRef}
               onClick={() => navigate("/")}
-              className="px-5 py-2 rounded-lg bg-[var(--color-darker)] text-[var(--color-bg)] font-semibold shadow hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-darker)]"
+              className="px-5 py-2 rounded-lg bg-[var(--color-secondary)] hover:bg-[var(--color-darker)] text-white font-semibold shadow transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-secondary)]"
             >
               Go to Home
             </button>
 
             <Link
-              to="/availability"
-              className="px-5 py-2 rounded-lg border border-[var(--color-darker)] text-[var(--color-darker)] font-medium text-center w-full sm:w-auto"
+              to="/properties"
+              className="px-5 py-2 rounded-lg border border-[var(--color-secondary)] text-[var(--color-secondary)] hover:bg-[var(--color-secondary)] hover:text-white transition-colors font-medium text-center w-full sm:w-auto"
             >
               Search Properties
             </Link>

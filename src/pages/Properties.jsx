@@ -153,12 +153,12 @@ export default function Properties() {
   return (
     <main className="min-h-screen bg-[var(--color-bg)] text-[var(--color-darkest)]">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] text-[var(--color-bg)] py-16">
+      <section className="bg-gradient-to-r from-[var(--color-darker)] to-[var(--color-secondary)] text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
             Find Your Perfect Property
           </h1>
-          <p className="text-lg md:text-xl max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl max-w-2xl mx-auto opacity-90">
             Discover amazing properties that match your lifestyle and budget
           </p>
         </div>

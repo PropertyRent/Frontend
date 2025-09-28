@@ -35,14 +35,14 @@ export default function UtilitySection({ mediaType, mediaSrc, onApply, onTour, o
 
             <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
 
-              <button onClick={() => handle(onApply, "/apply")} aria-label="Submit application" className="flex items-center gap-3 px-4 py-3 rounded-lg font-medium bg-[var(--color-accent)] text-white shadow-md hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+              <button onClick={() => handle(onApply, "/apply")} aria-label="Submit application" className="flex items-center gap-3 px-4 py-3 rounded-lg font-medium bg-[var(--color-secondary)] text-white shadow-md hover:bg-[var(--color-darker)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
                   <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 Submit Application
               </button>
 
-              <button onClick={() => handle(onTour, "/tour")} aria-label="Schedule tour" className="flex items-center gap-3 px-4 py-3 rounded-lg font-medium border border-[var(--color-accent)] text-[var(--color-accent)] bg-white hover:bg-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+              <button onClick={() => handle(onTour, "/tour")} aria-label="Schedule tour" className="flex items-center gap-3 px-4 py-3 rounded-lg font-medium border border-[var(--color-secondary)] text-[var(--color-secondary)] bg-white hover:bg-[var(--color-secondary)] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
                   <path d="M12 6v6l4 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                   <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.2" />
@@ -50,7 +50,7 @@ export default function UtilitySection({ mediaType, mediaSrc, onApply, onTour, o
                 Schedule Self-Guided Tour
               </button>
 
-              <button onClick={() => handle(onAvailability, "/availability")} aria-label="View availability" className="flex items-center gap-3 px-4 py-3 rounded-lg font-medium bg-[var(--color-secondary)] text-[var(--color-darkest)] hover:brightness-98 focus:outline-none">
+              <button onClick={() => handle(onAvailability, "/availability")} aria-label="View availability" className="flex items-center gap-3 px-4 py-3 rounded-lg font-medium bg-[var(--color-tan)] text-[var(--color-darkest)] hover:bg-[var(--color-light-brown)] transition-colors focus:outline-none">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
                   <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.3" />
                   <path d="M8 2v4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />

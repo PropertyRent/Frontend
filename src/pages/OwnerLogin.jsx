@@ -113,7 +113,7 @@ export default function OwnerPortalAuth() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full inline-flex items-center justify-center px-5 py-2 rounded-full bg-[var(--color-light-brown)] text-white font-medium hover:bg-[var(--color-dark)] cursor-pointer transition duration-300"
+              className="w-full inline-flex items-center justify-center px-5 py-2 rounded-full bg-[var(--color-secondary)] hover:bg-[var(--color-darker)] text-white font-medium cursor-pointer transition-colors duration-300"
             >
               {mode === "login" && loading ? "Logging in..." : "Log in"}
               {/* {mode === "signup" && "Sign up"} */}

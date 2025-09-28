@@ -4,7 +4,7 @@ import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaFacebookF, FaTwitter, FaLinke
 
 export default function Footer() {
   return (
-    <footer className="bg-[var(--color-bg)] text-[var(--color-light)] border-t pt-10">
+    <footer className="bg-[var(--color-light)] text-[var(--color-darker)] border-t border-[var(--color-tan)]/30 pt-10">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Company Info */}
         <div>
@@ -74,24 +74,24 @@ export default function Footer() {
           </div>
           <h3 className="text-lg font-semibold my-3">Follow Us</h3>
           <div className="flex gap-3">
-            <Link to="#" className="p-2 bg-[var(--color-darker)] rounded-full hover:opacity-80">
-              <FaFacebookF className="text-[var(--color-bg)]" />
+            <Link to="#" className="p-2 bg-[var(--color-secondary)] rounded-full hover:bg-[var(--color-darker)] transition-colors">
+              <FaFacebookF className="text-white" />
             </Link>
-            <Link to="#" className="p-2 bg-[var(--color-darker)] rounded-full hover:opacity-80">
-              <FaTwitter className="text-[var(--color-bg)]" />
+            <Link to="#" className="p-2 bg-[var(--color-secondary)] rounded-full hover:bg-[var(--color-darker)] transition-colors">
+              <FaTwitter className="text-white" />
             </Link>
-            <Link to="#" className="p-2 bg-[var(--color-darker)] rounded-full hover:opacity-80">
-              <FaLinkedinIn className="text-[var(--color-bg)]" />
+            <Link to="#" className="p-2 bg-[var(--color-secondary)] rounded-full hover:bg-[var(--color-darker)] transition-colors">
+              <FaLinkedinIn className="text-white" />
             </Link>
-            <Link to="#" className="p-2 bg-[var(--color-darker)] rounded-full hover:opacity-80">
-              <FaInstagram className="text-[var(--color-bg)]" />
+            <Link to="#" className="p-2 bg-[var(--color-secondary)] rounded-full hover:bg-[var(--color-darker)] transition-colors">
+              <FaInstagram className="text-white" />
             </Link>
           </div>
         </div>
       </div>
 
       {/* Bottom Bar */}
-      <div className=" w-full mt-10 border-t bg-[var(--color-darker)] border-[var(--color-dark)] py-8 text-center text-lg text-[var(--color-bg)]">
+      <div className=" w-full mt-10 border-t bg-[var(--color-darker)] border-[var(--color-tan)]/30 py-8 text-center text-lg text-white">
         © {new Date().getFullYear()} Company Name. All rights reserved.
       </div>
     </footer>

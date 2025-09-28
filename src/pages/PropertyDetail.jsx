@@ -68,8 +68,8 @@ export default function PropertyDetail() {
     return (
       <div className="min-h-screen bg-[var(--color-bg)] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-[var(--color-medium)]">Loading property details...</p>
+          <div className="w-16 h-16 border-4 border-[var(--color-secondary)] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-[var(--color-muted)]">Loading property details...</p>
         </div>
       </div>
     );
@@ -79,12 +79,12 @@ export default function PropertyDetail() {
     return (
       <div className="min-h-screen bg-[var(--color-bg)] flex items-center justify-center">
         <div className="text-center">
-          <div className="text-[var(--color-medium)] text-6xl mb-4">🏠</div>
+          <div className="text-[var(--color-muted)] text-6xl mb-4">🏠</div>
           <h2 className="text-2xl font-bold text-[var(--color-darkest)] mb-2">Property Not Found</h2>
-          <p className="text-[var(--color-medium)] mb-6">The property you're looking for doesn't exist.</p>
+          <p className="text-[var(--color-muted)] mb-6">The property you're looking for doesn't exist.</p>
           <Link
             to="/properties"
-            className="bg-[var(--color-primary)] text-white px-6 py-3 rounded-lg hover:bg-[var(--color-accent)] transition-colors duration-200"
+            className="bg-[var(--color-secondary)] text-white px-6 py-3 rounded-lg hover:bg-[var(--color-darker)] transition-colors duration-200"
           >
             Back to Properties
           </Link>
@@ -99,7 +99,7 @@ export default function PropertyDetail() {
       <div className="container mx-auto px-4 py-4">
         <Link
           to="/properties"
-          className="inline-flex items-center text-[var(--color-primary)] hover:text-[var(--color-accent)] transition-colors duration-200"
+          className="inline-flex items-center text-[var(--color-secondary)] hover:text-[var(--color-darker)] transition-colors duration-200"
         >
           <FaArrowLeft className="mr-2" />
           Back to Properties
@@ -161,7 +161,7 @@ export default function PropertyDetail() {
                   <h1 className="text-2xl font-bold text-[var(--color-darkest)] mb-2">
                     {property.title}
                   </h1>
-                  <div className="flex items-center text-[var(--color-medium)] mb-2">
+                  <div className="flex items-center text-[var(--color-muted)] mb-2">
                     <FaMapMarkerAlt className="mr-2" />
                     <span>{property.fullAddress}</span>
                   </div>
@@ -180,25 +180,25 @@ export default function PropertyDetail() {
 
               {/* Property Stats */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div className="bg-[var(--color-bg)] p-4 rounded-lg text-center">
-                  <FaBed className="text-[var(--color-primary)] text-2xl mx-auto mb-2" />
+                <div className="bg-[var(--color-light)] p-4 rounded-lg text-center">
+                  <FaBed className="text-[var(--color-secondary)] text-2xl mx-auto mb-2" />
                   <div className="text-lg font-semibold text-[var(--color-darkest)]">{property.bedrooms}</div>
-                  <div className="text-sm text-[var(--color-medium)]">Bedrooms</div>
+                  <div className="text-sm text-[var(--color-muted)]">Bedrooms</div>
                 </div>
-                <div className="bg-[var(--color-bg)] p-4 rounded-lg text-center">
-                  <FaBath className="text-[var(--color-primary)] text-2xl mx-auto mb-2" />
+                <div className="bg-[var(--color-light)] p-4 rounded-lg text-center">
+                  <FaBath className="text-[var(--color-secondary)] text-2xl mx-auto mb-2" />
                   <div className="text-lg font-semibold text-[var(--color-darkest)]">{property.bathrooms}</div>
-                  <div className="text-sm text-[var(--color-medium)]">Bathrooms</div>
+                  <div className="text-sm text-[var(--color-muted)]">Bathrooms</div>
                 </div>
-                <div className="bg-[var(--color-bg)] p-4 rounded-lg text-center">
-                  <FaRulerCombined className="text-[var(--color-primary)] text-2xl mx-auto mb-2" />
+                <div className="bg-[var(--color-light)] p-4 rounded-lg text-center">
+                  <FaRulerCombined className="text-[var(--color-secondary)] text-2xl mx-auto mb-2" />
                   <div className="text-lg font-semibold text-[var(--color-darkest)]">{property.area.toLocaleString()}</div>
-                  <div className="text-sm text-[var(--color-medium)]">Sq Ft</div>
+                  <div className="text-sm text-[var(--color-muted)]">Sq Ft</div>
                 </div>
-                <div className="bg-[var(--color-bg)] p-4 rounded-lg text-center">
-                  <div className="text-[var(--color-primary)] text-2xl mx-auto mb-2">🏠</div>
+                <div className="bg-[var(--color-light)] p-4 rounded-lg text-center">
+                  <div className="text-[var(--color-secondary)] text-2xl mx-auto mb-2">🏠</div>
                   <div className="text-lg font-semibold text-[var(--color-darkest)] capitalize">{property.type}</div>
-                  <div className="text-sm text-[var(--color-medium)]">Type</div>
+                  <div className="text-sm text-[var(--color-muted)]">Type</div>
                 </div>
               </div>
 
@@ -239,7 +239,7 @@ export default function PropertyDetail() {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
               <div className="text-center mb-6">
-                <div className="text-3xl font-bold text-[var(--color-primary)] mb-2">
+                <div className="text-3xl font-bold text-[var(--color-secondary)] mb-2">
                   ${property.price.toLocaleString()}/mo
                 </div>
                 <div className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
@@ -256,7 +256,7 @@ export default function PropertyDetail() {
                 <h4 className="text-lg font-semibold text-[var(--color-darkest)] mb-3">Contact Agent</h4>
                 <div className="space-y-3">
                   <div className="flex items-center">
-                    <div className="w-12 h-12 bg-[var(--color-primary)] rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                    <div className="w-12 h-12 bg-[var(--color-secondary)] rounded-full flex items-center justify-center text-white font-semibold mr-3">
                       {property.contactInfo.name.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
@@ -266,12 +266,12 @@ export default function PropertyDetail() {
                   </div>
                   
                   <div className="flex items-center text-[var(--color-darkest)]">
-                    <FaPhone className="mr-3 text-[var(--color-primary)]" />
+                    <FaPhone className="mr-3 text-[var(--color-secondary)]" />
                     <span>{property.contactInfo.phone}</span>
                   </div>
                   
                   <div className="flex items-center text-[var(--color-darkest)]">
-                    <FaEnvelope className="mr-3 text-[var(--color-primary)]" />
+                    <FaEnvelope className="mr-3 text-[var(--color-secondary)]" />
                     <span className="break-all">{property.contactInfo.email}</span>
                   </div>
                 </div>
@@ -280,15 +280,15 @@ export default function PropertyDetail() {
               {/* Contact Buttons */}
               <div className="space-y-3">
                 <button 
-                  className="w-full bg-[var(--color-primary)] text-white py-3 px-4 rounded-lg hover:bg-[var(--color-accent)] transition-colors duration-200 font-semibold"
+                  className="w-full bg-[var(--color-secondary)] text-white py-3 px-4 rounded-lg hover:bg-[var(--color-darker)] transition-colors duration-200 font-semibold"
                   disabled={!property.available}
                 >
                   {property.available ? 'Schedule Viewing' : 'Unavailable'}
                 </button>
-                <button className="w-full border-2 border-[var(--color-primary)] text-[var(--color-primary)] py-3 px-4 rounded-lg hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-200 font-semibold">
+                <button className="w-full border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] py-3 px-4 rounded-lg hover:bg-[var(--color-secondary)] hover:text-white transition-colors duration-200 font-semibold">
                   Send Message
                 </button>
-                <button className="w-full bg-[var(--color-light-brown)] text-[var(--color-darkest)] py-3 px-4 rounded-lg hover:bg-[var(--color-medium)] hover:text-white transition-colors duration-200 font-semibold">
+                <button className="w-full bg-[var(--color-tan)] text-[var(--color-darkest)] py-3 px-4 rounded-lg hover:bg-[var(--color-light-brown)] hover:text-white transition-colors duration-200 font-semibold">
                   Call Now
                 </button>
               </div>

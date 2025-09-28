@@ -45,7 +45,7 @@ export default function PropertyCard({ property }) {
         </div>
 
         {/* Property Type Badge */}
-        <div className="absolute top-3 right-12 px-2 py-1 bg-[var(--color-primary)] text-white rounded-full text-xs font-semibold capitalize">
+        <div className="absolute top-3 right-12 px-2 py-1 bg-[var(--color-secondary)] text-white rounded-full text-xs font-semibold capitalize">
           {type}
         </div>
 
@@ -69,19 +69,19 @@ export default function PropertyCard({ property }) {
           <h3 className="text-lg font-semibold text-[var(--color-darkest)] line-clamp-1">
             {title}
           </h3>
-          <span className="text-xl font-bold text-[var(--color-primary)]">
+          <span className="text-xl font-bold text-[var(--color-secondary)]">
             ${price.toLocaleString()}/mo
           </span>
         </div>
 
         {/* Location */}
-        <div className="flex items-center text-[var(--color-medium)] mb-3">
+        <div className="flex items-center text-[var(--color-muted)] mb-3">
           <FaMapMarkerAlt className="mr-1 text-sm" />
           <span className="text-sm">{location}</span>
         </div>
 
         {/* Property Stats */}
-        <div className="flex justify-between items-center mb-3 text-[var(--color-medium)]">
+        <div className="flex justify-between items-center mb-3 text-[var(--color-muted)]">
           <div className="flex items-center">
             <FaBed className="mr-1" />
             <span className="text-sm">{bedrooms} bed{bedrooms !== 1 ? 's' : ''}</span>
@@ -124,12 +124,12 @@ export default function PropertyCard({ property }) {
         <div className="flex gap-2">
           <Link
             to={`/properties/${id}`}
-            className="flex-1 bg-[var(--color-primary)] text-white py-2 px-4 rounded-lg hover:bg-[var(--color-accent)] transition-colors duration-200 text-center text-sm font-semibold"
+            className="flex-1 bg-[var(--color-secondary)] text-white py-2 px-4 rounded-lg hover:bg-[var(--color-darker)] transition-colors duration-200 text-center text-sm font-semibold"
           >
             View Details
           </Link>
           <button
-            className="flex-1 border-2 border-[var(--color-primary)] text-[var(--color-primary)] py-2 px-4 rounded-lg hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-200 text-sm font-semibold"
+            className="flex-1 border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] py-2 px-4 rounded-lg hover:bg-[var(--color-secondary)] hover:text-white transition-colors duration-200 text-sm font-semibold"
             disabled={!available}
           >
             {available ? 'Contact' : 'Unavailable'}

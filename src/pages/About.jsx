@@ -19,7 +19,7 @@ export default function AboutPage() {
 
         {/* Mission & Values */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="rounded-2xl p-6 border border-[var(--color-light-brown)] bg-white shadow-sm">
+          <div className="rounded-2xl p-6 border border-[var(--color-tan)]/30 bg-white shadow-sm">
             <h2 className="text-xl font-semibold mb-2">Our Mission</h2>
             <p className="text-[var(--color-darker)]">
               Make renting transparent and simple. We provide verified listings, easy communication
@@ -32,7 +32,7 @@ export default function AboutPage() {
             </ul>
           </div>
 
-          <div className="rounded-2xl p-6 border border-[var(--color-light-brown)] bg-white shadow-sm">
+          <div className="rounded-2xl p-6 border border-[var(--color-tan)]/30 bg-white shadow-sm">
             <h2 className="text-xl font-semibold mb-2">How we work</h2>
             <p className="text-[var(--color-darker)]">
               We combine a simple UI, robust backend workflows, and human support. Listings are
@@ -40,7 +40,7 @@ export default function AboutPage() {
             </p>
             <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:gap-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-full bg-[var(--color-light-brown)]">
+                <div className="p-3 rounded-full bg-[var(--color-tan)]">
                   <FiMapPin className="w-5 h-5" />
                 </div>
                 <div>
@@ -50,7 +50,7 @@ export default function AboutPage() {
               </div>
 
               <div className="flex items-center gap-3 mt-4 sm:mt-0">
-                <div className="p-3 rounded-full bg-[var(--color-light-brown)]">
+                <div className="p-3 rounded-full bg-[var(--color-tan)]">
                   <FiMail className="w-5 h-5" />
                 </div>
                 <div>

@@ -38,7 +38,7 @@ export default function PropertyFilters({ filters, onFilterChange, sortBy, onSor
         </h3>
         <button
           onClick={resetFilters}
-          className="text-sm text-[var(--color-primary)] hover:text-[var(--color-accent)] font-medium"
+          className="text-sm text-[var(--color-secondary)] hover:text-[var(--color-darker)] font-medium"
         >
           Reset All
         </button>
@@ -51,7 +51,7 @@ export default function PropertyFilters({ filters, onFilterChange, sortBy, onSor
         </label>
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-[var(--color-medium)] w-8">Min:</span>
+            <span className="text-sm text-[var(--color-muted)] w-8">Min:</span>
             <input
               type="range"
               min="0"
@@ -59,14 +59,14 @@ export default function PropertyFilters({ filters, onFilterChange, sortBy, onSor
               step="100"
               value={filters.priceRange[0]}
               onChange={(e) => handlePriceRangeChange(e, 0)}
-              className="flex-1 accent-[var(--color-primary)]"
+              className="flex-1 accent-[var(--color-secondary)]"
             />
             <span className="text-sm font-medium text-[var(--color-darkest)] w-16">
               ${filters.priceRange[0]}
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-[var(--color-medium)] w-8">Max:</span>
+            <span className="text-sm text-[var(--color-muted)] w-8">Max:</span>
             <input
               type="range"
               min="0"
@@ -74,7 +74,7 @@ export default function PropertyFilters({ filters, onFilterChange, sortBy, onSor
               step="100"
               value={filters.priceRange[1]}
               onChange={(e) => handlePriceRangeChange(e, 1)}
-              className="flex-1 accent-[var(--color-primary)]"
+              className="flex-1 accent-[var(--color-secondary)]"
             />
             <span className="text-sm font-medium text-[var(--color-darkest)] w-16">
               ${filters.priceRange[1]}

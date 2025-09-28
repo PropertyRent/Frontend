@@ -59,7 +59,7 @@ export default function ManagementPage() {
                 className="group rounded-2xl p-6 bg-white border border-[var(--color-secondary)] shadow-sm transform transition-transform duration-300 hover:scale-105 hover:-translate-y-1"
               >
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-primary)] ring-2 ring-[var(--color-bg)]">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-secondary)] ring-2 ring-white">
                     <div className="text-white">{s.icon}</div>
                   </div>
                   <h3 className="text-lg font-semibold text-[var(--color-darkest)]">{s.title}</h3>
@@ -68,7 +68,7 @@ export default function ManagementPage() {
                 <p className="mt-4 text-sm text-[var(--color-darker)]">{s.desc}</p>
 
                 <div className="mt-6 flex items-center justify-between">
-                  <span className="inline-flex items-center gap-2 text-xs font-medium text-[var(--color-accent)]">
+                  <span className="inline-flex items-center gap-2 text-xs font-medium text-[var(--color-secondary)]">
                     Learn more
                     <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                   </span>
@@ -91,10 +91,10 @@ export default function ManagementPage() {
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="px-3 py-2 rounded-full bg-[var(--color-primary)] text-white font-medium animate-pulse">Featured</span>
+            <span className="px-3 py-2 rounded-full bg-[var(--color-secondary)] text-white font-medium animate-pulse">Featured</span>
             <a
               href="/contact"
-              className="inline-block px-4 py-2 rounded-md bg-[var(--color-accent)] text-white font-semibold hover:brightness-105 transition"
+              className="inline-block px-4 py-2 rounded-md bg-[var(--color-darker)] hover:bg-[var(--color-secondary)] text-white font-semibold transition-colors"
             >
               Talk to our team
             </a>
@@ -110,7 +110,7 @@ export default function ManagementPage() {
           <div className="mt-6">
             <a
               href="/contact"
-              className="inline-block px-6 py-3 rounded-full bg-[var(--color-accent)] text-white font-semibold shadow-lg hover:scale-105 transform transition"
+              className="inline-block px-6 py-3 rounded-full bg-[var(--color-secondary)] hover:bg-[var(--color-darker)] text-white font-semibold shadow-lg hover:scale-105 transform transition-all"
             >
               Request a demo
             </a>

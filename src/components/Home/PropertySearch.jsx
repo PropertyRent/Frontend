@@ -289,14 +289,14 @@ export default function PropertySearchSection({
             <button
               type="button"
               onClick={clear}
-              className="px-4 py-2 rounded-full bg-white border border-[var(--color-dark)] text-[var(--color-darkest)] cursor-pointer"
+              className="px-4 py-2 rounded-full bg-white border border-[var(--color-secondary)] text-[var(--color-darkest)] hover:bg-[var(--color-light)] transition-colors cursor-pointer"
             >
               Clear
             </button>
 
             <button
               type="submit"
-              className="px-7 py-2 rounded-full bg-[var(--color-dark)] text-white font-medium shadow hover:brightness-150 focus:outline-none cursor-pointer"
+              className="px-7 py-2 rounded-full bg-[var(--color-secondary)] hover:bg-[var(--color-darker)] text-white font-medium shadow transition-colors focus:outline-none cursor-pointer"
             >
               Search
             </button>

@@ -105,13 +105,13 @@ export default function Navbar() {
       </div>
 
       {/* Navigation bar (dark row) */}
-      <div className="bg-[var(--color-dark)] text-[var(--color-bg)]">
+      <div className="bg-[var(--color-darker)] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center gap-6">
             {/* Desktop menu */}
             <ul className="hidden md:flex items-center gap-6 py-3">
               <li>
-                <Link to="/" className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-[var(--color-bg)] after:transition-all after:duration-300 after:w-0">
+                <Link to="/" className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-white after:transition-all after:duration-300 after:w-0">
                   Home
                 </Link>
               </li>
@@ -125,7 +125,7 @@ export default function Navbar() {
                     }}
                     aria-expanded={openMenu === m.key}
                     aria-controls={`${m.key}-menu`}
-                    className="flex items-center gap-2 text-base font-medium px-3 py-2 rounded-full hover:bg-[var(--color-darker)]/40 cursor-pointer"
+                    className="flex items-center gap-2 text-base font-medium px-3 py-2 rounded-full hover:bg-black/20 cursor-pointer"
                   >
                     {m.label}
                     <IoMdArrowDropdown className={`h-4 w-4 transform transition-transform duration-300 ${openMenu === m.key ? "rotate-180" : "rotate-0"}`} />
@@ -136,7 +136,7 @@ export default function Navbar() {
                     <div
                       id={`${m.key}-menu`}
                       role="menu"
-                      className="absolute left-0 mt-2 w-48 bg-[var(--color-bg)] text-[var(--color-darker)] rounded-md shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden z-50"
+                      className="absolute left-0 mt-2 w-48 bg-white text-[var(--color-darker)] rounded-md shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden z-50"
                     >
                       {m.items.map((it) => (
                         <Link
@@ -155,13 +155,13 @@ export default function Navbar() {
               ))}
 
               <li>
-                <Link to="/resident" className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-[var(--color-bg)] after:transition-all after:duration-300 after:w-0">
+                <Link to="/resident" className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-white after:transition-all after:duration-300 after:w-0">
                   Resident
                 </Link>
               </li>
 
               <li>
-                <Link to="/about" className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-[var(--color-bg)] after:transition-all after:duration-300 after:w-0">
+                <Link to="/about" className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-white after:transition-all after:duration-300 after:w-0">
                   About
                 </Link>
               </li>
@@ -171,7 +171,7 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-3">
               <Link
                 to="/contact"
-                className="text-sm px-4 py-2 rounded-full bg-[var(--color-bg)] text-[var(--color-darker)] font-semibold shadow-sm hover:opacity-95"
+                className="text-sm px-4 py-2 rounded-full bg-white text-[var(--color-darker)] font-semibold shadow-sm hover:bg-[var(--color-light)] transition-colors"
               >
                 Contact
               </Link>
