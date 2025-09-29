@@ -151,15 +151,31 @@ export default function AdminDashboard() {
 
   const [form, setForm] = useState({
     title: "",
-    price: "",
-    location: "",
-    beds: 1,
-    baths: 1,
-    area: "",
-    type: "Apartment",
-    status: "Available",
     description: "",
-    amenities: ""
+    property_type: "",
+    status: "",
+    furnishing: "",
+    area_sqft: "",
+    bedrooms: "",
+    bathrooms: "",
+    floors: "",
+    utilities: [],
+    amenities: [],
+    appliances_included: [],
+    lease_term: "",
+    application_fee: "",
+    pet_policy: "",
+    property_management_contact: "",
+    website: "",
+    price: "",
+    deposit: "",
+    address: "",
+    city: "",
+    state: "",
+    pincode: "",
+    latitude: "",
+    longitude: "",
+    available_from: ""
   });
 
   const [questionForm, setQuestionForm] = useState({
@@ -195,7 +211,19 @@ export default function AdminDashboard() {
     profileLoading, 
     updateProfileLoading, 
     profileError, 
-    updateProfileError 
+    updateProfileError,
+    properties: contextProperties,
+    fetchProperties,
+    propertiesLoading,
+    addPropertySuccess,
+    updateProperty,
+    updatePropertyLoading,
+    updatePropertyError,
+    updatePropertySuccess,
+    deleteProperty: deletePropertyAPI,
+    deletePropertyLoading,
+    deletePropertyError,
+    deletePropertySuccess
   } = useContext(PropertyContext);
 
   useEffect(() => {
@@ -206,8 +234,19 @@ export default function AdminDashboard() {
       if (activeSection === "settings") {
         handleGetProfile();
       }
+      // Fetch properties when properties section is active
+      if (activeSection === "properties") {
+        fetchProperties();
+      }
     }
   }, [navigate, activeSection]);
+
+  // Refresh properties when a new property is successfully added
+  useEffect(() => {
+    if (addPropertySuccess && activeSection === "properties") {
+      fetchProperties();
+    }
+  }, [addPropertySuccess, activeSection]);
 
   // Update profile form when profile data changes
   useEffect(() => {
@@ -254,18 +293,33 @@ export default function AdminDashboard() {
   function resetForm() {
     setForm({
       title: "",
-      price: "",
-      location: "",
-      beds: 1,
-      baths: 1,
-      area: "",
-      type: "Apartment",
-      status: "Available",
       description: "",
-      amenities: ""
+      property_type: "",
+      status: "",
+      furnishing: "",
+      area_sqft: "",
+      bedrooms: "",
+      bathrooms: "",
+      floors: "",
+      utilities: [],
+      amenities: [],
+      appliances_included: [],
+      lease_term: "",
+      application_fee: "",
+      pet_policy: "",
+      property_management_contact: "",
+      website: "",
+      price: "",
+      deposit: "",
+      address: "",
+      city: "",
+      state: "",
+      pincode: "",
+      latitude: "",
+      longitude: "",
+      available_from: ""
     });
     setImages([]);
-    if (fileInputRef.current) fileInputRef.current.value = null;
   }
 
   function resetQuestionForm() {
@@ -279,35 +333,18 @@ export default function AdminDashboard() {
     setEditingQuestion(null);
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    if (!form.title || !form.price || !form.location) {
-      alert("Please fill title, price and location.");
-      return;
-    }
 
-    try {
-      const newProp = {
-        id: Date.now(),
-        ...form,
-        images: imagePreviews.length > 0 ? imagePreviews : ["/Home1.jpg"],
-        createdAt: new Date().toISOString().split('T')[0],
-        amenities: form.amenities ? form.amenities.split(',').map(a => a.trim()) : []
-      };
-      setProperties((p) => [newProp, ...p]);
-      resetForm();
-      alert("Property added successfully!");
-    } catch (err) {
-      console.error(err);
-      alert("Failed to add property. See console.");
-    }
-  }
 
-  function deleteProperty(id) {
+  const handleDeleteProperty = async (id) => {
     if (confirm("Are you sure you want to delete this property?")) {
-      setProperties(prev => prev.filter(p => p.id !== id));
+      try {
+        await deletePropertyAPI(id);
+        // Properties list will be updated automatically via the deleteProperty function
+      } catch (error) {
+        console.error("Failed to delete property:", error);
+      }
     }
-  }
+  };
 
   function updateApplicationStatus(applicationId, newStatus) {
     setApplications(prev => prev.map(app => 
@@ -466,22 +503,27 @@ export default function AdminDashboard() {
   };
 
 
+  // Use real properties from PropertyContext, fallback to local mock data for other sections
+  const currentProperties = activeSection === "properties" ? (contextProperties || []) : properties;
 
   // Stats calculation
   const stats = {
-    totalProperties: properties.length,
-    availableProperties: properties.filter(p => p.status === "Available").length,
-    rentedProperties: properties.filter(p => p.status === "Rented").length,
+    totalProperties: currentProperties.length,
+    availableProperties: currentProperties.filter(p => p.status === "available" || p.status === "Available").length,
+    rentedProperties: currentProperties.filter(p => p.status === "rented" || p.status === "Rented").length,
     totalApplications: applications.length,
     pendingApplications: applications.filter(a => a.status === "Pending Review").length,
     approvedApplications: applications.filter(a => a.status === "Approved").length
   };
 
+
   // Filter properties based on search query
-  const filtered = properties.filter(
+  const filtered = currentProperties.filter(
     (p) =>
       p.title.toLowerCase().includes(query.toLowerCase()) ||
-      p.location.toLowerCase().includes(query.toLowerCase())
+      (p.location && p.location.toLowerCase().includes(query.toLowerCase())) ||
+      (p.city && p.city.toLowerCase().includes(query.toLowerCase())) ||
+      (p.address && p.address.toLowerCase().includes(query.toLowerCase()))
   );
 
   return (
@@ -517,24 +559,23 @@ export default function AdminDashboard() {
               <PropertiesSection 
                 form={form}
                 handleChange={handleChange}
-                handleSubmit={handleSubmit}
                 resetForm={resetForm}
                 images={images}
                 imagePreviews={imagePreviews}
                 handleFileSelect={handleFileSelect}
                 removeImage={removeImage}
                 filtered={filtered}
-                deleteProperty={deleteProperty}
+                deleteProperty={handleDeleteProperty}
               />
             )}
 
             {/* Applications Section */}
-            {activeSection === "applications" && (
+            {/* {activeSection === "applications" && (
               <ApplicationsSection 
                 applications={applications}
                 updateApplicationStatus={updateApplicationStatus}
               />
-            )}
+            )} */}
 
             {/* Pre-Screening Questions Section */}
             {activeSection === "pre-screening" && (

@@ -45,11 +45,11 @@ export default function Navbar() {
   return (
     <nav
       ref={rootRef}
-      className="w-full sticky top-0 z-40 bg-[var(--color-bg)] shadow-sm"
+      className="w-full top-0 z-40 bg-[var(--color-bg)] shadow-sm"
       aria-label="Main navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between py-8">
           <div className="flex items-center gap-4">
             <Link to="/" className="flex items-center gap-3">
               <img
@@ -58,7 +58,7 @@ export default function Navbar() {
                 className="w-14 h-14 object-contain rounded-md"
               />
               <div>
-                <h1 className="text-2xl md:text-3xl font-extrabold text-[var(--color-darker)]">
+                <h1 className="text-2xl md:text-4xl font-extrabold text-[var(--color-darker)]">
                   PropertyRent
                 </h1>
                 <p className="text-xs -mt-1 text-[var(--color-darker)]/70">
@@ -109,7 +109,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center gap-6">
             {/* Desktop menu */}
-            <ul className="hidden md:flex items-center gap-6 py-3">
+            <ul className="hidden md:flex items-center gap-6 py-2">
               <li>
                 <Link to="/" className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-white after:transition-all after:duration-300 after:w-0">
                   Home

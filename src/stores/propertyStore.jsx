@@ -52,6 +52,39 @@ export const PropertyContext = createContext({
   propertySuccess: null,
   // Clear single property methods
   clearPropertyError: () => {},
+  
+  // Add property states
+  addProperty: () => {},
+  // Add property loading states
+  addPropertyLoading: false,
+  // Add property error states
+  addPropertyError: null,
+  // Add property success states
+  addPropertySuccess: null,
+  // Clear add property methods
+  clearAddPropertyError: () => {},
+  
+  // Update property states
+  updateProperty: () => {},
+  // Update property loading states
+  updatePropertyLoading: false,
+  // Update property error states
+  updatePropertyError: null,
+  // Update property success states
+  updatePropertySuccess: null,
+  // Clear update property methods
+  clearUpdatePropertyError: () => {},
+  
+  // Delete property states
+  deleteProperty: () => {},
+  // Delete property loading states
+  deletePropertyLoading: false,
+  // Delete property error states
+  deletePropertyError: null,
+  // Delete property success states
+  deletePropertySuccess: null,
+  // Clear delete property methods
+  clearDeletePropertyError: () => {},
 });
 
 const PropertyProvider = ({ children }) => {
@@ -84,6 +117,21 @@ const PropertyProvider = ({ children }) => {
   const [propertyError, setPropertyError] = useState(null);
   const [propertySuccess, setPropertySuccess] = useState(null);
 
+  // Add property state
+  const [addPropertyLoading, setAddPropertyLoading] = useState(false);
+  const [addPropertyError, setAddPropertyError] = useState(null);
+  const [addPropertySuccess, setAddPropertySuccess] = useState(null);
+
+  // Update property state
+  const [updatePropertyLoading, setUpdatePropertyLoading] = useState(false);
+  const [updatePropertyError, setUpdatePropertyError] = useState(null);
+  const [updatePropertySuccess, setUpdatePropertySuccess] = useState(null);
+
+  // Delete property state
+  const [deletePropertyLoading, setDeletePropertyLoading] = useState(false);
+  const [deletePropertyError, setDeletePropertyError] = useState(null);
+  const [deletePropertySuccess, setDeletePropertySuccess] = useState(null);
+
   const clearProfileError = () => {
     setProfileError(null);
     setUpdateProfileError(null);
@@ -104,6 +152,21 @@ const PropertyProvider = ({ children }) => {
   const clearPropertyError = () => {
     setPropertyError(null);
     setPropertySuccess(null);
+  };
+
+  const clearAddPropertyError = () => {
+    setAddPropertyError(null);
+    setAddPropertySuccess(null);
+  };
+
+  const clearUpdatePropertyError = () => {
+    setUpdatePropertyError(null);
+    setUpdatePropertySuccess(null);
+  };
+
+  const clearDeletePropertyError = () => {
+    setDeletePropertyError(null);
+    setDeletePropertySuccess(null);
   };
 
   const getProfile = async () => {
@@ -267,6 +330,136 @@ const PropertyProvider = ({ children }) => {
     }
   };
 
+  const addProperty = async (propertyData) => {
+    console.log("Adding property with data:", propertyData);
+    const loadingToast = toast.loading("Adding property...");
+    try {
+      setAddPropertyLoading(true);
+      setAddPropertyError(null);
+      
+      
+      
+      const url = `${apiUrl}/api/admin/properties/add`;
+      
+      const response = await axios.post(url, propertyData, { 
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      
+      console.log("Add property response:", response.data);
+      if (response.data && response.data.success) {
+        // Optionally refresh the properties list
+        if (properties.length > 0) {
+          fetchProperties(); // Refresh the list
+        }
+        
+        const successMessage = response.data.message || "Property added successfully!";
+        setAddPropertySuccess(successMessage);
+        
+        toast.success(successMessage, { id: loadingToast });
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Add property error:", error);
+      const errorMessage = error.response?.data?.message || "Failed to add property. Please try again.";
+      
+      setAddPropertyError(errorMessage);
+      toast.error(errorMessage, { id: loadingToast });
+      throw error;
+    } finally {
+      setAddPropertyLoading(false);
+    }
+  };
+
+  const updateProperty = async (propertyId, propertyData) => {
+    console.log("Updating property with ID:", propertyId, "Data:", propertyData);
+    const loadingToast = toast.loading("Updating property...");
+    try {
+      setUpdatePropertyLoading(true);
+      setUpdatePropertyError(null);
+      
+      const url = `${apiUrl}/api/admin/properties/${propertyId}`;
+      
+      const response = await axios.put(url, propertyData, { 
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      
+      console.log("Update property response:", response.data);
+      if (response.data && response.data.success) {
+        // Refresh the properties list to show updated data
+        if (properties.length > 0) {
+          fetchProperties(); // Refresh the list
+        }
+        
+        // Update current property if it's the one being edited
+        if (currentProperty && currentProperty.id === propertyId) {
+          setCurrentProperty(response.data.data);
+        }
+        
+        const successMessage = response.data.message || "Property updated successfully!";
+        setUpdatePropertySuccess(successMessage);
+        
+        toast.success(successMessage, { id: loadingToast });
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Update property error:", error);
+      const errorMessage = error.response?.data?.message || "Failed to update property. Please try again.";
+      
+      setUpdatePropertyError(errorMessage);
+      toast.error(errorMessage, { id: loadingToast });
+      throw error;
+    } finally {
+      setUpdatePropertyLoading(false);
+    }
+  };
+
+  const deleteProperty = async (propertyId) => {
+    console.log("Deleting property with ID:", propertyId);
+    const loadingToast = toast.loading("Deleting property...");
+    try {
+      setDeletePropertyLoading(true);
+      setDeletePropertyError(null);
+      
+      const url = `${apiUrl}/api/admin/properties/${propertyId}`;
+      
+      const response = await axios.delete(url, { 
+        withCredentials: true
+      });
+      
+      console.log("Delete property response:", response.data);
+      if (response.data && response.data.success) {
+        // Remove the property from the local state
+        setProperties(prevProperties => prevProperties.filter(p => p.id !== propertyId));
+        
+        // Clear current property if it's the one being deleted
+        if (currentProperty && currentProperty.id === propertyId) {
+          setCurrentProperty(null);
+        }
+        
+        const successMessage = response.data.message || "Property deleted successfully!";
+        setDeletePropertySuccess(successMessage);
+        
+        toast.success(successMessage, { id: loadingToast });
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Delete property error:", error);
+      const errorMessage = error.response?.data?.message || "Failed to delete property. Please try again.";
+      
+      setDeletePropertyError(errorMessage);
+      toast.error(errorMessage, { id: loadingToast });
+      throw error;
+    } finally {
+      setDeletePropertyLoading(false);
+    }
+  };
+
   return (
     <PropertyContext.Provider value={{
       // Profile states
@@ -316,6 +509,39 @@ const PropertyProvider = ({ children }) => {
       propertySuccess,
       // Clear single property methods
       clearPropertyError,
+      
+      // Add property states
+      addProperty,
+      // Add property loading states
+      addPropertyLoading,
+      // Add property error states
+      addPropertyError,
+      // Add property success states
+      addPropertySuccess,
+      // Clear add property methods
+      clearAddPropertyError,
+      
+      // Update property states
+      updateProperty,
+      // Update property loading states
+      updatePropertyLoading,
+      // Update property error states
+      updatePropertyError,
+      // Update property success states
+      updatePropertySuccess,
+      // Clear update property methods
+      clearUpdatePropertyError,
+      
+      // Delete property states
+      deleteProperty,
+      // Delete property loading states
+      deletePropertyLoading,
+      // Delete property error states
+      deletePropertyError,
+      // Delete property success states
+      deletePropertySuccess,
+      // Clear delete property methods
+      clearDeletePropertyError,
     }}>
       {children}
     </PropertyContext.Provider>

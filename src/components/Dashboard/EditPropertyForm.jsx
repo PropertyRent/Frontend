@@ -1,121 +1,185 @@
-import { useRef, useContext } from "react";
-import { FiImage, FiSave, FiX, FiMaximize2, FiMinimize2 } from "react-icons/fi";
+import { useRef, useContext, useState, useEffect } from "react";
+import { FiImage, FiSave, FiX, FiArrowLeft, FiMaximize2, FiMinimize2 } from "react-icons/fi";
 import { PropertyContext } from "../../stores/propertyStore";
 
-const AddPropertyForm = ({ 
-  form, 
-  handleChange, 
-  resetForm, 
-  images, 
-  imagePreviews, 
-  handleFileSelect, 
-  removeImage,
-  isExpanded = false,
-  onToggleExpansion 
-}) => {
+const EditPropertyForm = ({ property, onCancel }) => {
   const fileInputRef = useRef(null);
-  const { addProperty, addPropertyLoading, addPropertyError, clearAddPropertyError } = useContext(PropertyContext);
+  const { updateProperty, updatePropertyLoading, updatePropertyError, clearUpdatePropertyError } = useContext(PropertyContext);
+
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    property_type: "",
+    status: "",
+    furnishing: "",
+    area_sqft: "",
+    bedrooms: "",
+    bathrooms: "",
+    floors: "",
+    utilities: [],
+    amenities: [],
+    appliances_included: [],
+    lease_term: "",
+    application_fee: "",
+    pet_policy: "",
+    property_management_contact: "",
+    website: "",
+    price: "",
+    deposit: "",
+    address: "",
+    city: "",
+    state: "",
+    pincode: "",
+    latitude: "",
+    longitude: "",
+    available_from: ""
+  });
+
+  const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  // Populate form with property data
+  useEffect(() => {
+    if (property) {
+      setForm({
+        title: property.title || "",
+        description: property.description || "",
+        property_type: property.property_type || "",
+        status: property.status || "",
+        furnishing: property.furnishing || "",
+        area_sqft: property.area_sqft || "",
+        bedrooms: property.bedrooms || "",
+        bathrooms: property.bathrooms || "",
+        floors: property.floors || "",
+        utilities: Array.isArray(property.utilities) ? property.utilities : (property.utilities ? property.utilities.split(', ') : []),
+        amenities: Array.isArray(property.amenities) ? property.amenities : (property.amenities ? property.amenities.split(', ') : []),
+        appliances_included: Array.isArray(property.appliances_included) ? property.appliances_included : (property.appliances_included ? property.appliances_included.split(', ') : []),
+        lease_term: property.lease_term || "",
+        application_fee: property.application_fee || "",
+        pet_policy: property.pet_policy || "",
+        property_management_contact: property.property_management_contact || "",
+        website: property.website || "",
+        price: property.price || "",
+        deposit: property.deposit || "",
+        address: property.address || "",
+        city: property.city || "",
+        state: property.state || "",
+        pincode: property.pincode || "",
+        latitude: property.latitude || "",
+        longitude: property.longitude || "",
+        available_from: property.available_from || ""
+      });
+
+      // Set existing images if available
+      if (property.images && Array.isArray(property.images)) {
+        setExistingImages(property.images);
+      }
+    }
+  }, [property]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleArrayChange = (fieldName, value) => {
+    setForm(prev => ({
+      ...prev,
+      [fieldName]: value
+    }));
+  };
+
+  const handleFileSelect = (e) => {
+    const files = Array.from(e.target.files);
+    const previews = files.map(file => URL.createObjectURL(file));
+    
+    setImages(files);
+    setImagePreviews(previews);
+  };
+
+  const removeNewImage = (idx) => {
+    setImages(prev => prev.filter((_, i) => i !== idx));
+    setImagePreviews(prev => prev.filter((_, i) => i !== idx));
+  };
+
+  const removeExistingImage = (idx) => {
+    setExistingImages(prev => prev.filter((_, i) => i !== idx));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Clear any previous errors
-    clearAddPropertyError();
-    
-    // Create FormData object
+    if (updatePropertyError) {
+      clearUpdatePropertyError();
+    }
+
     const formData = new FormData();
     
-    // Add basic property data
-    formData.append('title', form.title);
-    formData.append('description', form.description);
-    formData.append('property_type', form.property_type);
-    formData.append('status', form.status);
-    formData.append('furnishing', form.furnishing);
-    formData.append('area_sqft', form.area_sqft);
-    formData.append('bedrooms', form.bedrooms);
-    formData.append('bathrooms', form.bathrooms);
-    formData.append('floors', form.floors);
-    formData.append('lease_term', form.lease_term);
-    formData.append('application_fee', form.application_fee);
-    formData.append('pet_policy', form.pet_policy);
-    formData.append('property_management_contact', form.property_management_contact);
-    formData.append('website', form.website);
-    formData.append('price', form.price);
-    formData.append('deposit', form.deposit);
-    formData.append('address', form.address);
-    formData.append('city', form.city);
-    formData.append('state', form.state);
-    formData.append('pincode', form.pincode);
-    formData.append('latitude', form.latitude);
-    formData.append('longitude', form.longitude);
-    formData.append('available_from', form.available_from);
-    
-    // Add array fields as JSON strings
-    formData.append('utilities', JSON.stringify(form.utilities || []));
-    formData.append('amenities', JSON.stringify(form.amenities || []));
-    formData.append('appliances_included', JSON.stringify(form.appliances_included || []));
-    
-    // Add media files
-    images.forEach(file => {
-      formData.append('media_files', file);
-    });
-    
-    // Call the addProperty function
-    const success = await addProperty(formData);
-    
-    // Reset form if successful
-    if (success) {
-      resetForm();
-    }
-  };
-
-  const handleArrayChange = (field, value) => {
-    // Handle empty string
-    if (!value || value.trim() === '') {
-      handleChange({
-        target: {
-          name: field,
-          value: []
+    // Add form fields
+    Object.keys(form).forEach(key => {
+      if (form[key] !== "" && form[key] != null) {
+        if (Array.isArray(form[key])) {
+          formData.append(key, JSON.stringify(form[key]));
+        } else {
+          formData.append(key, form[key]);
         }
-      });
-      return;
-    }
-    
-    console.log("Original value:", value);
-    
-    // Split by comma, trim whitespace, and filter out empty items
-    const arrayValue = value.split(',').map(item => item.trim()).filter(item => item.length > 0);
-    
-    console.log("Processed array value:", arrayValue);
-
-    handleChange({
-      target: {
-        name: field,
-        value: arrayValue
       }
     });
+
+    // Add new images
+    images.forEach((image) => {
+      formData.append('images', image);
+    });
+
+    // Add existing images that weren't removed
+    if (existingImages.length > 0) {
+      formData.append('existing_images', JSON.stringify(existingImages));
+    }
+
+    try {
+      await updateProperty(property.id, formData);
+      onCancel(); // Close form on success
+    } catch (error) {
+      console.error('Update failed:', error);
+    }
   };
 
   return (
-    <div>
+    <div className="lg:col-span-1">
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-[var(--color-darkest)]">Add Property</h3>
-          {onToggleExpansion && (
+          <h3 className="text-lg font-semibold text-[var(--color-darkest)]">Edit Property</h3>
+          <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={onToggleExpansion}
+              onClick={toggleExpanded}
               className="p-2 text-[var(--color-muted)] hover:text-[var(--color-darkest)] rounded-lg transition-colors"
               title={isExpanded ? "Collapse form" : "Expand form"}
             >
               {isExpanded ? <FiMinimize2 className="w-5 h-5" /> : <FiMaximize2 className="w-5 h-5" />}
             </button>
-          )}
+            <button
+              type="button"
+              onClick={onCancel}
+              className="p-2 text-[var(--color-muted)] hover:text-[var(--color-darkest)] rounded-lg transition-colors"
+            >
+              <FiArrowLeft className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
-        {addPropertyError && (
+        {updatePropertyError && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700">
-            {addPropertyError}
+            {updatePropertyError}
           </div>
         )}
 
@@ -123,24 +187,22 @@ const AddPropertyForm = ({
           {/* Basic Information */}
           <div className={`grid gap-4 ${isExpanded ? 'lg:grid-cols-2' : 'grid-cols-1'}`}>
             <div>
-              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Title *</label>
+              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Title</label>
               <input
                 name="title"
                 value={form.title}
                 onChange={handleChange}
-                required
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
                 placeholder="Property title"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Description *</label>
+              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Description</label>
               <textarea
                 name="description"
                 value={form.description}
                 onChange={handleChange}
-                required
                 rows="3"
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
                 placeholder="Property description"
@@ -151,12 +213,11 @@ const AddPropertyForm = ({
           {/* Property Details */}
           <div className={`grid gap-4 ${isExpanded ? 'lg:grid-cols-4' : 'grid-cols-2'}`}>
             <div>
-              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Property Type *</label>
+              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Property Type</label>
               <select
                 name="property_type"
                 value={form.property_type}
                 onChange={handleChange}
-                required
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
               >
                 <option value="">Select Type</option>
@@ -168,12 +229,11 @@ const AddPropertyForm = ({
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Status *</label>
+              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Status</label>
               <select
                 name="status"
                 value={form.status}
                 onChange={handleChange}
-                required
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
               >
                 <option value="">Select Status</option>
@@ -183,9 +243,6 @@ const AddPropertyForm = ({
                 <option value="hold">On Hold</option>
               </select>
             </div>
-          </div>
-
-          <div className={`grid gap-4 ${isExpanded ? 'lg:grid-cols-2' : 'grid-cols-2'}`}>
             <div>
               <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Furnishing</label>
               <select
@@ -201,13 +258,12 @@ const AddPropertyForm = ({
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Area (sq ft) *</label>
+              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Area (sq ft)</label>
               <input
                 name="area_sqft"
                 type="number"
                 value={form.area_sqft}
                 onChange={handleChange}
-                required
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
                 placeholder="Square feet"
               />
@@ -216,19 +272,18 @@ const AddPropertyForm = ({
 
           <div className={`grid gap-4 ${isExpanded ? 'lg:grid-cols-3' : 'grid-cols-3'}`}>
             <div>
-              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Bedrooms *</label>
+              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Bedrooms</label>
               <input
                 name="bedrooms"
                 type="number"
                 min="0"
                 value={form.bedrooms}
                 onChange={handleChange}
-                required
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Bathrooms *</label>
+              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Bathrooms</label>
               <input
                 name="bathrooms"
                 type="number"
@@ -236,7 +291,6 @@ const AddPropertyForm = ({
                 step="0.5"
                 value={form.bathrooms}
                 onChange={handleChange}
-                required
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
               />
             </div>
@@ -316,14 +370,13 @@ const AddPropertyForm = ({
           {/* Financial Information */}
           <div className={`grid gap-4 ${isExpanded ? 'lg:grid-cols-4' : 'grid-cols-2'}`}>
             <div>
-              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Monthly Rent ($) *</label>
+              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Monthly Rent ($)</label>
               <input
                 name="price"
                 type="number"
                 step="0.01"
                 value={form.price}
                 onChange={handleChange}
-                required
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
                 placeholder="Monthly rent"
               />
@@ -411,12 +464,11 @@ const AddPropertyForm = ({
 
           {/* Address Information */}
           <div>
-            <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Address *</label>
+            <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Address</label>
             <input
               name="address"
               value={form.address}
               onChange={handleChange}
-              required
               className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
               placeholder="Street address"
             />
@@ -424,34 +476,31 @@ const AddPropertyForm = ({
 
           <div className={`grid gap-4 ${isExpanded ? 'lg:grid-cols-3' : 'grid-cols-2'}`}>
             <div>
-              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">City *</label>
+              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">City</label>
               <input
                 name="city"
                 value={form.city}
                 onChange={handleChange}
-                required
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
                 placeholder="City"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">State *</label>
+              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">State</label>
               <input
                 name="state"
                 value={form.state}
                 onChange={handleChange}
-                required
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
                 placeholder="State"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Pincode *</label>
+              <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Pincode</label>
               <input
                 name="pincode"
                 value={form.pincode}
                 onChange={handleChange}
-                required
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
                 placeholder="Pincode"
               />
@@ -498,10 +547,32 @@ const AddPropertyForm = ({
           {/* Media Files */}
           <div>
             <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Property Images</label>
+            
+            {/* Existing Images */}
+            {existingImages.length > 0 && (
+              <div className="mb-3">
+                <p className="text-sm text-[var(--color-muted)] mb-2">Current Images:</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {existingImages.map((src, i) => (
+                    <div key={i} className="relative rounded-lg overflow-hidden">
+                      <img src={src} alt={`existing-${i}`} className="w-full h-24 object-cover" />
+                      <button
+                        onClick={() => removeExistingImage(i)}
+                        type="button"
+                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                      >
+                        <FiX className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <label className="flex items-center gap-2 p-3 border-2 border-dashed border-[var(--color-tan)] rounded-lg cursor-pointer hover:border-[var(--color-secondary)] transition-colors">
               <FiImage className="text-[var(--color-muted)]" />
               <span className="text-sm text-[var(--color-muted)]">
-                {images.length > 0 ? `${images.length} files selected` : "Upload images"}
+                {images.length > 0 ? `${images.length} new files selected` : "Upload new images"}
               </span>
               <input
                 ref={fileInputRef}
@@ -519,7 +590,7 @@ const AddPropertyForm = ({
                   <div key={i} className="relative rounded-lg overflow-hidden">
                     <img src={src} alt={`preview-${i}`} className="w-full h-24 object-cover" />
                     <button
-                      onClick={() => removeImage(i)}
+                      onClick={() => removeNewImage(i)}
                       type="button"
                       className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
                     >
@@ -535,19 +606,19 @@ const AddPropertyForm = ({
         <div className="flex gap-3 mt-6">
           <button
             type="submit"
-            disabled={addPropertyLoading}
+            disabled={updatePropertyLoading}
             className="flex-1 bg-[var(--color-secondary)] hover:bg-[var(--color-darker)] disabled:bg-gray-400 text-white py-3 px-4 rounded-lg font-medium transition-colors"
           >
             <FiSave className="inline mr-2" />
-            {addPropertyLoading ? 'Adding Property...' : 'Add Property'}
+            {updatePropertyLoading ? 'Updating Property...' : 'Update Property'}
           </button>
           <button
             type="button"
-            onClick={resetForm}
-            disabled={addPropertyLoading}
+            onClick={onCancel}
+            disabled={updatePropertyLoading}
             className="px-4 py-3 border border-[var(--color-tan)] rounded-lg hover:bg-[var(--color-light)] disabled:bg-gray-100 transition-colors"
           >
-            Reset
+            Cancel
           </button>
         </div>
       </form>
@@ -555,4 +626,4 @@ const AddPropertyForm = ({
   );
 };
 
-export default AddPropertyForm;
+export default EditPropertyForm;

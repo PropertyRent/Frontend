@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function HeroSection() {
   const images = ["/Home1.jpg", "/Home2.jpg", "/Home3.jpg"];
@@ -59,9 +60,9 @@ export default function HeroSection() {
         <h1 className="px-2 text-3xl sm:text-4xl md:text-6xl text-center font-bold text-white">
           Welcome to PropertyRent
         </h1>
-        <button className="px-8 py-2 text-xl font-semibold text-white bg-transparent hover:bg-white hover:text-[var(--color-darkest)] transition duration-300 border-2 border-white rounded-full cursor-pointer">
+        <Link to="/properties" className="px-8 py-2 text-xl font-semibold text-white bg-transparent hover:bg-white hover:text-[var(--color-darkest)] transition duration-300 border-2 border-white rounded-full cursor-pointer">
           Get Started
-        </button>
+        </Link>
       </div>
 
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 flex gap-3">
