@@ -14,9 +14,40 @@ import ManagementPage from "./pages/ManagementService.jsx";
 import Properties from "./pages/Properties.jsx";
 import PropertyDetail from "./pages/PropertyDetail.jsx";
 import PreScreening from "./pages/PreScreening.jsx";
+import EmailVerify from "./pages/EmailVerify.jsx";
+import { Toaster } from "react-hot-toast";
+import PropertyProvider from "./stores/propertyStore.jsx";
 
-const AuthWrapper = ({ children }) => {
-  return <AuthProvider>{children}</AuthProvider>;
+const Wrapper = ({ children }) => {
+  return (
+    <PropertyProvider>
+      <AuthProvider>
+        {children}
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: "#1f2937",
+              color: "#fff",
+              borderRadius: "8px",
+              boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+            },
+            success: {
+              style: {
+                background: "#10b981",
+              },
+            },
+            error: {
+              style: {
+                background: "#ef4444",
+              },
+            },
+          }}
+        />
+      </AuthProvider>
+    </PropertyProvider>
+  );
 };
 
 const router = createBrowserRouter([
@@ -60,11 +91,35 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AuthWrapper><AdminDashboard /></AuthWrapper>,
+    element: (
+      <Wrapper>
+        <AdminDashboard />
+      </Wrapper>
+    ),
   },
   {
     path: "/admin-login",
-    element: <AuthWrapper><OwnerPortalAuth /></AuthWrapper>,
+    element: (
+      <Wrapper>
+        <OwnerPortalAuth />
+      </Wrapper>
+    ),
+  },
+  {
+    path: "/verify-email/:token",
+    element: (
+      <Wrapper>
+        <EmailVerify />
+      </Wrapper>
+    ),
+  },
+  {
+    path: "/reset-password/:resetToken",
+    element: (
+      <Wrapper>
+        <OwnerPortalAuth />
+      </Wrapper>
+    ),
   },
 ]);
 

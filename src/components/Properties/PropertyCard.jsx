@@ -6,17 +6,55 @@ export default function PropertyCard({ property }) {
   const {
     id,
     title,
-    location,
-    price,
+    description,
+    property_type: type,
+    status,
+    furnishing,
+    area_sqft: area,
     bedrooms,
     bathrooms,
-    area,
-    type,
-    image,
-    description,
+    utilities,
     amenities,
-    available
+    appliances_included,
+    price,
+    address,
+    city,
+    state,
+    media,
+    available_from
   } = property;
+
+  // Create location string
+  const location = `${address}, ${city}, ${state}`;
+  
+  // Parse utilities, amenities, and appliances if they're strings
+  const parseArrayField = (field) => {
+    if (!field) return [];
+    if (Array.isArray(field)) {
+      // Handle the weird format from API where each item has extra quotes and brackets
+      return field.map(item => {
+        if (typeof item === 'string') {
+          // Remove the extra brackets and quotes: "[\"electricity\"" -> "electricity"
+          return item.replace(/^\[?"?|"?\]?$/g, '').replace(/"/g, '');
+        }
+        return item;
+      });
+    }
+    return [];
+  };
+
+  const parsedUtilities = parseArrayField(utilities);
+  const parsedAmenities = parseArrayField(amenities);
+  const parsedAppliances = parseArrayField(appliances_included);
+  
+  // Combine all amenities for display
+  const allAmenities = [...parsedUtilities, ...parsedAmenities, ...parsedAppliances];
+  
+  // Get the first image or use a default
+  const image = media && media.length > 0 ? media[0].url : '/Home1.jpg';
+  
+  // Check if property is available
+  const available = status === 'available';
 
   const [isFavorite, setIsFavorite] = React.useState(false);
 
@@ -92,7 +130,7 @@ export default function PropertyCard({ property }) {
           </div>
           <div className="flex items-center">
             <FaRulerCombined className="mr-1" />
-            <span className="text-sm">{area.toLocaleString()} sqft</span>
+            <span className="text-sm">{area ? Math.round(area).toLocaleString() : 'N/A'} sqft</span>
           </div>
         </div>
 
@@ -104,17 +142,17 @@ export default function PropertyCard({ property }) {
         {/* Amenities */}
         <div className="mb-4">
           <div className="flex flex-wrap gap-1">
-            {amenities.slice(0, 3).map((amenity, index) => (
+            {allAmenities.slice(0, 3).map((amenity, index) => (
               <span
                 key={index}
-                className="px-2 py-1 bg-[var(--color-light-brown)]/20 text-[var(--color-dark)] text-xs rounded-full"
+                className="px-2 py-1 bg-[var(--color-light-brown)]/20 text-[var(--color-dark)] text-xs rounded-full capitalize"
               >
                 {amenity}
               </span>
             ))}
-            {amenities.length > 3 && (
+            {allAmenities.length > 3 && (
               <span className="px-2 py-1 bg-[var(--color-light-brown)]/20 text-[var(--color-dark)] text-xs rounded-full">
-                +{amenities.length - 3} more
+                +{allAmenities.length - 3} more
               </span>
             )}
           </div>

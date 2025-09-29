@@ -20,11 +20,13 @@ export default function PropertyFilters({ filters, onFilterChange, sortBy, onSor
 
   const resetFilters = () => {
     onFilterChange({
-      priceRange: [0, 5000],
+      priceRange: [0, 10000],
       bedrooms: "any",
       bathrooms: "any", 
       propertyType: "any",
-      available: "all"
+      available: "all",
+      furnishing: "any",
+      search: ""
     });
   };
 
@@ -44,6 +46,34 @@ export default function PropertyFilters({ filters, onFilterChange, sortBy, onSor
         </button>
       </div>
 
+      {/* Search */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-[var(--color-darkest)] mb-2">
+          Search
+        </label>
+        <input
+          type="text"
+          placeholder="Search by title, location, or description..."
+          value={filters.search}
+          onChange={(e) => handleFilterChange('search', e.target.value)}
+          className="w-full px-3 py-2 border border-[var(--color-light-brown)] rounded-lg bg-[var(--color-bg)] text-[var(--color-darkest)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] placeholder-[var(--color-muted)]"
+        />
+      </div>
+
+      {/* Search */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-[var(--color-darkest)] mb-2">
+          Search Properties
+        </label>
+        <input
+          type="text"
+          placeholder="Search by title, location, or description..."
+          value={filters.search}
+          onChange={(e) => handleFilterChange('search', e.target.value)}
+          className="w-full px-3 py-2 border border-[var(--color-light-brown)] rounded-lg bg-[var(--color-bg)] text-[var(--color-darkest)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+        />
+      </div>
+
       {/* Price Range */}
       <div className="mb-6">
         <label className="block text-sm font-medium text-[var(--color-darkest)] mb-3">
@@ -55,7 +85,7 @@ export default function PropertyFilters({ filters, onFilterChange, sortBy, onSor
             <input
               type="range"
               min="0"
-              max="5000"
+              max="10000"
               step="100"
               value={filters.priceRange[0]}
               onChange={(e) => handlePriceRangeChange(e, 0)}
@@ -70,7 +100,7 @@ export default function PropertyFilters({ filters, onFilterChange, sortBy, onSor
             <input
               type="range"
               min="0"
-              max="5000"
+              max="10000"
               step="100"
               value={filters.priceRange[1]}
               onChange={(e) => handlePriceRangeChange(e, 1)}
@@ -133,7 +163,26 @@ export default function PropertyFilters({ filters, onFilterChange, sortBy, onSor
           <option value="house">House</option>
           <option value="condo">Condo</option>
           <option value="studio">Studio</option>
-          <option value="penthouse">Penthouse</option>
+          <option value="townhouse">Townhouse</option>
+          <option value="villa">Villa</option>
+          <option value="duplex">Duplex</option>
+        </select>
+      </div>
+
+      {/* Furnishing */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-[var(--color-darkest)] mb-2">
+          Furnishing
+        </label>
+        <select
+          value={filters.furnishing}
+          onChange={(e) => handleFilterChange('furnishing', e.target.value)}
+          className="w-full px-3 py-2 border border-[var(--color-light-brown)] rounded-lg bg-[var(--color-bg)] text-[var(--color-darkest)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+        >
+          <option value="any">Any</option>
+          <option value="fully-furnished">Fully Furnished</option>
+          <option value="semi-furnished">Semi Furnished</option>
+          <option value="unfurnished">Unfurnished</option>
         </select>
       </div>
 
@@ -166,7 +215,9 @@ export default function PropertyFilters({ filters, onFilterChange, sortBy, onSor
             { value: "bedrooms-low", label: "Bedrooms: Low to High" },
             { value: "bedrooms-high", label: "Bedrooms: High to Low" },
             { value: "area-low", label: "Area: Small to Large" },
-            { value: "area-high", label: "Area: Large to Small" }
+            { value: "area-high", label: "Area: Large to Small" },
+            { value: "newest", label: "Newest First" },
+            { value: "oldest", label: "Oldest First" }
           ].map(option => (
             <label key={option.value} className="flex items-center">
               <input

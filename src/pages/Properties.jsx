@@ -1,122 +1,65 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import PropertyCard from "../components/Properties/PropertyCard";
 import PropertyFilters from "../components/Properties/PropertyFilters";
-
-// Mock data for properties
-const mockProperties = [
-  {
-    id: 1,
-    title: "Modern Downtown Apartment",
-    location: "New York, NY",
-    price: 2500,
-    bedrooms: 2,
-    bathrooms: 2,
-    area: 1200,
-    type: "apartment",
-    image: "/Home1.jpg",
-    description: "Beautiful modern apartment in the heart of downtown with stunning city views.",
-    amenities: ["Gym", "Pool", "Parking", "Pet Friendly"],
-    available: true
-  },
-  {
-    id: 2,
-    title: "Cozy Family House",
-    location: "Los Angeles, CA",
-    price: 3200,
-    bedrooms: 3,
-    bathrooms: 2,
-    area: 1800,
-    type: "house",
-    image: "/Home2.jpg",
-    description: "Spacious family home with a beautiful garden and quiet neighborhood.",
-    amenities: ["Garden", "Garage", "Fireplace"],
-    available: true
-  },
-  {
-    id: 3,
-    title: "Luxury Penthouse",
-    location: "Miami, FL",
-    price: 4500,
-    bedrooms: 3,
-    bathrooms: 3,
-    area: 2200,
-    type: "penthouse",
-    image: "/Home3.jpg",
-    description: "Stunning penthouse with ocean views and premium amenities.",
-    amenities: ["Ocean View", "Balcony", "Concierge", "Pool"],
-    available: true
-  },
-  {
-    id: 4,
-    title: "Studio Loft",
-    location: "Chicago, IL",
-    price: 1800,
-    bedrooms: 1,
-    bathrooms: 1,
-    area: 800,
-    type: "studio",
-    image: "/Home1.jpg",
-    description: "Trendy studio loft in an artistic neighborhood with high ceilings.",
-    amenities: ["High Ceilings", "Exposed Brick", "Gym"],
-    available: false
-  },
-  {
-    id: 5,
-    title: "Suburban Villa",
-    location: "Austin, TX",
-    price: 2800,
-    bedrooms: 4,
-    bathrooms: 3,
-    area: 2500,
-    type: "house",
-    image: "/Home2.jpg",
-    description: "Spacious villa in a quiet suburban area with modern amenities.",
-    amenities: ["Swimming Pool", "Garden", "Garage", "Security"],
-    available: true
-  },
-  {
-    id: 6,
-    title: "City Center Condo",
-    location: "Seattle, WA",
-    price: 2200,
-    bedrooms: 2,
-    bathrooms: 1,
-    area: 1000,
-    type: "condo",
-    image: "/Home3.jpg",
-    description: "Modern condo in the city center with easy access to public transport.",
-    amenities: ["City View", "Gym", "Parking"],
-    available: true
-  }
-];
+import { PropertyContext } from "../stores/propertyStore";
+import { FiLoader, FiAlertCircle, FiRefreshCw } from "react-icons/fi";
 
 export default function Properties() {
-  const [properties, setProperties] = useState(mockProperties);
-  const [filteredProperties, setFilteredProperties] = useState(mockProperties);
+  const {
+    properties,
+    fetchProperties,
+    propertiesLoading,
+    propertiesError,
+    propertiesPagination,
+    propertiesFilters,
+    clearPropertiesError
+  } = useContext(PropertyContext);
+
+  const [filteredProperties, setFilteredProperties] = useState([]);
   const [sortBy, setSortBy] = useState("price-low");
-  const [filters, setFilters] = useState({
-    priceRange: [0, 5000],
+  const [localFilters, setLocalFilters] = useState({
+    priceRange: [0, 10000],
     bedrooms: "any",
     bathrooms: "any",
     propertyType: "any",
-    available: "all"
+    available: "all",
+    furnishing: "any",
+    search: ""
   });
 
-  // Apply filters and sorting
+  // Initialize - fetch properties when component mounts
   useEffect(() => {
+    fetchProperties();
+  }, []);
+
+  // Apply local filters and sorting
+  useEffect(() => {
+    if (!properties || properties.length === 0) {
+      setFilteredProperties([]);
+      return;
+    }
+
     let filtered = [...properties];
 
-    // Apply filters
+    // Apply local filters
     filtered = filtered.filter(property => {
-      const priceInRange = property.price >= filters.priceRange[0] && property.price <= filters.priceRange[1];
-      const bedroomsMatch = filters.bedrooms === "any" || property.bedrooms === parseInt(filters.bedrooms);
-      const bathroomsMatch = filters.bathrooms === "any" || property.bathrooms === parseInt(filters.bathrooms);
-      const typeMatch = filters.propertyType === "any" || property.type === filters.propertyType;
-      const availabilityMatch = filters.available === "all" || 
-        (filters.available === "available" && property.available) ||
-        (filters.available === "unavailable" && !property.available);
+      const priceInRange = property.price >= localFilters.priceRange[0] && property.price <= localFilters.priceRange[1];
+      const bedroomsMatch = localFilters.bedrooms === "any" || property.bedrooms === parseInt(localFilters.bedrooms);
+      const bathroomsMatch = localFilters.bathrooms === "any" || property.bathrooms === parseInt(localFilters.bathrooms);
+      const typeMatch = localFilters.propertyType === "any" || property.property_type === localFilters.propertyType;
+      const furnishingMatch = localFilters.furnishing === "any" || property.furnishing === localFilters.furnishing;
+      const availabilityMatch = localFilters.available === "all" || 
+        (localFilters.available === "available" && property.status === "available") ||
+        (localFilters.available === "unavailable" && property.status !== "available");
+      
+      // Search filter
+      const searchMatch = !localFilters.search || 
+        property.title.toLowerCase().includes(localFilters.search.toLowerCase()) ||
+        property.description.toLowerCase().includes(localFilters.search.toLowerCase()) ||
+        property.city.toLowerCase().includes(localFilters.search.toLowerCase()) ||
+        property.state.toLowerCase().includes(localFilters.search.toLowerCase());
 
-      return priceInRange && bedroomsMatch && bathroomsMatch && typeMatch && availabilityMatch;
+      return priceInRange && bedroomsMatch && bathroomsMatch && typeMatch && furnishingMatch && availabilityMatch && searchMatch;
     });
 
     // Apply sorting
@@ -131,23 +74,32 @@ export default function Properties() {
         case "bedrooms-high":
           return b.bedrooms - a.bedrooms;
         case "area-low":
-          return a.area - b.area;
+          return (a.area_sqft || 0) - (b.area_sqft || 0);
         case "area-high":
-          return b.area - a.area;
+          return (b.area_sqft || 0) - (a.area_sqft || 0);
+        case "newest":
+          return new Date(b.created_at) - new Date(a.created_at);
+        case "oldest":
+          return new Date(a.created_at) - new Date(b.created_at);
         default:
           return 0;
       }
     });
 
     setFilteredProperties(filtered);
-  }, [properties, filters, sortBy]);
+  }, [properties, localFilters, sortBy]);
 
   const handleFilterChange = (newFilters) => {
-    setFilters(newFilters);
+    setLocalFilters(newFilters);
   };
 
   const handleSortChange = (newSortBy) => {
     setSortBy(newSortBy);
+  };
+
+  const handleRefresh = () => {
+    clearPropertiesError();
+    fetchProperties();
   };
 
   return (
@@ -169,7 +121,7 @@ export default function Properties() {
           {/* Filters Sidebar */}
           <aside className="lg:w-1/4">
             <PropertyFilters
-              filters={filters}
+              filters={localFilters}
               onFilterChange={handleFilterChange}
               sortBy={sortBy}
               onSortChange={handleSortChange}
@@ -180,16 +132,24 @@ export default function Properties() {
           <main className="lg:w-3/4">
             {/* Results Summary */}
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold">
-                {filteredProperties.length} Properties Found
-              </h2>
+              <div className="flex items-center gap-4">
+                <h2 className="text-xl font-semibold">
+                  {propertiesLoading ? 'Loading...' : `${filteredProperties.length} Properties Found`}
+                </h2>
+                {propertiesPagination && (
+                  <span className="text-sm text-[var(--color-medium)]">
+                    Page {propertiesPagination.current_page} of {propertiesPagination.total_pages}
+                  </span>
+                )}
+              </div>
               
               {/* Mobile Sort Dropdown */}
-              <div className="lg:hidden">
+              <div className="lg:hidden flex items-center gap-2">
                 <select
                   value={sortBy}
                   onChange={(e) => handleSortChange(e.target.value)}
                   className="px-4 py-2 border border-[var(--color-light-brown)] rounded-lg bg-[var(--color-bg)] text-[var(--color-darkest)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                  disabled={propertiesLoading}
                 >
                   <option value="price-low">Price: Low to High</option>
                   <option value="price-high">Price: High to Low</option>
@@ -197,24 +157,97 @@ export default function Properties() {
                   <option value="bedrooms-high">Bedrooms: High to Low</option>
                   <option value="area-low">Area: Small to Large</option>
                   <option value="area-high">Area: Large to Small</option>
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
                 </select>
+                <button
+                  onClick={handleRefresh}
+                  className="p-2 text-[var(--color-secondary)] hover:text-[var(--color-darker)] transition-colors disabled:opacity-50"
+                  title="Refresh properties"
+                  disabled={propertiesLoading}
+                >
+                  <FiRefreshCw className={`w-5 h-5 ${propertiesLoading ? 'animate-spin' : ''}`} />
+                </button>
               </div>
             </div>
 
+            {/* Loading State */}
+            {propertiesLoading && (
+              <div className="flex items-center justify-center py-12">
+                <div className="text-center">
+                  <FiLoader className="w-8 h-8 animate-spin text-[var(--color-secondary)] mx-auto mb-4" />
+                  <p className="text-[var(--color-medium)]">Loading properties...</p>
+                </div>
+              </div>
+            )}
+
+            {/* Error State */}
+            {propertiesError && !propertiesLoading && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
+                <div className="flex items-center gap-3">
+                  <FiAlertCircle className="w-6 h-6 text-red-500 flex-shrink-0" />
+                  <div className="flex-1">
+                    <h3 className="text-red-800 font-semibold mb-1">Failed to load properties</h3>
+                    <p className="text-red-600 text-sm">{propertiesError}</p>
+                  </div>
+                  <button
+                    onClick={handleRefresh}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
+                  >
+                    Try Again
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Properties Grid */}
-            {filteredProperties.length > 0 ? (
+            {!propertiesLoading && !propertiesError && filteredProperties.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {filteredProperties.map(property => (
                   <PropertyCard key={property.id} property={property} />
                 ))}
               </div>
-            ) : (
+            )}
+
+            {/* No Properties State */}
+            {!propertiesLoading && !propertiesError && filteredProperties.length === 0 && properties.length > 0 && (
               <div className="text-center py-12">
-                <div className="text-[var(--color-medium)] text-6xl mb-4">🏠</div>
-                <h3 className="text-xl font-semibold mb-2">No Properties Found</h3>
-                <p className="text-[var(--color-medium)]">
+                <div className="text-[var(--color-medium)] text-6xl mb-4">🔍</div>
+                <h3 className="text-xl font-semibold mb-2">No Properties Match Your Filters</h3>
+                <p className="text-[var(--color-medium)] mb-4">
                   Try adjusting your filters to see more properties
                 </p>
+                <button
+                  onClick={() => setLocalFilters({
+                    priceRange: [0, 10000],
+                    bedrooms: "any",
+                    bathrooms: "any",
+                    propertyType: "any",
+                    available: "all",
+                    furnishing: "any",
+                    search: ""
+                  })}
+                  className="px-6 py-2 bg-[var(--color-secondary)] text-white rounded-lg hover:bg-[var(--color-darker)] transition-colors"
+                >
+                  Clear All Filters
+                </button>
+              </div>
+            )}
+
+            {/* Empty State */}
+            {!propertiesLoading && !propertiesError && properties.length === 0 && (
+              <div className="text-center py-12">
+                <div className="text-[var(--color-medium)] text-6xl mb-4">🏠</div>
+                <h3 className="text-xl font-semibold mb-2">No Properties Available</h3>
+                <p className="text-[var(--color-medium)] mb-4">
+                  There are currently no properties listed. Please check back later.
+                </p>
+                <button
+                  onClick={handleRefresh}
+                  className="px-6 py-2 bg-[var(--color-secondary)] text-white rounded-lg hover:bg-[var(--color-darker)] transition-colors"
+                >
+                  Refresh
+                </button>
               </div>
             )}
           </main>
