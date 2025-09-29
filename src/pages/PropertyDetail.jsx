@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaArrowLeft, FaHeart, FaRegHeart, FaPhone, FaEnvelope } from 'react-icons/fa';
+import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaArrowLeft, FaHeart, FaRegHeart, FaPhone, FaEnvelope, FaHome } from 'react-icons/fa';
 
 // Mock data - in real app this would come from API
 const mockPropertyDetails = {
@@ -79,7 +79,7 @@ export default function PropertyDetail() {
     return (
       <div className="min-h-screen bg-[var(--color-bg)] flex items-center justify-center">
         <div className="text-center">
-          <div className="text-[var(--color-muted)] text-6xl mb-4">🏠</div>
+          <FaHome className="text-[var(--color-secondary)] w-full text-center text-6xl mb-4" />
           <h2 className="text-2xl font-bold text-[var(--color-darkest)] mb-2">Property Not Found</h2>
           <p className="text-[var(--color-muted)] mb-6">The property you're looking for doesn't exist.</p>
           <Link
@@ -196,7 +196,7 @@ export default function PropertyDetail() {
                   <div className="text-sm text-[var(--color-muted)]">Sq Ft</div>
                 </div>
                 <div className="bg-[var(--color-light)] p-4 rounded-lg text-center">
-                  <div className="text-[var(--color-secondary)] text-2xl mx-auto mb-2">🏠</div>
+                  <FaHome className="text-[var(--color-secondary)] text-2xl mx-auto mb-2" />
                   <div className="text-lg font-semibold text-[var(--color-darkest)] capitalize">{property.type}</div>
                   <div className="text-sm text-[var(--color-muted)]">Type</div>
                 </div>

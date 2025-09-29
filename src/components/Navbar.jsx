@@ -29,8 +29,8 @@ export default function Navbar() {
       key: "apply",
       label: "Apply Now",
       items: [
-        { to: "/apply-now", label: "Pre-Screening Questions" },
-        { to: "/apply-now/status", label: "Pet-Screening Status" },
+        { to: "/pre-screening", label: "Pre-Screening Questions" },
+        { to: "/apply-now/status", label: "Pre-Screening Status" },
       ],
     },
     {
