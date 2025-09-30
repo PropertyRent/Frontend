@@ -1,94 +1,157 @@
-import { FiHome, FiCheckCircle, FiUsers } from "react-icons/fi";
+import React, { useContext, useEffect } from 'react';
+import { FiHome, FiCheckCircle, FiUsers, FiTool, FiTrendingUp, FiRefreshCw } from "react-icons/fi";
+import { PropertyContext } from '../../stores/propertyStore';
 
-const DashboardOverview = ({ stats, properties, applications }) => {
+const DashboardOverview = () => {
+  const {
+    propertyStats,
+    propertyStatsLoading,
+    propertyStatsError,
+    fetchPropertyStats,
+    recentProperties,
+    recentPropertiesLoading,
+    recentPropertiesError,
+    fetchRecentProperties,
+  } = useContext(PropertyContext);
+
+  useEffect(() => {
+    fetchPropertyStats();
+    fetchRecentProperties();
+  }, []);
+
+  const renderStatCard = (title, value, icon, color, isLoading) => (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm text-[var(--color-muted)]">{title}</p>
+          {isLoading ? (
+            <div className="flex items-center gap-2">
+              <FiRefreshCw className="w-4 h-4 animate-spin text-[var(--color-secondary)]" />
+              <span className="text-sm text-[var(--color-muted)]">Loading...</span>
+            </div>
+          ) : (
+            <p className={`text-3xl font-bold ${color}`}>
+              {value || 0}
+            </p>
+          )}
+        </div>
+        {React.createElement(icon, { className: `text-3xl ${color.replace('text-', 'text-').split('-')[1] ? color : 'text-[var(--color-secondary)]'}` })}
+      </div>
+    </div>
+  );
+
   return (
     <div className="space-y-8">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-[var(--color-muted)]">Total Properties</p>
-              <p className="text-3xl font-bold text-[var(--color-darkest)]">{stats.totalProperties}</p>
-            </div>
-            <FiHome className="text-3xl text-[var(--color-secondary)]" />
-          </div>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {renderStatCard(
+          "Total Properties",
+          propertyStats?.total_properties,
+          FiHome,
+          "text-[var(--color-darkest)]",
+          propertyStatsLoading
+        )}
         
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-[var(--color-muted)]">Available</p>
-              <p className="text-3xl font-bold text-green-600">{stats.availableProperties}</p>
-            </div>
-            <FiCheckCircle className="text-3xl text-green-500" />
-          </div>
-        </div>
+        {renderStatCard(
+          "Available",
+          propertyStats?.available_properties,
+          FiCheckCircle,
+          "text-green-600",
+          propertyStatsLoading
+        )}
         
-        {/* <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-[var(--color-muted)]">Applications</p>
-              <p className="text-3xl font-bold text-[var(--color-secondary)]">{stats.totalApplications}</p>
-            </div>
-            <FiUsers className="text-3xl text-[var(--color-secondary)]" />
-          </div>
-        </div> */}
+        {renderStatCard(
+          "Rented",
+          propertyStats?.rented_properties,
+          FiUsers,
+          "text-blue-600",
+          propertyStatsLoading
+        )}
+        
+        {renderStatCard(
+          "Maintenance",
+          propertyStats?.maintenance_properties,
+          FiTool,
+          "text-orange-600",
+          propertyStatsLoading
+        )}
       </div>
 
-      {/* Recent Properties & Applications */}
+      
+
+      {/* Error States */}
+      {propertyStatsError && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p className="text-red-600">Error loading stats: {propertyStatsError}</p>
+        </div>
+      )}
+
+      {recentPropertiesError && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p className="text-red-600">Error loading recent properties: {recentPropertiesError}</p>
+        </div>
+      )}
+
+      {/* Recent Properties */}
       <div className="grid lg:grid-cols-1 gap-8">
         <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
           <h3 className="text-lg font-semibold mb-4 text-[var(--color-darkest)]">Recent Properties</h3>
-          <div className="space-y-3">
-            {properties.slice(0, 3).map((property) => (
-              <div key={property.id} className="flex items-center gap-4 p-3 rounded-lg bg-[var(--color-bg)]">
-                <img
-                  src={property.images[0]}
-                  alt={property.title}
-                  className="w-12 h-12 rounded-lg object-cover"
-                />
-                <div className="flex-1">
-                  <h4 className="font-medium text-[var(--color-darkest)]">{property.title}</h4>
-                  <p className="text-sm text-[var(--color-muted)]">${property.price}/month</p>
+          
+          {recentPropertiesLoading ? (
+            <div className="flex justify-center items-center py-8">
+              <FiRefreshCw className="w-6 h-6 animate-spin text-[var(--color-secondary)]" />
+              <span className="ml-2 text-[var(--color-muted)]">Loading recent properties...</span>
+            </div>
+          ) : recentProperties && recentProperties.length > 0 ? (
+            <div className="space-y-3">
+              {recentProperties.map((property) => (
+                <div key={property.id} className="flex items-center gap-4 p-3 rounded-lg bg-[var(--color-light)] hover:bg-[var(--color-tan)]/10 transition-colors">
+                  {property.cover_image ? (
+                    <img
+                      src={property.cover_image}
+                      alt={property.title}
+                      className="w-16 h-16 rounded-lg object-cover border-2 border-[var(--color-tan)]/30"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 rounded-lg bg-[var(--color-tan)]/20 flex items-center justify-center">
+                      <FiHome className="text-[var(--color-secondary)] text-xl" />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <h4 className="font-medium text-[var(--color-darkest)] mb-1">{property.title}</h4>
+                    <p className="text-sm text-[var(--color-muted)] mb-1">${property.price}/month</p>
+                    <div className="flex items-center gap-4 text-xs text-[var(--color-muted)]">
+                      <span>{property.bedrooms} bed{property.bedrooms !== 1 ? 's' : ''}</span>
+                      <span>{property.bathrooms} bath{property.bathrooms !== 1 ? 's' : ''}</span>
+                      <span>{property.property_type}</span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${
+                      property.status.toLowerCase() === 'available' 
+                        ? 'bg-green-100 text-green-800'
+                        : property.status.toLowerCase() === 'rented'
+                        ? 'bg-blue-100 text-blue-800'
+                        : property.status.toLowerCase() === 'maintenance'
+                        ? 'bg-orange-100 text-orange-800'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}>
+                      {property.status}
+                    </span>
+                    <p className="text-xs text-[var(--color-muted)] mt-1">
+                      {new Date(property.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
                 </div>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                  property.status === 'Available' 
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-red-100 text-red-800'
-                }`}>
-                  {property.status}
-                </span>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <FiHome className="w-12 h-12 text-[var(--color-tan)] mx-auto mb-3" />
+              <p className="text-[var(--color-muted)]">No recent properties found</p>
+            </div>
+          )}
         </div>
-
-        {/* <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
-          <h3 className="text-lg font-semibold mb-4 text-[var(--color-darkest)]">Recent Applications</h3>
-          <div className="space-y-3">
-            {applications.slice(0, 3).map((app) => (
-              <div key={app.id} className="flex items-center gap-4 p-3 rounded-lg bg-[var(--color-bg)]">
-                <div className="w-12 h-12 rounded-full bg-[var(--color-secondary)] flex items-center justify-center text-white font-semibold">
-                  {app.applicantName.split(' ').map(n => n[0]).join('')}
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-medium text-[var(--color-darkest)]">{app.applicantName}</h4>
-                  <p className="text-sm text-[var(--color-muted)]">{app.propertyTitle}</p>
-                </div>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                  app.status === 'Approved' 
-                    ? 'bg-green-100 text-green-800'
-                    : app.status === 'Pending Review'
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : 'bg-red-100 text-red-800'
-                }`}>
-                  {app.status}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div> */}
       </div>
     </div>
   );

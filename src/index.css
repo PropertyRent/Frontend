@@ -39,3 +39,151 @@
     --color-darkest: #512E1B;     /* Seal brown - primary text */
     --color-muted: #6A8283;       /* Slate gray for muted text */
 }
+
+/* Custom Toast Styling */
+.toast-custom {
+  animation: slideInRight 0.3s ease-out forwards;
+  transform: translateX(100%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toast-custom[data-visible="true"] {
+  animation: slideInRight 0.3s ease-out forwards;
+}
+
+.toast-custom[data-visible="false"] {
+  animation: slideOutRight 0.2s ease-in forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Toast hover effects */
+.toast-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 25px 35px -5px rgb(0 0 0 / 0.15), 0 15px 15px -5px rgb(0 0 0 / 0.08) !important;
+}
+
+/* Toast icon styling */
+.toast-custom .react-hot-toast-icon {
+  width: 20px !important;
+  height: 20px !important;
+  margin-right: 12px !important;
+}
+
+/* Success toast specific styling */
+.toast-custom[data-type="success"] {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  backdrop-filter: blur(10px);
+}
+
+.toast-custom[data-type="success"]:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Error toast specific styling */
+.toast-custom[data-type="error"] {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  backdrop-filter: blur(10px);
+}
+
+.toast-custom[data-type="error"]:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Loading toast specific styling */
+.toast-custom[data-type="loading"] {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+  backdrop-filter: blur(10px);
+}
+
+.toast-custom[data-type="loading"]:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Loading spinner animation enhancement */
+.toast-custom[data-type="loading"] .react-hot-toast-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Toast progress bar */
+.toast-custom:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 0 0 12px 12px;
+  animation: toastProgress var(--duration, 4000ms) linear forwards;
+}
+
+@keyframes toastProgress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+/* Dark mode support for toasts */
+@media (prefers-color-scheme: dark) {
+  .toast-custom:not([data-type="success"]):not([data-type="error"]):not([data-type="loading"]) {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+  }
+}

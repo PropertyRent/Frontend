@@ -49,8 +49,8 @@ const AddPropertyForm = ({
     formData.append('city', form.city);
     formData.append('state', form.state);
     formData.append('pincode', form.pincode);
-    formData.append('latitude', form.latitude);
-    formData.append('longitude', form.longitude);
+    // formData.append('latitude', form.latitude);
+    // formData.append('longitude', form.longitude);
     formData.append('available_from', form.available_from);
     
     // Add array fields as JSON strings
@@ -441,7 +441,7 @@ const AddPropertyForm = ({
           </div>
 
           <div className={`grid gap-4 ${isExpanded ? 'lg:grid-cols-3' : 'grid-cols-2'}`}>
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Latitude</label>
               <input
                 name="latitude"
@@ -464,7 +464,7 @@ const AddPropertyForm = ({
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
                 placeholder="Longitude"
               />
-            </div>
+            </div> */}
             <div>
               <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Available From</label>
               <input

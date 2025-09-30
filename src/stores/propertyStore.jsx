@@ -99,6 +99,32 @@ export const PropertyContext = createContext({
   coverImagesSuccess: null,
   // Clear cover images methods
   clearCoverImagesError: () => {},
+  
+  // Property stats states
+  propertyStats: null,
+  setPropertyStats: () => {},
+  fetchPropertyStats: () => {},
+  // Property stats loading states
+  propertyStatsLoading: false,
+  // Property stats error states
+  propertyStatsError: null,
+  // Property stats success states
+  propertyStatsSuccess: null,
+  // Clear property stats methods
+  clearPropertyStatsError: () => {},
+  
+  // Recent properties states
+  recentProperties: [],
+  setRecentProperties: () => {},
+  fetchRecentProperties: () => {},
+  // Recent properties loading states
+  recentPropertiesLoading: false,
+  // Recent properties error states
+  recentPropertiesError: null,
+  // Recent properties success states
+  recentPropertiesSuccess: null,
+  // Clear recent properties methods
+  clearRecentPropertiesError: () => {},
 });
 
 const PropertyProvider = ({ children }) => {
@@ -151,6 +177,18 @@ const PropertyProvider = ({ children }) => {
   const [coverImagesLoading, setCoverImagesLoading] = useState(false);
   const [coverImagesError, setCoverImagesError] = useState(null);
   const [coverImagesSuccess, setCoverImagesSuccess] = useState(null);
+  
+  // Property stats state
+  const [propertyStats, setPropertyStats] = useState(null);
+  const [propertyStatsLoading, setPropertyStatsLoading] = useState(false);
+  const [propertyStatsError, setPropertyStatsError] = useState(null);
+  const [propertyStatsSuccess, setPropertyStatsSuccess] = useState(null);
+  
+  // Recent properties state
+  const [recentProperties, setRecentProperties] = useState([]);
+  const [recentPropertiesLoading, setRecentPropertiesLoading] = useState(false);
+  const [recentPropertiesError, setRecentPropertiesError] = useState(null);
+  const [recentPropertiesSuccess, setRecentPropertiesSuccess] = useState(null);
 
   const clearProfileError = () => {
     setProfileError(null);
@@ -192,6 +230,16 @@ const PropertyProvider = ({ children }) => {
   const clearCoverImagesError = () => {
     setCoverImagesError(null);
     setCoverImagesSuccess(null);
+  };
+  
+  const clearPropertyStatsError = () => {
+    setPropertyStatsError(null);
+    setPropertyStatsSuccess(null);
+  };
+  
+  const clearRecentPropertiesError = () => {
+    setRecentPropertiesError(null);
+    setRecentPropertiesSuccess(null);
   };
 
   const getProfile = async () => {
@@ -571,6 +619,66 @@ const PropertyProvider = ({ children }) => {
       setCoverImagesLoading(false);
     }
   };
+  
+  const fetchPropertyStats = async () => {
+    console.log("Fetching property stats...");
+    try {
+      setPropertyStatsLoading(true);
+      setPropertyStatsError(null);
+      
+      const url = `${apiUrl}/api/admin/properties/stats`;
+      
+      const response = await axios.get(url, { withCredentials: true });
+      
+      console.log("Property stats response:", response.data);
+      if (response.data && response.data.success) {
+        setPropertyStats(response.data.data || null);
+        
+        const successMessage = response.data.message || "Property stats loaded successfully!";
+        setPropertyStatsSuccess(successMessage);
+        
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Fetch property stats error:", error);
+      const errorMessage = error.response?.data?.message || "Failed to fetch property stats. Please try again.";
+      
+      setPropertyStatsError(errorMessage);
+      throw error;
+    } finally {
+      setPropertyStatsLoading(false);
+    }
+  };
+  
+  const fetchRecentProperties = async () => {
+    console.log("Fetching recent properties...");
+    try {
+      setRecentPropertiesLoading(true);
+      setRecentPropertiesError(null);
+      
+      const url = `${apiUrl}/api/admin/properties/recent`;
+      
+      const response = await axios.get(url, { withCredentials: true });
+      
+      console.log("Recent properties response:", response.data);
+      if (response.data && response.data.success) {
+        setRecentProperties(response.data.data || []);
+        
+        const successMessage = response.data.message || "Recent properties loaded successfully!";
+        setRecentPropertiesSuccess(successMessage);
+        
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Fetch recent properties error:", error);
+      const errorMessage = error.response?.data?.message || "Failed to fetch recent properties. Please try again.";
+      
+      setRecentPropertiesError(errorMessage);
+      throw error;
+    } finally {
+      setRecentPropertiesLoading(false);
+    }
+  };
 
   return (
     <PropertyContext.Provider value={{
@@ -668,6 +776,32 @@ const PropertyProvider = ({ children }) => {
       coverImagesSuccess,
       // Clear cover images methods
       clearCoverImagesError,
+      
+      // Property stats states
+      propertyStats,
+      setPropertyStats,
+      fetchPropertyStats,
+      // Property stats loading states
+      propertyStatsLoading,
+      // Property stats error states
+      propertyStatsError,
+      // Property stats success states
+      propertyStatsSuccess,
+      // Clear property stats methods
+      clearPropertyStatsError,
+      
+      // Recent properties states
+      recentProperties,
+      setRecentProperties,
+      fetchRecentProperties,
+      // Recent properties loading states
+      recentPropertiesLoading,
+      // Recent properties error states
+      recentPropertiesError,
+      // Recent properties success states
+      recentPropertiesSuccess,
+      // Clear recent properties methods
+      clearRecentPropertiesError,
     }}>
       {children}
     </PropertyContext.Provider>

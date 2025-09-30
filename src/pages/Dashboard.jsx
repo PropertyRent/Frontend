@@ -547,11 +547,7 @@ export default function AdminDashboard() {
 
             {/* Dashboard Content */}
             {activeSection === "dashboard" && (
-              <DashboardOverview 
-                stats={stats}
-                properties={properties}
-                applications={applications}
-              />
+              <DashboardOverview />
             )}
 
             {/* Properties Section */}

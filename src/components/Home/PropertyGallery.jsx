@@ -151,7 +151,7 @@ const PropertyGallery = () => {
 
   return (
     <section className="w-full py-16 px-4 bg-[var(--color-bg)]">
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12">
           <h3 className="text-3xl font-bold text-[var(--color-darkest)] mb-4">
@@ -174,7 +174,7 @@ const PropertyGallery = () => {
           ref={galleryRef}
           className="overflow-x-auto scrollbar-hide"
         >
-          <div className="flex gap-5 pb-4 mx-auto" style={{ width: 'max-content' }}>
+          <div className="min-w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 pb-4" style={{ width: 'max-content' }}>
             {coverImages.map((image, index) => (
               <div
                 key={image.id}
