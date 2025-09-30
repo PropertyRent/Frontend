@@ -20,7 +20,7 @@ const PropertyList = ({ filtered, deleteProperty, onEditProperty }) => {
                   <div className="flex gap-4">
                     <img
                       src={property.media && property.media.length > 0 
-                        ? property.media[0].file_url 
+                        ? property.media[0].url 
                         : property.images && property.images.length > 0
                         ? property.images[0]
                         : "/Home1.jpg"

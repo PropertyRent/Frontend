@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {IoMdArrowDropdown, IoMdLocate} from "react-icons/io";
 
 export default function PropertySearchSection({
@@ -7,6 +8,8 @@ export default function PropertySearchSection({
   priceSteps = [0, 250, 500, 750, 1000, 1250, 1500, 1750, 2000, 2500, 3000],
   initial = {},
 }) {
+  const navigate = useNavigate();
+  
   const [location, setLocation] = useState(initial.location || "");
   const [showLoc, setShowLoc] = useState(false);
 
@@ -53,14 +56,50 @@ export default function PropertySearchSection({
 
   function submit(e) {
     e.preventDefault();
-    const values = {
-      location: location.trim(),
-      priceMin: priceMin === "" ? null : Number(priceMin),
-      priceMax: priceMax === "" ? null : Number(priceMax),
-      beds,
-      baths,
-    };
-    if (typeof onSearch === "function") onSearch(values);
+    
+    // Convert home search filters to properties page format
+    const searchParams = new URLSearchParams();
+    
+    // Add location as city filter
+    if (location.trim()) {
+      searchParams.set('city', location.trim());
+    }
+    
+    // Add price range
+    if (priceMin !== "" && priceMin !== null) {
+      searchParams.set('min_price', priceMin.toString());
+    }
+    if (priceMax !== "" && priceMax !== null) {
+      searchParams.set('max_price', priceMax.toString());
+    }
+    
+    // Convert beds format (1+, 2+, etc.) to number
+    if (beds !== "Any") {
+      const bedroomNum = beds.replace('+', '');
+      searchParams.set('bedrooms', bedroomNum);
+    }
+    
+    // Convert baths format (1+, 2+, etc.) to number  
+    if (baths !== "Any") {
+      const bathroomNum = baths.replace('+', '');
+      searchParams.set('bathrooms', bathroomNum);
+    }
+    
+    // Navigate to properties page with search parameters
+    const queryString = searchParams.toString();
+    navigate(`/properties${queryString ? `?${queryString}` : ''}`);
+    
+    // Still call onSearch if provided for backward compatibility
+    if (typeof onSearch === "function") {
+      const values = {
+        location: location.trim(),
+        priceMin: priceMin === "" ? null : Number(priceMin),
+        priceMax: priceMax === "" ? null : Number(priceMax),
+        beds,
+        baths,
+      };
+      onSearch(values);
+    }
   }
 
   function formatPrice(v) {

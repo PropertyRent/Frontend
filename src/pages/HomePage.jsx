@@ -2,6 +2,7 @@ import HeroSection from "../components/Home/HeroSection";
 import PropertySearchSection from "../components/Home/PropertySearch";
 import ServiceSection from "../components/Home/ServiceSection";
 import UtilitySection from "../components/Home/UtilitySection";
+import PropertyGallery from "../components/Home/PropertyGallery";
 
 export default function HomePage() {
   return (
@@ -10,6 +11,7 @@ export default function HomePage() {
         <UtilitySection/>
         <ServiceSection/>
         <PropertySearchSection/>
+        <PropertyGallery/>
     </main>
   )
 }

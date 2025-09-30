@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import PropertyCard from "../components/Properties/PropertyCard";
 import PropertySearchFilters from "../components/Properties/PropertySearchFilters";
 import { PropertyContext } from "../stores/propertyStore";
@@ -16,6 +17,7 @@ export default function Properties() {
     clearPropertiesError
   } = useContext(PropertyContext);
 
+  const [searchParams] = useSearchParams();
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [activeFilters, setActiveFilters] = useState({
     keyword: "",
@@ -28,10 +30,52 @@ export default function Properties() {
     status: "all"
   });
 
-  // Initialize - fetch properties when component mounts
+  // Function to convert URL parameters to filter format
+  const getFiltersFromURL = () => {
+    const filters = {
+      keyword: searchParams.get('keyword') || "",
+      propertyType: searchParams.get('property_type') || "any",
+      bedrooms: searchParams.get('bedrooms') || "any",
+      bathrooms: searchParams.get('bathrooms') || "any",
+      priceRange: [
+        parseInt(searchParams.get('min_price')) || 0,
+        parseInt(searchParams.get('max_price')) || 10000
+      ],
+      furnishing: searchParams.get('furnishing') || "any",
+      city: searchParams.get('city') || "",
+      status: searchParams.get('status') || "all"
+    };
+
+    return filters;
+  };
+
+  // Check if URL has search parameters
+  const hasURLParams = () => {
+    return searchParams.get('keyword') || 
+           searchParams.get('property_type') || 
+           searchParams.get('bedrooms') || 
+           searchParams.get('bathrooms') || 
+           searchParams.get('min_price') || 
+           searchParams.get('max_price') || 
+           searchParams.get('furnishing') || 
+           searchParams.get('city') || 
+           searchParams.get('status');
+  };
+
+  // Initialize - fetch properties when component mounts and handle URL parameters
   useEffect(() => {
-    fetchProperties();
-  }, []);
+    const urlFilters = getFiltersFromURL();
+    setActiveFilters(urlFilters);
+
+    // If there are URL parameters, perform search with those filters
+    if (hasURLParams()) {
+      setIsSearchActive(true);
+      searchProperties(urlFilters);
+    } else {
+      // Otherwise fetch all properties
+      fetchProperties();
+    }
+  }, [searchParams]);
 
   const handleApplyFilters = async (filters) => {
     setActiveFilters(filters);

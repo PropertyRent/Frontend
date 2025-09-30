@@ -1,4 +1,4 @@
-import { useRef, useContext } from "react";
+import { useRef, useContext, useState } from "react";
 import { FiImage, FiSave, FiX, FiMaximize2, FiMinimize2 } from "react-icons/fi";
 import { PropertyContext } from "../../stores/propertyStore";
 
@@ -15,6 +15,9 @@ const AddPropertyForm = ({
 }) => {
   const fileInputRef = useRef(null);
   const { addProperty, addPropertyLoading, addPropertyError, clearAddPropertyError } = useContext(PropertyContext);
+  const [utilities_temp, setUtilitiesTemp] = useState(form.utilities ? form.utilities.join(', ') : '');
+  const [amenities_temp, setAmenitiesTemp] = useState(form.amenities ? form.amenities.join(', ') : '');
+  const [appliances_temp, setAppliancesTemp] = useState(form.appliances_included ? form.appliances_included.join(', ') : '');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,7 +64,7 @@ const AddPropertyForm = ({
     });
     
     // Call the addProperty function
-    const success = await addProperty(formData);
+    const success = addProperty(formData);
     
     // Reset form if successful
     if (success) {
@@ -82,7 +85,10 @@ const AddPropertyForm = ({
     }
     
     console.log("Original value:", value);
-    
+    if(field === 'utilities') setUtilitiesTemp(value);
+    if(field === 'amenities') setAmenitiesTemp(value);
+    if(field === 'appliances_included') setAppliancesTemp(value);
+
     // Split by comma, trim whitespace, and filter out empty items
     const arrayValue = value.split(',').map(item => item.trim()).filter(item => item.length > 0);
     
@@ -259,15 +265,7 @@ const AddPropertyForm = ({
               <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Utilities (comma separated)</label>
               <input
                 name="utilities"
-                value={(() => {
-                  if (Array.isArray(form.utilities)) {
-                    return form.utilities.join(', ');
-                  } else if (typeof form.utilities === 'string') {
-                    return form.utilities;
-                  } else {
-                    return '';
-                  }
-                })()}
+                value={utilities_temp}
                 onChange={(e) => handleArrayChange('utilities', e.target.value)}
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
                 placeholder="Water, Electricity, Gas, Internet"
@@ -278,15 +276,7 @@ const AddPropertyForm = ({
               <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Amenities (comma separated)</label>
               <input
                 name="amenities"
-                value={(() => {
-                  if (Array.isArray(form.amenities)) {
-                    return form.amenities.join(', ');
-                  } else if (typeof form.amenities === 'string') {
-                    return form.amenities;
-                  } else {
-                    return '';
-                  }
-                })()}
+                value={amenities_temp}
                 onChange={(e) => handleArrayChange('amenities', e.target.value)}
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
                 placeholder="Gym, Pool, Parking, Laundry"
@@ -297,15 +287,7 @@ const AddPropertyForm = ({
               <label className="block text-sm font-medium text-[var(--color-darkest)] mb-1">Appliances Included (comma separated)</label>
               <input
                 name="appliances_included"
-                value={(() => {
-                  if (Array.isArray(form.appliances_included)) {
-                    return form.appliances_included.join(', ');
-                  } else if (typeof form.appliances_included === 'string') {
-                    return form.appliances_included;
-                  } else {
-                    return '';
-                  }
-                })()}
+                value={appliances_temp}
                 onChange={(e) => handleArrayChange('appliances_included', e.target.value)}
                 className="w-full p-3 border border-[var(--color-tan)]/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
                 placeholder="Refrigerator, Stove, Washer, Dryer"

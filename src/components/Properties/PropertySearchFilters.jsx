@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   FaSearch,
   FaBath,
@@ -177,6 +178,9 @@ export default function PropertySearchFilters({
   onApplyFilters,
   initialFilters = {},
 }) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  
   const [filters, setFilters] = useState({
     keyword: "",
     propertyType: "any",
@@ -235,6 +239,24 @@ export default function PropertySearchFilters({
   };
 
   const handleApplyFilters = () => {
+    // Update URL parameters
+    const newSearchParams = new URLSearchParams();
+    
+    if (filters.keyword) newSearchParams.set('keyword', filters.keyword);
+    if (filters.propertyType !== 'any') newSearchParams.set('property_type', filters.propertyType);
+    if (filters.bedrooms !== 'any') newSearchParams.set('bedrooms', filters.bedrooms);
+    if (filters.bathrooms !== 'any') newSearchParams.set('bathrooms', filters.bathrooms);
+    if (filters.priceRange[0] > 0) newSearchParams.set('min_price', filters.priceRange[0].toString());
+    if (filters.priceRange[1] < 10000) newSearchParams.set('max_price', filters.priceRange[1].toString());
+    if (filters.furnishing !== 'any') newSearchParams.set('furnishing', filters.furnishing);
+    if (filters.city) newSearchParams.set('city', filters.city);
+    if (filters.status !== 'all') newSearchParams.set('status', filters.status);
+
+    // Update URL
+    const queryString = newSearchParams.toString();
+    navigate(`/properties${queryString ? `?${queryString}` : ''}`, { replace: true });
+    
+    // Apply filters
     onApplyFilters(filters);
   };
 
@@ -250,6 +272,10 @@ export default function PropertySearchFilters({
       status: "all",
     };
     setFilters(resetFilters);
+    
+    // Clear URL parameters
+    navigate('/properties', { replace: true });
+    
     onApplyFilters(resetFilters);
   };
 

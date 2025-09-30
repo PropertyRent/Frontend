@@ -86,6 +86,19 @@ export const PropertyContext = createContext({
   deletePropertySuccess: null,
   // Clear delete property methods
   clearDeletePropertyError: () => {},
+  
+  // Cover images states
+  coverImages: [],
+  setCoverImages: () => {},
+  fetchCoverImages: () => {},
+  // Cover images loading states
+  coverImagesLoading: false,
+  // Cover images error states
+  coverImagesError: null,
+  // Cover images success states
+  coverImagesSuccess: null,
+  // Clear cover images methods
+  clearCoverImagesError: () => {},
 });
 
 const PropertyProvider = ({ children }) => {
@@ -132,6 +145,12 @@ const PropertyProvider = ({ children }) => {
   const [deletePropertyLoading, setDeletePropertyLoading] = useState(false);
   const [deletePropertyError, setDeletePropertyError] = useState(null);
   const [deletePropertySuccess, setDeletePropertySuccess] = useState(null);
+  
+  // Cover images state
+  const [coverImages, setCoverImages] = useState([]);
+  const [coverImagesLoading, setCoverImagesLoading] = useState(false);
+  const [coverImagesError, setCoverImagesError] = useState(null);
+  const [coverImagesSuccess, setCoverImagesSuccess] = useState(null);
 
   const clearProfileError = () => {
     setProfileError(null);
@@ -168,6 +187,11 @@ const PropertyProvider = ({ children }) => {
   const clearDeletePropertyError = () => {
     setDeletePropertyError(null);
     setDeletePropertySuccess(null);
+  };
+  
+  const clearCoverImagesError = () => {
+    setCoverImagesError(null);
+    setCoverImagesSuccess(null);
   };
 
   const getProfile = async () => {
@@ -517,6 +541,36 @@ const PropertyProvider = ({ children }) => {
       setDeletePropertyLoading(false);
     }
   };
+  
+  const fetchCoverImages = async () => {
+    console.log("Fetching cover images...");
+    try {
+      setCoverImagesLoading(true);
+      setCoverImagesError(null);
+      
+      const url = `${apiUrl}/api/properties/cover-images/all`;
+      
+      const response = await axios.get(url, { withCredentials: true });
+      
+      console.log("Cover images response:", response.data);
+      if (response.data && response.data.success) {
+        setCoverImages(response.data.data || []);
+        
+        const successMessage = response.data.message || "Cover images loaded successfully!";
+        setCoverImagesSuccess(successMessage);
+        
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Fetch cover images error:", error);
+      const errorMessage = error.response?.data?.message || "Failed to fetch cover images. Please try again.";
+      
+      setCoverImagesError(errorMessage);
+      throw error;
+    } finally {
+      setCoverImagesLoading(false);
+    }
+  };
 
   return (
     <PropertyContext.Provider value={{
@@ -601,6 +655,19 @@ const PropertyProvider = ({ children }) => {
       deletePropertySuccess,
       // Clear delete property methods
       clearDeletePropertyError,
+      
+      // Cover images states
+      coverImages,
+      setCoverImages,
+      fetchCoverImages,
+      // Cover images loading states
+      coverImagesLoading,
+      // Cover images error states
+      coverImagesError,
+      // Cover images success states
+      coverImagesSuccess,
+      // Clear cover images methods
+      clearCoverImagesError,
     }}>
       {children}
     </PropertyContext.Provider>
