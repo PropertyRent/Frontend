@@ -27,6 +27,7 @@ export const PropertyContext = createContext({
   properties: [],
   setProperties: () => {},
   fetchProperties: () => {},
+  searchProperties: () => {},
   // Properties loading states
   propertiesLoading: false,
   // Properties error states
@@ -275,10 +276,10 @@ const PropertyProvider = ({ children }) => {
       
       console.log("Properties response:", response.data);
       if (response.data && response.data.success) {
-        setProperties(response.data.data || []);
-        setPropertiesPagination(response.data.pagination || null);
-        setPropertiesFilters(response.data.filters_applied || {});
-        
+        setProperties(response.data?.data?.properties || []);
+        setPropertiesPagination(response.data?.pagination || null);
+        setPropertiesFilters(response.data?.filters_applied || {});
+
         const successMessage = response.data.message || "Properties loaded successfully!";
         setPropertiesSuccess(successMessage);
         
@@ -288,6 +289,63 @@ const PropertyProvider = ({ children }) => {
     } catch (error) {
       console.error("Fetch properties error:", error);
       const errorMessage = error.response?.data?.message || "Failed to fetch properties. Please try again.";
+      
+      setPropertiesError(errorMessage);
+      toast.error(errorMessage, { id: loadingToast });
+      throw error;
+    } finally {
+      setPropertiesLoading(false);
+    }
+  };
+
+  const searchProperties = async (searchParams = {}) => {
+    console.log("Searching properties with params:", searchParams);
+    const loadingToast = toast.loading("Searching properties...");
+    try {
+      setPropertiesLoading(true);
+      setPropertiesError(null);
+      
+      // Build query string from search parameters
+      const queryParams = new URLSearchParams();
+      
+      // Add all non-empty parameters to query string
+      Object.keys(searchParams).forEach(key => {
+        if (searchParams[key] && searchParams[key] !== "" && searchParams[key] !== "any" && searchParams[key] !== "all") {
+          if (key === 'priceRange' && Array.isArray(searchParams[key])) {
+            queryParams.append('min_price', searchParams[key][0]);
+            queryParams.append('max_price', searchParams[key][1]);
+          } else if (key === 'keyword' || key === 'search') {
+            queryParams.append('keyword', searchParams[key]);
+          } else if (key === 'propertyType') {
+            queryParams.append('property_type', searchParams[key]);
+          } else if (key === 'bedrooms' || key === 'bathrooms') {
+            queryParams.append(key, searchParams[key]);
+          } else if (key === 'furnishing' || key === 'status' || key === 'city' || key === 'state') {
+            queryParams.append(key, searchParams[key]);
+          }
+        }
+      });
+      
+      const url = `${apiUrl}/api/properties${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      console.log("Search URL:", url);
+      
+      const response = await axios.get(url, { withCredentials: true });
+      
+      console.log("Search response:", response.data);
+      if (response.data && response.data.success) {
+        setProperties(response.data?.data?.properties || []);
+        setPropertiesPagination(response.data?.pagination || null);
+        setPropertiesFilters(response.data?.filters_applied || {});
+
+        const successMessage = response.data.message || `Found ${response.data?.data?.properties?.length || 0} properties`;
+        setPropertiesSuccess(successMessage);
+        
+        toast.success(successMessage, { id: loadingToast });
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Search properties error:", error);
+      const errorMessage = error.response?.data?.message || "Failed to search properties. Please try again.";
       
       setPropertiesError(errorMessage);
       toast.error(errorMessage, { id: loadingToast });
@@ -484,6 +542,7 @@ const PropertyProvider = ({ children }) => {
       properties,
       setProperties,
       fetchProperties,
+      searchProperties,
       // Properties loading states
       propertiesLoading,
       // Properties error states

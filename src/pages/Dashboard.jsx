@@ -8,45 +8,44 @@ import Sidebar from "../components/Dashboard/Sidebar";
 import DashboardHeader from "../components/Dashboard/DashboardHeader";
 import DashboardOverview from "../components/Dashboard/DashboardOverview";
 import PropertiesSection from "../components/Dashboard/PropertiesSection";
-import ApplicationsSection from "../components/Dashboard/ApplicationsSection";
 import PreScreeningSection from "../components/Dashboard/PreScreeningSection";
 import SettingsSection from "../components/Dashboard/SettingsSection";
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeSection, setActiveSection] = useState("dashboard");
-  const [properties, setProperties] = useState([
-    {
-      id: 1,
-      title: "Modern Downtown Apartment",
-      price: "2500",
-      location: "Downtown, NYC",
-      beds: 2,
-      baths: 2,
-      area: "1200",
-      type: "Apartment",
-      status: "Available",
-      description: "Beautiful modern apartment with city views",
-      images: ["/Home1.jpg"],
-      createdAt: "2025-09-15",
-      amenities: ["Gym", "Pool", "Parking", "Laundry"]
-    },
-    {
-      id: 2,
-      title: "Cozy Studio Near Park",
-      price: "1800",
-      location: "Central Park, NYC",
-      beds: 1,
-      baths: 1,
-      area: "800",
-      type: "Studio",
-      status: "Rented",
-      description: "Charming studio apartment near Central Park",
-      images: ["/Home2.jpg"],
-      createdAt: "2025-09-10",
-      amenities: ["Gym", "Doorman", "Rooftop"]
-    }
-  ]);
+  // const [properties, setProperties] = useState([
+  //   {
+  //     id: 1,
+  //     title: "Modern Downtown Apartment",
+  //     price: "2500",
+  //     location: "Downtown, NYC",
+  //     beds: 2,
+  //     baths: 2,
+  //     area: "1200",
+  //     type: "Apartment",
+  //     status: "Available",
+  //     description: "Beautiful modern apartment with city views",
+  //     images: ["/Home1.jpg"],
+  //     createdAt: "2025-09-15",
+  //     amenities: ["Gym", "Pool", "Parking", "Laundry"]
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Cozy Studio Near Park",
+  //     price: "1800",
+  //     location: "Central Park, NYC",
+  //     beds: 1,
+  //     baths: 1,
+  //     area: "800",
+  //     type: "Studio",
+  //     status: "Rented",
+  //     description: "Charming studio apartment near Central Park",
+  //     images: ["/Home2.jpg"],
+  //     createdAt: "2025-09-10",
+  //     amenities: ["Gym", "Doorman", "Rooftop"]
+  //   }
+  // ]);
   
   const [applications, setApplications] = useState([
     {
@@ -212,7 +211,7 @@ export default function AdminDashboard() {
     updateProfileLoading, 
     profileError, 
     updateProfileError,
-    properties: contextProperties,
+    properties,
     fetchProperties,
     propertiesLoading,
     addPropertySuccess,
@@ -346,11 +345,11 @@ export default function AdminDashboard() {
     }
   };
 
-  function updateApplicationStatus(applicationId, newStatus) {
-    setApplications(prev => prev.map(app => 
-      app.id === applicationId ? { ...app, status: newStatus } : app
-    ));
-  }
+  // function updateApplicationStatus(applicationId, newStatus) {
+  //   setApplications(prev => prev.map(app => 
+  //     app.id === applicationId ? { ...app, status: newStatus } : app
+  //   ));
+  // }
 
   // Pre-Screening Questions Functions
   function handleQuestionSubmit(e) {
@@ -504,7 +503,8 @@ export default function AdminDashboard() {
 
 
   // Use real properties from PropertyContext, fallback to local mock data for other sections
-  const currentProperties = activeSection === "properties" ? (contextProperties || []) : properties;
+  const currentProperties = activeSection === "properties" ? properties : [];
+  console.log("Current Properties:", currentProperties);
 
   // Stats calculation
   const stats = {

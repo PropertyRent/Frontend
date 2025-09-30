@@ -4,7 +4,7 @@ const DashboardOverview = ({ stats, properties, applications }) => {
   return (
     <div className="space-y-8">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
           <div className="flex items-center justify-between">
             <div>
@@ -25,7 +25,7 @@ const DashboardOverview = ({ stats, properties, applications }) => {
           </div>
         </div>
         
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
+        {/* <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-[var(--color-muted)]">Applications</p>
@@ -33,11 +33,11 @@ const DashboardOverview = ({ stats, properties, applications }) => {
             </div>
             <FiUsers className="text-3xl text-[var(--color-secondary)]" />
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Recent Properties & Applications */}
-      <div className="grid lg:grid-cols-2 gap-8">
+      <div className="grid lg:grid-cols-1 gap-8">
         <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
           <h3 className="text-lg font-semibold mb-4 text-[var(--color-darkest)]">Recent Properties</h3>
           <div className="space-y-3">
@@ -64,7 +64,7 @@ const DashboardOverview = ({ stats, properties, applications }) => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
+        {/* <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
           <h3 className="text-lg font-semibold mb-4 text-[var(--color-darkest)]">Recent Applications</h3>
           <div className="space-y-3">
             {applications.slice(0, 3).map((app) => (
@@ -88,7 +88,7 @@ const DashboardOverview = ({ stats, properties, applications }) => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

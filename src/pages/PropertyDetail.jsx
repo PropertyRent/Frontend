@@ -411,19 +411,20 @@ export default function PropertyDetail() {
               </div>
 
               {/* Contact Buttons */}
-              <div className="space-y-3">
-                <button 
-                  className="w-full bg-[var(--color-secondary)] text-white py-3 px-4 rounded-lg hover:bg-[var(--color-darker)] transition-colors duration-200 font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
+              <div className="flex flex-col space-y-3">
+                <Link
+                  to="#"
+                  className="w-full text-center bg-[var(--color-secondary)] text-white py-3 px-4 rounded-lg hover:bg-[var(--color-darker)] transition-colors duration-200 font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
                   disabled={!processedProperty.available}
                 >
                   {processedProperty.available ? 'Schedule Viewing' : 'Not Available'}
-                </button>
-                <button className="w-full border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] py-3 px-4 rounded-lg hover:bg-[var(--color-secondary)] hover:text-white transition-colors duration-200 font-semibold">
+                </Link>
+                <Link to="#" className="w-full text-center border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] py-3 px-4 rounded-lg hover:bg-[var(--color-secondary)] hover:text-white transition-colors duration-200 font-semibold">
                   Send Message
-                </button>
-                <button className="w-full bg-[var(--color-tan)] text-[var(--color-darkest)] py-3 px-4 rounded-lg hover:bg-[var(--color-light-brown)] hover:text-white transition-colors duration-200 font-semibold">
+                </Link>
+                <Link to="/contact" className="w-full text-center bg-[var(--color-tan)] text-[var(--color-darkest)] py-3 px-4 rounded-lg hover:bg-[var(--color-light-brown)] hover:text-white transition-colors duration-200 font-semibold">
                   Contact Property
-                </button>
+                </Link>
                 <Link
                   to="/properties"
                   className="w-full block text-center border border-gray-300 text-gray-600 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 font-semibold"
