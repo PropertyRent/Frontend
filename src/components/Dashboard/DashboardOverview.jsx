@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import { FiHome, FiCheckCircle, FiUsers, FiTool, FiTrendingUp, FiRefreshCw } from "react-icons/fi";
 import { PropertyContext } from '../../stores/propertyStore';
+import DashboardStatsSkeleton from '../skeleton/DashboardStatsSkeleton';
+import RecentPropertiesSkeleton from '../skeleton/RecentPropertiesSkeleton';
 
 const DashboardOverview = () => {
   const {
@@ -43,39 +45,43 @@ const DashboardOverview = () => {
   return (
     <div className="space-y-8">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {renderStatCard(
-          "Total Properties",
-          propertyStats?.total_properties,
-          FiHome,
-          "text-[var(--color-darkest)]",
-          propertyStatsLoading
-        )}
-        
-        {renderStatCard(
-          "Available",
-          propertyStats?.available_properties,
-          FiCheckCircle,
-          "text-green-600",
-          propertyStatsLoading
-        )}
-        
-        {renderStatCard(
-          "Rented",
-          propertyStats?.rented_properties,
-          FiUsers,
-          "text-blue-600",
-          propertyStatsLoading
-        )}
-        
-        {renderStatCard(
-          "Maintenance",
-          propertyStats?.maintenance_properties,
-          FiTool,
-          "text-orange-600",
-          propertyStatsLoading
-        )}
-      </div>
+      {propertyStatsLoading ? (
+        <DashboardStatsSkeleton />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {renderStatCard(
+            "Total Properties",
+            propertyStats?.total_properties,
+            FiHome,
+            "text-[var(--color-darkest)]",
+            propertyStatsLoading
+          )}
+          
+          {renderStatCard(
+            "Available",
+            propertyStats?.available_properties,
+            FiCheckCircle,
+            "text-green-600",
+            propertyStatsLoading
+          )}
+          
+          {renderStatCard(
+            "Rented",
+            propertyStats?.rented_properties,
+            FiUsers,
+            "text-blue-600",
+            propertyStatsLoading
+          )}
+          
+          {renderStatCard(
+            "Maintenance",
+            propertyStats?.maintenance_properties,
+            FiTool,
+            "text-orange-600",
+            propertyStatsLoading
+          )}
+        </div>
+      )}
 
       
 
@@ -94,15 +100,13 @@ const DashboardOverview = () => {
 
       {/* Recent Properties */}
       <div className="grid lg:grid-cols-1 gap-8">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
-          <h3 className="text-lg font-semibold mb-4 text-[var(--color-darkest)]">Recent Properties</h3>
-          
-          {recentPropertiesLoading ? (
-            <div className="flex justify-center items-center py-8">
-              <FiRefreshCw className="w-6 h-6 animate-spin text-[var(--color-secondary)]" />
-              <span className="ml-2 text-[var(--color-muted)]">Loading recent properties...</span>
-            </div>
-          ) : recentProperties && recentProperties.length > 0 ? (
+        {recentPropertiesLoading ? (
+          <RecentPropertiesSkeleton />
+        ) : (
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-[var(--color-tan)]/20">
+            <h3 className="text-lg font-semibold mb-4 text-[var(--color-darkest)]">Recent Properties</h3>
+            
+            {recentProperties && recentProperties.length > 0 ? (
             <div className="space-y-3">
               {recentProperties.map((property) => (
                 <div key={property.id} className="flex items-center gap-4 p-3 rounded-lg bg-[var(--color-light)] hover:bg-[var(--color-tan)]/10 transition-colors">
@@ -146,12 +150,13 @@ const DashboardOverview = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-8">
-              <FiHome className="w-12 h-12 text-[var(--color-tan)] mx-auto mb-3" />
-              <p className="text-[var(--color-muted)]">No recent properties found</p>
-            </div>
-          )}
-        </div>
+              <div className="text-center py-8">
+                <FiHome className="w-12 h-12 text-[var(--color-tan)] mx-auto mb-3" />
+                <p className="text-[var(--color-muted)]">No recent properties found</p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaArrowLeft, FaHeart, FaRegHeart, FaPhone, FaEnvelope, FaHome, FaCalendarAlt, FaCar, FaPaw } from 'react-icons/fa';
 import { FiLoader, FiAlertCircle, FiRefreshCw } from 'react-icons/fi';
 import { PropertyContext } from '../stores/propertyStore';
+import PropertyDetailSkeleton from '../components/skeleton/PropertyDetailSkeleton';
 
 
 export default function PropertyDetail() {
@@ -86,14 +87,7 @@ export default function PropertyDetail() {
   };
 
   if (propertyLoading) {
-    return (
-      <div className="min-h-screen bg-[var(--color-bg)] flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[var(--color-secondary)] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-[var(--color-muted)]">Loading property details...</p>
-        </div>
-      </div>
-    );
+    return <PropertyDetailSkeleton />;
   }
 
   if (!propertyLoading && !processedProperty && !propertyError) {

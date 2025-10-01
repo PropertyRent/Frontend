@@ -11,6 +11,7 @@ import {
   FiX 
 } from "react-icons/fi";
 import { PropertyContext } from "../../stores/propertyStore";
+import ProfileSkeleton from "../skeleton/ProfileSkeleton";
 
 const SettingsSection = ({ 
   profileForm, 
@@ -55,10 +56,7 @@ const SettingsSection = ({
         </div>
 
         {profileLoading ? (
-          <div className="flex items-center justify-center py-8">
-            <FiLoader className="w-6 h-6 animate-spin text-[var(--color-secondary)]" />
-            <span className="ml-2 text-[var(--color-muted)]">Loading profile...</span>
-          </div>
+          <ProfileSkeleton />
         ) : profileError ? (
           <div className="flex items-center justify-center py-8">
             <div className="text-center">

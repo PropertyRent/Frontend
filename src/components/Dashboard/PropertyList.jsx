@@ -1,4 +1,5 @@
 import { FiHome, FiEdit3, FiTrash2, FiMapPin, FiDollarSign } from "react-icons/fi";
+import PropertyListSkeleton from "../skeleton/PropertyListSkeleton";
 
 const PropertyList = ({ filtered, deleteProperty, onEditProperty }) => {
   return (
@@ -9,10 +10,7 @@ const PropertyList = ({ filtered, deleteProperty, onEditProperty }) => {
         </div>
         <div className="max-h-[600px] overflow-y-auto">
           {filtered.length === 0 ? (
-            <div className="p-8 text-center text-[var(--color-muted)]">
-              <FiHome className="mx-auto text-4xl mb-4 opacity-50" />
-              <p>No properties found. Add some properties to get started.</p>
-            </div>
+            <PropertyListSkeleton count={5} />
           ) : (
             <div className="divide-y divide-[var(--color-tan)]/20">
               {filtered.map((property) => (

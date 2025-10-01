@@ -4,6 +4,8 @@ import PropertyCard from "../components/Properties/PropertyCard";
 import PropertySearchFilters from "../components/Properties/PropertySearchFilters";
 import { PropertyContext } from "../stores/propertyStore";
 import { FiLoader, FiAlertCircle, FiRefreshCw } from "react-icons/fi";
+import PropertiesSkeleton from "../components/skeleton/PropertiesSkeleton";
+import { FaHome } from "react-icons/fa";
 
 export default function Properties() {
   const {
@@ -100,11 +102,11 @@ export default function Properties() {
 
     if (hasActiveFilters) {
       // Use search API with filters
-      await searchProperties(filters);
+      searchProperties(filters);
     } else {
       // Reset to show all properties
       setIsSearchActive(false);
-      await fetchProperties();
+      fetchProperties();
     }
   };
 
@@ -167,12 +169,7 @@ export default function Properties() {
 
             {/* Loading State */}
             {propertiesLoading && (
-              <div className="flex h-full items-center justify-center py-12">
-                <div className="text-center">
-                  <FiLoader className="w-10 h-10 animate-spin text-[var(--color-secondary)] mx-auto mb-4" />
-                  <p className="text-[var(--color-medium)]">Loading properties...</p>
-                </div>
-              </div>
+              <PropertiesSkeleton />
             )}
 
             {/* Error State */}
@@ -232,7 +229,7 @@ export default function Properties() {
           {/* Empty State */}
           {!propertiesLoading && !propertiesError && properties.length === 0 && !isSearchActive && (
             <div className="text-center py-12">
-              <div className="text-[var(--color-medium)] text-6xl mb-4">🏠</div>
+              <FaHome className="text-[var(--color-medium)] text-6xl mb-4" />
               <h3 className="text-xl font-semibold mb-2">No Properties Available</h3>
               <p className="text-[var(--color-medium)] mb-4">
                 There are currently no properties listed. Please check back later.

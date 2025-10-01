@@ -166,12 +166,13 @@ export default function PropertyCard({ property }) {
           >
             View Details
           </Link>
-          <button
-            className="flex-1 border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] py-2 px-4 rounded-lg hover:bg-[var(--color-secondary)] hover:text-white transition-colors duration-200 text-sm font-semibold"
+          <Link
+            to={`/contact`}
+            className="flex-1 text-center border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] py-2 px-4 rounded-lg hover:bg-[var(--color-secondary)] hover:text-white transition-colors duration-200 text-sm font-semibold"
             disabled={!available}
           >
             {available ? 'Contact' : 'Unavailable'}
-          </button>
+          </Link>
         </div>
       </div>
     </div>

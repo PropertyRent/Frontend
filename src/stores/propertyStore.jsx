@@ -372,7 +372,7 @@ const PropertyProvider = ({ children }) => {
 
   const searchProperties = async (searchParams = {}) => {
     console.log("Searching properties with params:", searchParams);
-    const loadingToast = toast.loading("Searching properties...");
+    // const loadingToast = toast.loading("Searching properties...");
     try {
       setPropertiesLoading(true);
       setPropertiesError(null);
@@ -412,7 +412,7 @@ const PropertyProvider = ({ children }) => {
         const successMessage = response.data.message || `Found ${response.data?.data?.properties?.length || 0} properties`;
         setPropertiesSuccess(successMessage);
         
-        toast.success(successMessage, { id: loadingToast });
+        // toast.success(successMessage, { id: loadingToast });
         return response.data;
       }
     } catch (error) {
@@ -420,7 +420,7 @@ const PropertyProvider = ({ children }) => {
       const errorMessage = error.response?.data?.message || "Failed to search properties. Please try again.";
       
       setPropertiesError(errorMessage);
-      toast.error(errorMessage, { id: loadingToast });
+      // toast.error(errorMessage, { id: loadingToast });
       throw error;
     } finally {
       setPropertiesLoading(false);
