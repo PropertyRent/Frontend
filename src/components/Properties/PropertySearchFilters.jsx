@@ -343,7 +343,7 @@ export default function PropertySearchFilters({
       {/* Filters - Expandable on Mobile */}
       <div className={`${isExpanded ? "block" : "hidden lg:block"}`}>
         <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-4 mb-4">
-          <div className="col-span-6 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 h-1">
+          <div className="md:col-span-3 lg:col-span-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 h-1">
             <CustomDropdown
               label="Property Type"
               value={filters.propertyType}
