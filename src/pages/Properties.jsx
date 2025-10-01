@@ -64,6 +64,7 @@ export default function Properties() {
 
   // Initialize - fetch properties when component mounts and handle URL parameters
   useEffect(() => {
+    let isMounted = true;
     const urlFilters = getFiltersFromURL();
     setActiveFilters(urlFilters);
 
@@ -75,6 +76,11 @@ export default function Properties() {
       // Otherwise fetch all properties
       fetchProperties();
     }
+
+    return () => {
+      // Cleanup function if needed
+      isMounted = false;
+    };
   }, [searchParams]);
 
   const handleApplyFilters = async (filters) => {

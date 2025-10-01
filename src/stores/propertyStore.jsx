@@ -243,7 +243,7 @@ const PropertyProvider = ({ children }) => {
   };
 
   const getProfile = async () => {
-    const loadingToast = toast.loading("Fetching profile...");
+    // const loadingToast = toast.loading("Fetching profile...");
     try {
       setProfileLoading(true);
       setProfileError(null);
@@ -260,7 +260,7 @@ const PropertyProvider = ({ children }) => {
         const successMessage = "Profile loaded successfully!";
         setProfileSuccess(successMessage);
         
-        toast.success(successMessage, { id: loadingToast });
+        // toast.success(successMessage, { id: loadingToast });
         return response.data;
       }
     } catch (error) {
@@ -268,7 +268,7 @@ const PropertyProvider = ({ children }) => {
       const errorMessage = error.response?.data?.message || "Failed to fetch profile. Please try again.";
       
       setProfileError(errorMessage);
-      toast.error(errorMessage, { id: loadingToast });
+      // toast.error(errorMessage, { id: loadingToast });
       throw error;
     } finally {
       setProfileLoading(false);
@@ -336,7 +336,7 @@ const PropertyProvider = ({ children }) => {
 
   const fetchProperties = async (filters = {}) => {
     console.log("Fetching properties with filters:", filters);
-    const loadingToast = toast.loading("Fetching properties...");
+    // const loadingToast = toast.loading("Fetching properties...");
     try {
       setPropertiesLoading(true);
       setPropertiesError(null);
@@ -355,7 +355,7 @@ const PropertyProvider = ({ children }) => {
         const successMessage = response.data.message || "Properties loaded successfully!";
         setPropertiesSuccess(successMessage);
         
-        toast.success(successMessage, { id: loadingToast });
+        // toast.success(successMessage, { id: loadingToast });
         return response.data;
       }
     } catch (error) {
@@ -363,7 +363,7 @@ const PropertyProvider = ({ children }) => {
       const errorMessage = error.response?.data?.message || "Failed to fetch properties. Please try again.";
       
       setPropertiesError(errorMessage);
-      toast.error(errorMessage, { id: loadingToast });
+      // toast.error(errorMessage, { id: loadingToast });
       throw error;
     } finally {
       setPropertiesLoading(false);
@@ -429,7 +429,7 @@ const PropertyProvider = ({ children }) => {
 
   const fetchProperty = async (propertyId) => {
     console.log("Fetching property with ID:", propertyId);
-    const loadingToast = toast.loading("Fetching property details...");
+    // const loadingToast = toast.loading("Fetching property details...");
     try {
       setPropertyLoading(true);
       setPropertyError(null);
@@ -445,7 +445,7 @@ const PropertyProvider = ({ children }) => {
         const successMessage = response.data.message || "Property loaded successfully!";
         setPropertySuccess(successMessage);
         
-        toast.success(successMessage, { id: loadingToast });
+        // toast.success(successMessage, { id: loadingToast });
         return response.data;
       }
     } catch (error) {
@@ -453,7 +453,7 @@ const PropertyProvider = ({ children }) => {
       const errorMessage = error.response?.data?.message || "Failed to fetch property details. Please try again.";
       
       setPropertyError(errorMessage);
-      toast.error(errorMessage, { id: loadingToast });
+      // toast.error(errorMessage, { id: loadingToast });
       throw error;
     } finally {
       setPropertyLoading(false);
