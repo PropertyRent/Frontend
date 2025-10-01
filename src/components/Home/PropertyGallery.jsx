@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { FiEye, FiMapPin, FiRefreshCw, FiAlertCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { PropertyContext } from "../../stores/propertyStore";
+import { PropertyGallerySkeleton } from "../skeleton";
 
 const PropertyGallery = () => {
   const {
@@ -85,27 +86,7 @@ const PropertyGallery = () => {
   };
 
   if (coverImagesLoading) {
-    return (
-      <section className="w-full py-16 px-4 bg-[var(--color-bg)]">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-[var(--color-darkest)] mb-4">
-              Featured Properties
-            </h3>
-            <p className="text-lg text-[var(--color-dark)] max-w-2xl mx-auto">
-              Discover beautiful homes and apartments from our premium
-              collection
-            </p>
-          </div>
-          <div className="flex justify-center items-center py-12">
-            <FiRefreshCw className="w-8 h-8 animate-spin text-[var(--color-secondary)]" />
-            <span className="ml-3 text-[var(--color-dark)]">
-              Loading property images...
-            </span>
-          </div>
-        </div>
-      </section>
-    );
+    return <PropertyGallerySkeleton count={3} />;
   }
 
   if (coverImagesError) {
