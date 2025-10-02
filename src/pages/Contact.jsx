@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { FiMail, FiPhone, FiMapPin, FiSend } from "react-icons/fi";
+import { FiMail, FiPhone, FiMapPin, FiSend, FiCheck } from "react-icons/fi";
+import ContactService from "../services/contactService";
+import toast from 'react-hot-toast';
 
 /**
  * ContactPage.jsx
+ * - Integrated with backend contact service
  * - Uses only Tailwind classes (no inline style props)
  * - Reads theme CSS vars via Tailwind arbitrary values like bg-[var(--color-bg)]
- * - Minimal comments only where useful
  */
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ loading: false, ok: null, msg: "" });
 
@@ -18,7 +20,6 @@ export default function ContactPage() {
     if (!form.name.trim()) e.name = "Please enter your name.";
     if (!form.email.trim()) e.email = "Please enter your email.";
     else if (!/^\S+@\S+\.\S+$/.test(form.email)) e.email = "Please enter a valid email.";
-    if (!form.subject.trim()) e.subject = "Please add a subject.";
     if (!form.message.trim() || form.message.trim().length < 10)
       e.message = "Message must be at least 10 characters.";
     setErrors(e);
@@ -27,6 +28,37 @@ export default function ContactPage() {
 
   async function handleSubmit(evt) {
     evt.preventDefault();
+    if (!validate()) return;
+
+    setStatus({ loading: true, ok: null, msg: "" });
+
+    try {
+      const contactData = {
+        full_name: form.name.trim(),
+        email: form.email.trim(),
+        message: form.message.trim()
+      };
+
+      const response = await ContactService.submitContact(contactData);
+      
+      if (response.success) {
+        setStatus({ 
+          loading: false, 
+          ok: true, 
+          msg: response.message || "Your message has been sent successfully!" 
+        });
+        setForm({ name: "", email: "", message: "" });
+        setErrors({});
+        toast.success("Message sent successfully! We'll get back to you soon.");
+      } else {
+        throw new Error(response.message || "Failed to send message");
+      }
+    } catch (error) {
+      console.error('Contact form error:', error);
+      const errorMsg = error.message || "Failed to send message. Please try again.";
+      setStatus({ loading: false, ok: false, msg: errorMsg });
+      toast.error(errorMsg);
+    }
   }
 
   const inputClasses =
@@ -155,27 +187,6 @@ export default function ContactPage() {
 
                 <div className="mt-4">
                   <label className="block">
-                    <span className="text-sm font-medium">Subject</span>
-                    <input
-                      type="text"
-                      name="subject"
-                      value={form.subject}
-                      onChange={(e) => setForm((s) => ({ ...s, subject: e.target.value }))}
-                      className={`${inputClasses} mt-1 focus:ring-[3px] focus:ring-[var(--color-accent)]`}
-                      placeholder="Inquiry about property ID #1234"
-                      aria-invalid={!!errors.subject}
-                      aria-describedby={errors.subject ? "subject-error" : undefined}
-                    />
-                    {errors.subject && (
-                      <p id="subject-error" className="mt-1 text-xs text-red-600">
-                        {errors.subject}
-                      </p>
-                    )}
-                  </label>
-                </div>
-
-                <div className="mt-4">
-                  <label className="block">
                     <span className="text-sm font-medium">Message</span>
                     <textarea
                       name="message"
@@ -210,7 +221,7 @@ export default function ContactPage() {
                   <button
                     type="button"
                     onClick={() => {
-                      setForm({ name: "", email: "", subject: "", message: "" });
+                      setForm({ name: "", email: "", message: "" });
                       setErrors({});
                       setStatus({ loading: false, ok: null, msg: "" });
                     }}

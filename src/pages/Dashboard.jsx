@@ -10,71 +10,12 @@ import DashboardOverview from "../components/Dashboard/DashboardOverview";
 import PropertiesSection from "../components/Dashboard/PropertiesSection";
 import PreScreeningSection from "../components/Dashboard/PreScreeningSection";
 import SettingsSection from "../components/Dashboard/SettingsSection";
+import ContactSection from "../components/Dashboard/ContactSection";
+import ContactManagement from "../components/Dashboard/ContactManagement";
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeSection, setActiveSection] = useState("dashboard");
-  // const [properties, setProperties] = useState([
-  //   {
-  //     id: 1,
-  //     title: "Modern Downtown Apartment",
-  //     price: "2500",
-  //     location: "Downtown, NYC",
-  //     beds: 2,
-  //     baths: 2,
-  //     area: "1200",
-  //     type: "Apartment",
-  //     status: "Available",
-  //     description: "Beautiful modern apartment with city views",
-  //     images: ["/Home1.jpg"],
-  //     createdAt: "2025-09-15",
-  //     amenities: ["Gym", "Pool", "Parking", "Laundry"]
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Cozy Studio Near Park",
-  //     price: "1800",
-  //     location: "Central Park, NYC",
-  //     beds: 1,
-  //     baths: 1,
-  //     area: "800",
-  //     type: "Studio",
-  //     status: "Rented",
-  //     description: "Charming studio apartment near Central Park",
-  //     images: ["/Home2.jpg"],
-  //     createdAt: "2025-09-10",
-  //     amenities: ["Gym", "Doorman", "Rooftop"]
-  //   }
-  // ]);
-  
-  const [applications, setApplications] = useState([
-    {
-      id: 1,
-      applicantName: "John Smith",
-      email: "john@example.com",
-      propertyTitle: "Modern Downtown Apartment",
-      status: "Pending Review",
-      submittedAt: "2025-09-20",
-      moveInDate: "2025-10-15",
-      peopleCount: 2,
-      pets: "1 Golden Retriever",
-      jobDuration: "3 years",
-      phone: "(555) 123-4567"
-    },
-    {
-      id: 2,
-      applicantName: "Sarah Johnson",
-      email: "sarah@example.com",
-      propertyTitle: "Cozy Studio Near Park",
-      status: "Approved",
-      submittedAt: "2025-09-18",
-      moveInDate: "2025-10-01",
-      peopleCount: 1,
-      pets: "No pets",
-      jobDuration: "2 years",
-      phone: "(555) 987-6543"
-    }
-  ]);
 
   const [preScreeningQuestions, setPreScreeningQuestions] = useState([
     {
@@ -202,27 +143,15 @@ export default function AdminDashboard() {
   const [profilePhotoPreview, setProfilePhotoPreview] = useState(null);
   const profilePhotoInputRef = useRef(null);
 
-  const { logoutAdmin, navigate, user } = useContext(AuthContext);
+  const { navigate, user } = useContext(AuthContext);
   const { 
     profile, 
     getProfile, 
     updateProfile, 
-    profileLoading, 
-    updateProfileLoading, 
-    profileError, 
-    updateProfileError,
     properties,
     fetchProperties,
-    propertiesLoading,
     addPropertySuccess,
-    updateProperty,
-    updatePropertyLoading,
-    updatePropertyError,
-    updatePropertySuccess,
     deleteProperty: deletePropertyAPI,
-    deletePropertyLoading,
-    deletePropertyError,
-    deletePropertySuccess
   } = useContext(PropertyContext);
 
   useEffect(() => {
@@ -236,6 +165,9 @@ export default function AdminDashboard() {
       // Fetch properties when properties section is active
       if (activeSection === "properties") {
         fetchProperties();
+      }
+      if(activeSection === "contacts") {
+
       }
     }
   }, [navigate, activeSection]);
@@ -337,19 +269,13 @@ export default function AdminDashboard() {
   const handleDeleteProperty = async (id) => {
     if (confirm("Are you sure you want to delete this property?")) {
       try {
-        await deletePropertyAPI(id);
+        deletePropertyAPI(id);
         // Properties list will be updated automatically via the deleteProperty function
       } catch (error) {
         console.error("Failed to delete property:", error);
       }
     }
   };
-
-  // function updateApplicationStatus(applicationId, newStatus) {
-  //   setApplications(prev => prev.map(app => 
-  //     app.id === applicationId ? { ...app, status: newStatus } : app
-  //   ));
-  // }
 
   // Pre-Screening Questions Functions
   function handleQuestionSubmit(e) {
@@ -410,7 +336,7 @@ export default function AdminDashboard() {
   // Profile Management Functions
   const handleGetProfile = async () => {
     try {
-      await getProfile();
+      getProfile();
     } catch (error) {
       console.error("Failed to fetch profile:", error);
     }
@@ -435,7 +361,7 @@ export default function AdminDashboard() {
         profileData.profile_photo = profilePhoto;
       }
       
-      await updateProfile(profileData);
+      updateProfile(profileData);
       setIsEditingProfile(false);
       setProfilePhoto(null);
       if (profilePhotoInputRef.current) {
@@ -506,15 +432,7 @@ export default function AdminDashboard() {
   const currentProperties = activeSection === "properties" ? properties : [];
   console.log("Current Properties:", currentProperties);
 
-  // Stats calculation
-  const stats = {
-    totalProperties: currentProperties.length,
-    availableProperties: currentProperties.filter(p => p.status === "available" || p.status === "Available").length,
-    rentedProperties: currentProperties.filter(p => p.status === "rented" || p.status === "Rented").length,
-    totalApplications: applications.length,
-    pendingApplications: applications.filter(a => a.status === "Pending Review").length,
-    approvedApplications: applications.filter(a => a.status === "Approved").length
-  };
+  
 
 
   // Filter properties based on search query
@@ -547,7 +465,7 @@ export default function AdminDashboard() {
 
             {/* Dashboard Content */}
             {activeSection === "dashboard" && (
-              <DashboardOverview />
+              <DashboardOverview onNavigateToContacts={() => setActiveSection("contacts")} />
             )}
 
             {/* Properties Section */}
@@ -565,13 +483,7 @@ export default function AdminDashboard() {
               />
             )}
 
-            {/* Applications Section */}
-            {/* {activeSection === "applications" && (
-              <ApplicationsSection 
-                applications={applications}
-                updateApplicationStatus={updateApplicationStatus}
-              />
-            )} */}
+            
 
             {/* Pre-Screening Questions Section */}
             {activeSection === "pre-screening" && (
@@ -588,6 +500,10 @@ export default function AdminDashboard() {
                 editQuestion={editQuestion}
                 deleteQuestion={deleteQuestion}
               />
+            )}
+
+            {activeSection === "contacts" && (
+              <ContactManagement />
             )}
 
             {/* Settings Section */}

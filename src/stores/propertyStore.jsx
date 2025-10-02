@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const apiUrl = import.meta.env.VITE_APP_URL;
 
@@ -130,6 +131,10 @@ export const PropertyContext = createContext({
 const PropertyProvider = ({ children }) => {
   // Profile state
   const [profile, setProfile] = useState(null);
+  const navigate = useNavigate();
+  
+  // Add logout state to prevent multiple logout calls
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Separate loading states
   const [profileLoading, setProfileLoading] = useState(false);
@@ -242,6 +247,28 @@ const PropertyProvider = ({ children }) => {
     setRecentPropertiesSuccess(null);
   };
 
+  // Handle 401 errors with immediate logout and redirect
+  const handle401Error = () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
+    
+    try {
+      // Clear all user data immediately
+      localStorage.removeItem("adminUser");
+      
+      // Call logout API without waiting for response
+      axios.post(`${apiUrl}/api/auth/logout`, {}, { withCredentials: true })
+        .catch(error => console.error("Logout API error:", error));
+      
+      // Force hard redirect to login page to bypass any React routing issues
+      window.location.href = "/admin-login";
+    } catch (error) {
+      console.error("401 handling error:", error);
+      // Even if everything fails, force redirect
+      window.location.href = "/admin-login";
+    }
+  };
+
   const getProfile = async () => {
     // const loadingToast = toast.loading("Fetching profile...");
     try {
@@ -265,6 +292,10 @@ const PropertyProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Get profile error:", error);
+      if(error.response?.status === 401){
+        handle401Error();
+        return;
+      }
       const errorMessage = error.response?.data?.message || "Failed to fetch profile. Please try again.";
       
       setProfileError(errorMessage);
@@ -324,6 +355,10 @@ const PropertyProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Update profile error:", error);
+      if(error.response?.status === 401){
+        handle401Error();
+        return;
+      }
       const errorMessage = error.response?.data?.message || "Failed to update profile. Please try again.";
       
       setUpdateProfileError(errorMessage);
@@ -467,8 +502,6 @@ const PropertyProvider = ({ children }) => {
       setAddPropertyLoading(true);
       setAddPropertyError(null);
       
-      
-      
       const url = `${apiUrl}/api/admin/properties/add`;
       
       const response = await axios.post(url, propertyData, { 
@@ -477,6 +510,7 @@ const PropertyProvider = ({ children }) => {
           'Content-Type': 'multipart/form-data'
         }
       });
+
       
       console.log("Add property response:", response.data);
       if (response.data && response.data.success) {
@@ -493,6 +527,10 @@ const PropertyProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Add property error:", error);
+      if(error.response?.status === 401){
+        handle401Error();
+        return;
+      }
       const errorMessage = error.response?.data?.message || "Failed to add property. Please try again.";
       
       setAddPropertyError(errorMessage);
@@ -539,6 +577,10 @@ const PropertyProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Update property error:", error);
+      if(error.response?.status === 401){
+        handle401Error();
+        return;
+      }
       const errorMessage = error.response?.data?.message || "Failed to update property. Please try again.";
       
       setUpdatePropertyError(errorMessage);
@@ -580,6 +622,10 @@ const PropertyProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Delete property error:", error);
+      if(error.response?.status === 401){
+        handle401Error();
+        return;
+      }
       const errorMessage = error.response?.data?.message || "Failed to delete property. Please try again.";
       
       setDeletePropertyError(errorMessage);
@@ -641,6 +687,10 @@ const PropertyProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Fetch property stats error:", error);
+      if(error.response?.status === 401){
+        handle401Error();
+        return;
+      }
       const errorMessage = error.response?.data?.message || "Failed to fetch property stats. Please try again.";
       
       setPropertyStatsError(errorMessage);
@@ -671,6 +721,10 @@ const PropertyProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Fetch recent properties error:", error);
+      if(error.response?.status === 401){
+        handle401Error();
+        return;
+      }
       const errorMessage = error.response?.data?.message || "Failed to fetch recent properties. Please try again.";
       
       setRecentPropertiesError(errorMessage);

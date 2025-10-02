@@ -6,7 +6,8 @@ import {
   FiBarChart2,
   FiUsers,
   FiFileText,
-  FiSettings
+  FiSettings,
+  FiMail
 } from "react-icons/fi";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import { AuthContext } from "../../stores/authStore";
@@ -20,6 +21,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, activeSection, setActiveSection 
     { key: "properties", label: "Properties", icon: FiHome },
     // { key: "applications", label: "Applications", icon: FiUsers },
     { key: "pre-screening", label: "Pre-Screening", icon: FiFileText },
+    { key: "contacts", label: "Contact Messages", icon: FiMail },
     { key: "settings", label: "Settings", icon: FiSettings }
   ];
 

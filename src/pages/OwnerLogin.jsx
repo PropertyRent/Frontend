@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaArrowLeft, FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { AuthContext } from "../stores/authStore";
-import toaster from "react-hot-toast";
 
 export default function OwnerPortalAuth() {
   const [mode, setMode] = useState("login");
