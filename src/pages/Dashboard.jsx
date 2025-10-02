@@ -12,6 +12,8 @@ import PreScreeningSection from "../components/Dashboard/PreScreeningSection";
 import SettingsSection from "../components/Dashboard/SettingsSection";
 import ContactSection from "../components/Dashboard/ContactSection";
 import ContactManagement from "../components/Dashboard/ContactManagement";
+import TeamManagement from "../components/Dashboard/TeamManagement";
+import MeetingManagement from "../components/Dashboard/MeetingManagement";
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -465,7 +467,10 @@ export default function AdminDashboard() {
 
             {/* Dashboard Content */}
             {activeSection === "dashboard" && (
-              <DashboardOverview onNavigateToContacts={() => setActiveSection("contacts")} />
+              <DashboardOverview 
+                onNavigateToContacts={() => setActiveSection("contacts")}
+                onNavigateToTeam={() => setActiveSection("team")}
+              />
             )}
 
             {/* Properties Section */}
@@ -504,6 +509,16 @@ export default function AdminDashboard() {
 
             {activeSection === "contacts" && (
               <ContactManagement />
+            )}
+
+            {/* Team Management Section */}
+            {activeSection === "team" && (
+              <TeamManagement />
+            )}
+
+            {/* Meeting Management Section */}
+            {activeSection === "meetings" && (
+              <MeetingManagement />
             )}
 
             {/* Settings Section */}

@@ -406,13 +406,19 @@ export default function PropertyDetail() {
 
               {/* Contact Buttons */}
               <div className="flex flex-col space-y-3">
-                <Link
-                  to="#"
-                  className="w-full text-center bg-[var(--color-secondary)] text-white py-3 px-4 rounded-lg hover:bg-[var(--color-darker)] transition-colors duration-200 font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
-                  disabled={!processedProperty.available}
-                >
-                  {processedProperty.available ? 'Schedule Viewing' : 'Not Available'}
-                </Link>
+                {processedProperty.available ? (
+                  <Link
+                    to={`/schedule-meeting/${processedProperty.id}`}
+                    className="w-full text-center bg-[var(--color-secondary)] text-white py-3 px-4 rounded-lg hover:bg-[var(--color-darker)] transition-colors duration-200 font-semibold flex items-center justify-center space-x-2"
+                  >
+                    <FaCalendarAlt className="w-4 h-4" />
+                    <span>Schedule Viewing</span>
+                  </Link>
+                ) : (
+                  <div className="w-full text-center bg-gray-400 text-white py-3 px-4 rounded-lg cursor-not-allowed font-semibold">
+                    Not Available
+                  </div>
+                )}
                 <Link to="#" className="w-full text-center border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] py-3 px-4 rounded-lg hover:bg-[var(--color-secondary)] hover:text-white transition-colors duration-200 font-semibold">
                   Send Message
                 </Link>

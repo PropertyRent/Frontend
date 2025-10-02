@@ -7,7 +7,8 @@ import {
   FiUsers,
   FiFileText,
   FiSettings,
-  FiMail
+  FiMail,
+  FiCalendar
 } from "react-icons/fi";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import { AuthContext } from "../../stores/authStore";
@@ -21,6 +22,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, activeSection, setActiveSection 
     { key: "properties", label: "Properties", icon: FiHome },
     // { key: "applications", label: "Applications", icon: FiUsers },
     { key: "pre-screening", label: "Pre-Screening", icon: FiFileText },
+    { key: "meetings", label: "Meeting Management", icon: FiCalendar },
+    { key: "team", label: "Team Management", icon: FiUsers },
     { key: "contacts", label: "Contact Messages", icon: FiMail },
     { key: "settings", label: "Settings", icon: FiSettings }
   ];

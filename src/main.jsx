@@ -13,6 +13,7 @@ import AboutPage from "./pages/About.jsx";
 import ManagementPage from "./pages/ManagementService.jsx";
 import Properties from "./pages/Properties.jsx";
 import PropertyDetail from "./pages/PropertyDetail.jsx";
+import ScheduleMeeting from "./pages/ScheduleMeeting.jsx";
 import PreScreening from "./pages/PreScreening.jsx";
 import EmailVerify from "./pages/EmailVerify.jsx";
 import { Toaster } from "react-hot-toast";
@@ -119,6 +120,10 @@ const router = createBrowserRouter([
       {
         path: "/properties/:id",
         element: <PropertyDetail />,
+      },
+      {
+        path: "/schedule-meeting/:propertyId",
+        element: <ScheduleMeeting />,
       },
       {
         path: "/pre-screening",

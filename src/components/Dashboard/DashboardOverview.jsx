@@ -4,8 +4,9 @@ import { PropertyContext } from '../../stores/propertyStore';
 import DashboardStatsSkeleton from '../skeleton/DashboardStatsSkeleton';
 import RecentPropertiesSkeleton from '../skeleton/RecentPropertiesSkeleton';
 import ContactSection from './ContactSection';
+import TeamSection from './TeamSection';
 
-const DashboardOverview = ({ onNavigateToContacts }) => {
+const DashboardOverview = ({ onNavigateToContacts, onNavigateToTeam }) => {
   const {
     propertyStats,
     propertyStatsLoading,
@@ -99,8 +100,8 @@ const DashboardOverview = ({ onNavigateToContacts }) => {
         </div>
       )}
 
-      {/* Dashboard Content Grid */}
-      <div className="grid lg:grid-cols-2 gap-8">
+      {/* Dashboard Content Grid - 3 Column Layout */}
+      <div className="grid lg:grid-cols-3 gap-8">
         {/* Recent Properties */}
         <div>
           {recentPropertiesLoading ? (
@@ -111,30 +112,29 @@ const DashboardOverview = ({ onNavigateToContacts }) => {
               
               {recentProperties && recentProperties.length > 0 ? (
               <div className="space-y-3">
-                {recentProperties.map((property) => (
+                {recentProperties.slice(0, 4).map((property) => (
                   <div key={property.id} className="flex items-center gap-4 p-3 rounded-lg bg-[var(--color-light)] hover:bg-[var(--color-tan)]/10 transition-colors">
                     {property.cover_image ? (
                       <img
                         src={property.cover_image}
                         alt={property.title}
-                        className="w-16 h-16 rounded-lg object-cover border-2 border-[var(--color-tan)]/30"
+                        className="w-12 h-12 rounded-lg object-cover border-2 border-[var(--color-tan)]/30"
                       />
                     ) : (
-                      <div className="w-16 h-16 rounded-lg bg-[var(--color-tan)]/20 flex items-center justify-center">
-                        <FiHome className="text-[var(--color-secondary)] text-xl" />
+                      <div className="w-12 h-12 rounded-lg bg-[var(--color-tan)]/20 flex items-center justify-center">
+                        <FiHome className="text-[var(--color-secondary)] text-base" />
                       </div>
                     )}
-                    <div className="flex-1">
-                      <h4 className="font-medium text-[var(--color-darkest)] mb-1">{property.title}</h4>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-medium text-[var(--color-darkest)] mb-1 truncate">{property.title}</h4>
                       <p className="text-sm text-[var(--color-muted)] mb-1">${property.price}/month</p>
-                      <div className="flex items-center gap-4 text-xs text-[var(--color-muted)]">
-                        <span>{property.bedrooms} bed{property.bedrooms !== 1 ? 's' : ''}</span>
-                        <span>{property.bathrooms} bath{property.bathrooms !== 1 ? 's' : ''}</span>
-                        <span>{property.property_type}</span>
+                      <div className="flex items-center gap-2 text-xs text-[var(--color-muted)]">
+                        <span>{property.bedrooms}bed</span>
+                        <span>{property.bathrooms}bath</span>
                       </div>
                     </div>
                     <div className="text-right">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${
                         property.status.toLowerCase() === 'available' 
                           ? 'bg-green-100 text-green-800'
                           : property.status.toLowerCase() === 'rented'
@@ -145,9 +145,6 @@ const DashboardOverview = ({ onNavigateToContacts }) => {
                       }`}>
                         {property.status}
                       </span>
-                      <p className="text-xs text-[var(--color-muted)] mt-1">
-                        {new Date(property.created_at).toLocaleDateString()}
-                      </p>
                     </div>
                   </div>
                 ))}
@@ -165,6 +162,11 @@ const DashboardOverview = ({ onNavigateToContacts }) => {
         {/* Contact Messages Section */}
         <div>
           <ContactSection onNavigateToContacts={onNavigateToContacts} />
+        </div>
+
+        {/* Team Section */}
+        <div>
+          <TeamSection onNavigateToTeam={onNavigateToTeam} />
         </div>
       </div>
     </div>
