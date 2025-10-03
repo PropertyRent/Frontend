@@ -104,6 +104,7 @@ const NoticePage = () => {
     if (notice.original_filename) {
       toast.loading("Preparing download...", { id: "downloadToast" });
       const response = await NoticeService.downloadNoticeFile(notice.id, false); // false for public
+    //   console.log(response.data);
 
       if (response.success) {
         toast.dismiss("downloadToast");

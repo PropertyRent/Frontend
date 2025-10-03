@@ -230,6 +230,7 @@ const NoticeManagement = () => {
     if (notice.original_filename) {
         toast.loading('Preparing download...', { id: 'downloadToast' });
       const response = await NoticeService.downloadNoticeFile(notice.id, true); // true for admin
+    //   console.log(response);
       
       if (response.success) {
         toast.dismiss('downloadToast');

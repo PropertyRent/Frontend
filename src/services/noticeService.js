@@ -325,6 +325,31 @@ class NoticeService {
   }
 
   /**
+   * Get file extension from content type
+   */
+  static getExtensionFromContentType(contentType) {
+    const mimeToExt = {
+      'application/pdf': 'pdf',
+      'application/msword': 'doc',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
+      'image/jpeg': 'jpg',
+      'image/jpg': 'jpg',
+      'image/png': 'png',
+      'image/gif': 'gif',
+      'image/webp': 'webp',
+      'text/plain': 'txt',
+      'application/zip': 'zip',
+      'application/x-zip-compressed': 'zip',
+      'application/vnd.ms-excel': 'xls',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+      'application/vnd.ms-powerpoint': 'ppt',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx'
+    };
+    
+    return mimeToExt[contentType.toLowerCase()] || '';
+  }
+
+  /**
    * Check if file is an image
    */
   static isImageFile(filename) {
@@ -413,13 +438,45 @@ class NoticeService {
       }
       
       const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: fileType });
+      
+      // Determine proper MIME type if not provided or generic
+      let mimeType = fileType;
+      if (!mimeType || mimeType === 'application/octet-stream') {
+        const extension = this.getFileExtension(filename);
+        mimeType = this.getMimeTypeFromExtension(extension);
+      }
+      
+      const blob = new Blob([byteArray], { type: mimeType });
       
       return URL.createObjectURL(blob);
     } catch (error) {
       console.error('Error creating download URL:', error);
       return null;
     }
+  }
+
+  /**
+   * Get MIME type from file extension
+   */
+  static getMimeTypeFromExtension(extension) {
+    const extToMime = {
+      'pdf': 'application/pdf',
+      'doc': 'application/msword',
+      'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'jpg': 'image/jpeg',
+      'jpeg': 'image/jpeg',
+      'png': 'image/png',
+      'gif': 'image/gif',
+      'webp': 'image/webp',
+      'txt': 'text/plain',
+      'zip': 'application/zip',
+      'xls': 'application/vnd.ms-excel',
+      'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'ppt': 'application/vnd.ms-powerpoint',
+      'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+    };
+    
+    return extToMime[extension?.toLowerCase()] || 'application/octet-stream';
   }
 
   /**
@@ -434,25 +491,41 @@ class NoticeService {
       const response = await api.get(endpoint, {
         responseType: 'blob'
       });
+       
+      if (!response.data) {
+        throw new Error('No file data received');
+      }
 
       // Get filename from Content-Disposition header
       const contentDisposition = response.headers['content-disposition'];
       let filename = 'download';
       
       if (contentDisposition) {
-        const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
+        const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
         if (filenameMatch) {
-          filename = filenameMatch[1];
+          filename = filenameMatch[1].replace(/['"]/g, '');
         }
       }
 
-      // Create download link
-      const blob = new Blob([response.data]);
+      // Get content type from response headers
+      const contentType = response.headers['content-type'] || 'application/octet-stream';
+      
+      // If filename doesn't have extension, try to add it based on content type
+      if (!filename.includes('.') && contentType) {
+        const extension = this.getExtensionFromContentType(contentType);
+        if (extension) {
+          filename += `.${extension}`;
+        }
+      }
+
+      // Create blob with proper content type
+      const blob = new Blob([response.data], { type: contentType });
       const downloadUrl = URL.createObjectURL(blob);
       
       const link = document.createElement('a');
       link.href = downloadUrl;
       link.download = filename;
+      link.style.display = 'none';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -462,7 +535,8 @@ class NoticeService {
       
       return {
         success: true,
-        message: 'File downloaded successfully'
+        message: 'File downloaded successfully',
+        filename: filename
       };
     } catch (error) {
       console.error('Error downloading file:', error);
@@ -478,12 +552,22 @@ class NoticeService {
    */
   static downloadFile(base64Data, fileType, filename) {
     try {
-      const downloadUrl = this.createDownloadUrl(base64Data, fileType, filename);
+      // Ensure filename has proper extension
+      let properFilename = filename;
+      if (!properFilename.includes('.') && fileType) {
+        const extension = this.getExtensionFromContentType(fileType);
+        if (extension) {
+          properFilename += `.${extension}`;
+        }
+      }
+
+      const downloadUrl = this.createDownloadUrl(base64Data, fileType, properFilename);
       if (!downloadUrl) return false;
 
       const link = document.createElement('a');
       link.href = downloadUrl;
-      link.download = filename;
+      link.download = properFilename;
+      link.style.display = 'none';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -491,10 +575,16 @@ class NoticeService {
       // Clean up the URL
       setTimeout(() => URL.revokeObjectURL(downloadUrl), 100);
       
-      return true;
+      return {
+        success: true,
+        filename: properFilename
+      };
     } catch (error) {
       console.error('Error downloading file:', error);
-      return false;
+      return {
+        success: false,
+        error: error.message
+      };
     }
   }
 }

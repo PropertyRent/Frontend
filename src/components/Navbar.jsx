@@ -34,7 +34,7 @@ export default function Navbar() {
       key: "apply",
       label: "Apply Now",
       items: [
-        { to: "/pre-screening", label: "Pre-Screening Questions" },
+        { to: "/screening", label: "Pre-Screening Form" },
       ],
     },
     {

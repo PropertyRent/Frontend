@@ -419,8 +419,12 @@ export default function PropertyDetail() {
                     Not Available
                   </div>
                 )}
-                <Link to="/apply-now" className="w-full text-center border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] py-3 px-4 rounded-lg hover:bg-[var(--color-secondary)] hover:text-white transition-colors duration-200 font-semibold">
-                  Apply Now
+                <Link 
+                  to={`/apply/${processedProperty.id}`} 
+                  className="w-full text-center border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] py-3 px-4 rounded-lg hover:bg-[var(--color-secondary)] hover:text-white transition-colors duration-200 font-semibold flex items-center justify-center space-x-2"
+                >
+                  <FaHome className="w-4 h-4" />
+                  <span>Apply Now</span>
                 </Link>
                 <Link to="/contact" className="w-full text-center bg-[var(--color-tan)] text-[var(--color-darkest)] py-3 px-4 rounded-lg hover:bg-[var(--color-light-brown)] hover:text-white transition-colors duration-200 font-semibold">
                   Contact Property

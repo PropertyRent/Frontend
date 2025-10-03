@@ -14,6 +14,8 @@ import ContactSection from "../components/Dashboard/ContactSection";
 import ContactManagement from "../components/Dashboard/ContactManagement";
 import TeamManagement from "../components/Dashboard/TeamManagement";
 import MeetingManagement from "../components/Dashboard/MeetingManagement";
+import ApplicationManagement from "../components/Dashboard/ApplicationManagement";
+import ScreeningManagement from "../components/Dashboard/ScreeningManagement";
 import NoticeManagement from "../components/Dashboard/NoticeManagement";
 
 export default function AdminDashboard() {
@@ -491,21 +493,9 @@ export default function AdminDashboard() {
 
             
 
-            {/* Pre-Screening Questions Section */}
+            {/* Pre-Screening Management Section */}
             {activeSection === "pre-screening" && (
-              <PreScreeningSection 
-                questionForm={questionForm}
-                handleQuestionChange={handleQuestionChange}
-                handleQuestionSubmit={handleQuestionSubmit}
-                resetQuestionForm={resetQuestionForm}
-                editingQuestion={editingQuestion}
-                addOption={addOption}
-                removeOption={removeOption}
-                setQuestionForm={setQuestionForm}
-                preScreeningQuestions={preScreeningQuestions}
-                editQuestion={editQuestion}
-                deleteQuestion={deleteQuestion}
-              />
+              <ScreeningManagement />
             )}
 
             {activeSection === "contacts" && (
@@ -520,6 +510,11 @@ export default function AdminDashboard() {
             {/* Meeting Management Section */}
             {activeSection === "meetings" && (
               <MeetingManagement />
+            )}
+
+            {/* Application Management Section */}
+            {activeSection === "applications" && (
+              <ApplicationManagement />
             )}
 
             {/* Notice Management Section */}

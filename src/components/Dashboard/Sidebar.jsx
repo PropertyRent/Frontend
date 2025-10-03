@@ -21,7 +21,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, activeSection, setActiveSection 
   const navItems = [
     { key: "dashboard", label: "Dashboard", icon: FiBarChart2 },
     { key: "properties", label: "Properties", icon: FiHome },
-    // { key: "applications", label: "Applications", icon: FiUsers },
+    { key: "applications", label: "Applications", icon: FiUsers },
     { key: "pre-screening", label: "Pre-Screening", icon: FiFileText },
     { key: "notices", label: "Notice Management", icon: FiBell },
     { key: "meetings", label: "Meeting Management", icon: FiCalendar },
