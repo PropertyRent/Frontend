@@ -4,6 +4,7 @@ import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaArrowLeft, FaHeart, F
 import { FiLoader, FiAlertCircle, FiRefreshCw } from 'react-icons/fi';
 import { PropertyContext } from '../stores/propertyStore';
 import PropertyDetailSkeleton from '../components/skeleton/PropertyDetailSkeleton';
+import TidyCalBookingWidget from '../components/TidyCalBookingWidget';
 
 
 export default function PropertyDetail() {
@@ -404,21 +405,21 @@ export default function PropertyDetail() {
                 )}
               </div>
 
+              {/* TidyCal Booking Widget */}
+              {processedProperty.available && (
+                <div className="mb-6">
+                  <TidyCalBookingWidget 
+                    propertyId={processedProperty.id}
+                    width="100%"
+                    height="400px"
+                    showDirectLink={true}
+                    className="mb-4"
+                  />
+                </div>
+              )}
+
               {/* Contact Buttons */}
               <div className="flex flex-col space-y-3">
-                {processedProperty.available ? (
-                  <Link
-                    to={`/schedule-meeting/${processedProperty.id}`}
-                    className="w-full text-center bg-[var(--color-secondary)] text-white py-3 px-4 rounded-lg hover:bg-[var(--color-darker)] transition-colors duration-200 font-semibold flex items-center justify-center space-x-2"
-                  >
-                    <FaCalendarAlt className="w-4 h-4" />
-                    <span>Schedule Viewing</span>
-                  </Link>
-                ) : (
-                  <div className="w-full text-center bg-gray-400 text-white py-3 px-4 rounded-lg cursor-not-allowed font-semibold">
-                    Not Available
-                  </div>
-                )}
                 <Link 
                   to={`/apply/${processedProperty.id}`} 
                   className="w-full text-center border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] py-3 px-4 rounded-lg hover:bg-[var(--color-secondary)] hover:text-white transition-colors duration-200 font-semibold flex items-center justify-center space-x-2"

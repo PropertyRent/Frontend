@@ -13,7 +13,6 @@ import AboutPage from "./pages/About.jsx";
 import ManagementPage from "./pages/ManagementService.jsx";
 import Properties from "./pages/Properties.jsx";
 import PropertyDetail from "./pages/PropertyDetail.jsx";
-import ScheduleMeeting from "./pages/ScheduleMeeting.jsx";
 import NoticePage from "./pages/NoticePage.jsx";
 import ApplicationPage from "./pages/ApplicationPage.jsx";
 import ScreeningForm from "./pages/ScreeningForm.jsx";
@@ -122,10 +121,6 @@ const router = createBrowserRouter([
       {
         path: "/properties/:id",
         element: <PropertyDetail />,
-      },
-      {
-        path: "/schedule-meeting/:propertyId",
-        element: <ScheduleMeeting />,
       },
       {
         path: "/notice",

@@ -13,7 +13,7 @@ import SettingsSection from "../components/Dashboard/SettingsSection";
 import ContactSection from "../components/Dashboard/ContactSection";
 import ContactManagement from "../components/Dashboard/ContactManagement";
 import TeamManagement from "../components/Dashboard/TeamManagement";
-import MeetingManagement from "../components/Dashboard/MeetingManagement";
+import TidyCalManagement from "../components/Dashboard/TidyCalManagement";
 import ApplicationManagement from "../components/Dashboard/ApplicationManagement";
 import ScreeningManagement from "../components/Dashboard/ScreeningManagement";
 import NoticeManagement from "../components/Dashboard/NoticeManagement";
@@ -22,106 +22,8 @@ export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeSection, setActiveSection] = useState("dashboard");
 
-  const [preScreeningQuestions, setPreScreeningQuestions] = useState([
-    {
-      id: 1,
-      question: "Full Name",
-      type: "text",
-      required: true,
-      placeholder: "Enter your full name",
-      options: []
-    },
-    {
-      id: 2,
-      question: "Email",
-      type: "email",
-      required: true,
-      placeholder: "Enter your email",
-      options: []
-    },
-    {
-      id: 3,
-      question: "How many people will be moving in?",
-      type: "number",
-      required: true,
-      placeholder: "Number of people",
-      options: []
-    },
-    {
-      id: 4,
-      question: "Do you have any pets? If so, what are the breeds and how many?",
-      type: "textarea",
-      required: false,
-      placeholder: "Please describe your pets (breed, number, etc.) or write 'No pets'",
-      options: []
-    },
-    {
-      id: 5,
-      question: "How soon are you looking to move in?",
-      type: "date",
-      required: true,
-      placeholder: "",
-      options: []
-    },
-    {
-      id: 6,
-      question: "How long have you been at your current job?",
-      type: "text",
-      required: true,
-      placeholder: "e.g., 2 years, 6 months",
-      options: []
-    },
-    {
-      id: 7,
-      question: "Will there be any issues making the 1st month rent + deposit before move in?",
-      type: "textarea",
-      required: true,
-      placeholder: "Please explain any potential issues or write 'No issues'",
-      options: []
-    },
-    {
-      id: 8,
-      question: "Have you ever been sent to collections for not paying your bills?",
-      type: "select",
-      required: true,
-      placeholder: "Please select an option",
-      options: [
-        "No, never",
-        "Yes, but it's been resolved",
-        "Yes, and it's still ongoing",
-        "Prefer not to say"
-      ]
-    }
-  ]);
 
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-    property_type: "",
-    status: "",
-    furnishing: "",
-    area_sqft: "",
-    bedrooms: "",
-    bathrooms: "",
-    floors: "",
-    utilities: [],
-    amenities: [],
-    appliances_included: [],
-    lease_term: "",
-    application_fee: "",
-    pet_policy: "",
-    property_management_contact: "",
-    website: "",
-    price: "",
-    deposit: "",
-    address: "",
-    city: "",
-    state: "",
-    pincode: "",
-    latitude: "",
-    longitude: "",
-    available_from: ""
-  });
+
 
   const [questionForm, setQuestionForm] = useState({
     question: "",
@@ -132,9 +34,6 @@ export default function AdminDashboard() {
   });
 
   const [editingQuestion, setEditingQuestion] = useState(null);
-  const [images, setImages] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([]);
-
   const [query, setQuery] = useState("");
 
   // Profile form state
@@ -152,11 +51,7 @@ export default function AdminDashboard() {
   const { 
     profile, 
     getProfile, 
-    updateProfile, 
-    properties,
-    fetchProperties,
-    addPropertySuccess,
-    deleteProperty: deletePropertyAPI,
+    updateProfile,
   } = useContext(PropertyContext);
 
   useEffect(() => {
@@ -167,22 +62,11 @@ export default function AdminDashboard() {
       if (activeSection === "settings") {
         handleGetProfile();
       }
-      // Fetch properties when properties section is active
-      if (activeSection === "properties") {
-        fetchProperties();
-      }
       if(activeSection === "contacts") {
 
       }
     }
   }, [navigate, activeSection]);
-
-  // Refresh properties when a new property is successfully added
-  useEffect(() => {
-    if (addPropertySuccess && activeSection === "properties") {
-      fetchProperties();
-    }
-  }, [addPropertySuccess, activeSection]);
 
   // Update profile form when profile data changes
   useEffect(() => {
@@ -199,63 +83,13 @@ export default function AdminDashboard() {
     }
   }, [profile]);
 
-  useEffect(() => {
-    const urls = images.map((file) => URL.createObjectURL(file));
-    setImagePreviews(urls);
-    return () => urls.forEach((u) => URL.revokeObjectURL(u));
-  }, [images]);
 
-  // Property Management Functions
-  function handleFileSelect(e) {
-    const files = Array.from(e.target.files || []);
-    const combined = [...images, ...files].slice(0, 8);
-    setImages(combined);
-  }
 
-  function removeImage(idx) {
-    setImages((prev) => prev.filter((_, i) => i !== idx));
-  }
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
-  }
 
   function handleQuestionChange(e) {
     const { name, value } = e.target;
     setQuestionForm((f) => ({ ...f, [name]: value }));
-  }
-
-  function resetForm() {
-    setForm({
-      title: "",
-      description: "",
-      property_type: "",
-      status: "",
-      furnishing: "",
-      area_sqft: "",
-      bedrooms: "",
-      bathrooms: "",
-      floors: "",
-      utilities: [],
-      amenities: [],
-      appliances_included: [],
-      lease_term: "",
-      application_fee: "",
-      pet_policy: "",
-      property_management_contact: "",
-      website: "",
-      price: "",
-      deposit: "",
-      address: "",
-      city: "",
-      state: "",
-      pincode: "",
-      latitude: "",
-      longitude: "",
-      available_from: ""
-    });
-    setImages([]);
   }
 
   function resetQuestionForm() {
@@ -268,19 +102,6 @@ export default function AdminDashboard() {
     });
     setEditingQuestion(null);
   }
-
-
-
-  const handleDeleteProperty = async (id) => {
-    if (confirm("Are you sure you want to delete this property?")) {
-      try {
-        deletePropertyAPI(id);
-        // Properties list will be updated automatically via the deleteProperty function
-      } catch (error) {
-        console.error("Failed to delete property:", error);
-      }
-    }
-  };
 
   // Pre-Screening Questions Functions
   function handleQuestionSubmit(e) {
@@ -434,20 +255,20 @@ export default function AdminDashboard() {
 
 
   // Use real properties from PropertyContext, fallback to local mock data for other sections
-  const currentProperties = activeSection === "properties" ? properties : [];
-  console.log("Current Properties:", currentProperties);
+  // const currentProperties = activeSection === "properties" ? properties : [];
+  // console.log("Current Properties:", currentProperties);
 
   
 
 
   // Filter properties based on search query
-  const filtered = currentProperties.filter(
-    (p) =>
-      p.title.toLowerCase().includes(query.toLowerCase()) ||
-      (p.location && p.location.toLowerCase().includes(query.toLowerCase())) ||
-      (p.city && p.city.toLowerCase().includes(query.toLowerCase())) ||
-      (p.address && p.address.toLowerCase().includes(query.toLowerCase()))
-  );
+  // const filtered = currentProperties.filter(
+  //   (p) =>
+  //     p.title.toLowerCase().includes(query.toLowerCase()) ||
+  //     (p.location && p.location.toLowerCase().includes(query.toLowerCase())) ||
+  //     (p.city && p.city.toLowerCase().includes(query.toLowerCase())) ||
+  //     (p.address && p.address.toLowerCase().includes(query.toLowerCase()))
+  // );
 
   return (
     <div className="min-h-screen font-sans bg-[var(--color-bg)]">
@@ -478,17 +299,7 @@ export default function AdminDashboard() {
 
             {/* Properties Section */}
             {activeSection === "properties" && (
-              <PropertiesSection 
-                form={form}
-                handleChange={handleChange}
-                resetForm={resetForm}
-                images={images}
-                imagePreviews={imagePreviews}
-                handleFileSelect={handleFileSelect}
-                removeImage={removeImage}
-                filtered={filtered}
-                deleteProperty={handleDeleteProperty}
-              />
+              <PropertiesSection />
             )}
 
             
@@ -507,9 +318,9 @@ export default function AdminDashboard() {
               <TeamManagement />
             )}
 
-            {/* Meeting Management Section */}
+            {/* TidyCal Booking Management Section */}
             {activeSection === "meetings" && (
-              <MeetingManagement />
+              <TidyCalManagement />
             )}
 
             {/* Application Management Section */}

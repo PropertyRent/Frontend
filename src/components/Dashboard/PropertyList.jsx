@@ -3,7 +3,7 @@ import PropertyListSkeleton from "../skeleton/PropertyListSkeleton";
 
 const PropertyList = ({ filtered, deleteProperty, onEditProperty }) => {
   return (
-    <div className="lg:col-span-2">
+    <div className="w-full">
       <div className="bg-white rounded-xl shadow-sm border border-[var(--color-tan)]/20 overflow-hidden">
         <div className="p-6 border-b border-[var(--color-tan)]/20">
           <h3 className="text-lg font-semibold text-[var(--color-darkest)]">Properties ({filtered.length})</h3>
