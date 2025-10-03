@@ -7,6 +7,10 @@ export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(null);
   const rootRef = useRef(null);
 
+  const goToRedirectUrl = () => {
+    window.open(import.meta.env.VITE_REDIRECT_URL, "_blank");
+  }
+
   useEffect(() => {
     function onClickOutside(e) {
       if (rootRef.current && !rootRef.current.contains(e.target)) {
@@ -23,6 +27,7 @@ export default function Navbar() {
       label: "Properties",
       items: [
         { to: "/properties", label: "All Properties" },
+        { to: "/notice", label: "Notice" },
       ],
     },
     {
@@ -30,7 +35,6 @@ export default function Navbar() {
       label: "Apply Now",
       items: [
         { to: "/pre-screening", label: "Pre-Screening Questions" },
-        { to: "/apply-now/status", label: "Pre-Screening Status" },
       ],
     },
     {
@@ -70,12 +74,14 @@ export default function Navbar() {
 
           {/* Desktop actions */}
           <div className="hidden md:flex items-center gap-4">
-            <Link
-              to="/pay-rent"
+            <div
+              onClick={goToRedirectUrl}
+              role="button"
+              tabIndex={0}
               className="px-3 py-1 text-md text-[var(--color-primary)] border border-[var(--color-primary)] rounded-full font-medium hover:bg-[var(--color-primary)] hover:text-[var(--color-bg)] transition"
             >
               Pay Rent
-            </Link>
+            </div>
             {localStorage.getItem("adminUser") && (
               <Link
                 to="/admin"
@@ -155,9 +161,9 @@ export default function Navbar() {
               ))}
 
               <li>
-                <Link to="/resident" className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-white after:transition-all after:duration-300 after:w-0">
+                <div onClick={goToRedirectUrl} className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-white after:transition-all after:duration-300 after:w-0">
                   Resident
-                </Link>
+                </div>
               </li>
 
               <li>
@@ -219,9 +225,9 @@ export default function Navbar() {
                 </div>
               ))}
 
-              <Link to="/resident" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[var(--color-bg)]/10">
+              <div onClick={goToRedirectUrl} className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[var(--color-bg)]/10">
                 Resident
-              </Link>
+              </div>
               <Link to="/about" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[var(--color-bg)]/10">
                 About
               </Link>

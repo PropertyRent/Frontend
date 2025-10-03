@@ -419,8 +419,8 @@ export default function PropertyDetail() {
                     Not Available
                   </div>
                 )}
-                <Link to="#" className="w-full text-center border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] py-3 px-4 rounded-lg hover:bg-[var(--color-secondary)] hover:text-white transition-colors duration-200 font-semibold">
-                  Send Message
+                <Link to="/apply-now" className="w-full text-center border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] py-3 px-4 rounded-lg hover:bg-[var(--color-secondary)] hover:text-white transition-colors duration-200 font-semibold">
+                  Apply Now
                 </Link>
                 <Link to="/contact" className="w-full text-center bg-[var(--color-tan)] text-[var(--color-darkest)] py-3 px-4 rounded-lg hover:bg-[var(--color-light-brown)] hover:text-white transition-colors duration-200 font-semibold">
                   Contact Property

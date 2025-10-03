@@ -14,6 +14,7 @@ import ContactSection from "../components/Dashboard/ContactSection";
 import ContactManagement from "../components/Dashboard/ContactManagement";
 import TeamManagement from "../components/Dashboard/TeamManagement";
 import MeetingManagement from "../components/Dashboard/MeetingManagement";
+import NoticeManagement from "../components/Dashboard/NoticeManagement";
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -519,6 +520,11 @@ export default function AdminDashboard() {
             {/* Meeting Management Section */}
             {activeSection === "meetings" && (
               <MeetingManagement />
+            )}
+
+            {/* Notice Management Section */}
+            {activeSection === "notices" && (
+              <NoticeManagement />
             )}
 
             {/* Settings Section */}
