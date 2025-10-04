@@ -4,7 +4,7 @@ import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaArrowLeft, FaHeart, F
 import { FiLoader, FiAlertCircle, FiRefreshCw } from 'react-icons/fi';
 import { PropertyContext } from '../stores/propertyStore';
 import PropertyDetailSkeleton from '../components/skeleton/PropertyDetailSkeleton';
-import TidyCalBookingWidget from '../components/TidyCalBookingWidget';
+import ScheduleVisitModal from '../components/ScheduleVisitModal';
 
 
 export default function PropertyDetail() {
@@ -19,6 +19,7 @@ export default function PropertyDetail() {
   
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -405,19 +406,6 @@ export default function PropertyDetail() {
                 )}
               </div>
 
-              {/* TidyCal Booking Widget */}
-              {processedProperty.available && (
-                <div className="mb-6">
-                  <TidyCalBookingWidget 
-                    propertyId={processedProperty.id}
-                    width="100%"
-                    height="400px"
-                    showDirectLink={true}
-                    className="mb-4"
-                  />
-                </div>
-              )}
-
               {/* Contact Buttons */}
               <div className="flex flex-col space-y-3">
                 <Link 
@@ -427,6 +415,15 @@ export default function PropertyDetail() {
                   <FaHome className="w-4 h-4" />
                   <span>Apply Now</span>
                 </Link>
+                {processedProperty.available && (
+                <button
+                  onClick={() => setShowScheduleModal(true)}
+                  className="w-full text-center bg-[var(--color-secondary)] text-white py-3 px-4 rounded-lg hover:bg-[var(--color-darker)] transition-colors duration-200 font-semibold flex items-center justify-center space-x-2"
+                >
+                  <FaCalendarAlt className="w-4 h-4" />
+                  <span>Schedule Visit</span>
+                </button>
+                )}
                 <Link to="/contact" className="w-full text-center bg-[var(--color-tan)] text-[var(--color-darkest)] py-3 px-4 rounded-lg hover:bg-[var(--color-light-brown)] hover:text-white transition-colors duration-200 font-semibold">
                   Contact Property
                 </Link>
@@ -441,6 +438,13 @@ export default function PropertyDetail() {
           </div>
         </div>
       </div>
+
+      {/* Schedule Visit Modal */}
+      <ScheduleVisitModal
+        isOpen={showScheduleModal}
+        onClose={() => setShowScheduleModal(false)}
+        propertyId={processedProperty.id}
+      />
     </div>
   );
 }

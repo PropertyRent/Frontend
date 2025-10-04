@@ -13,7 +13,6 @@ import SettingsSection from "../components/Dashboard/SettingsSection";
 import ContactSection from "../components/Dashboard/ContactSection";
 import ContactManagement from "../components/Dashboard/ContactManagement";
 import TeamManagement from "../components/Dashboard/TeamManagement";
-import TidyCalManagement from "../components/Dashboard/TidyCalManagement";
 import ApplicationManagement from "../components/Dashboard/ApplicationManagement";
 import ScreeningManagement from "../components/Dashboard/ScreeningManagement";
 import NoticeManagement from "../components/Dashboard/NoticeManagement";
@@ -316,11 +315,6 @@ export default function AdminDashboard() {
             {/* Team Management Section */}
             {activeSection === "team" && (
               <TeamManagement />
-            )}
-
-            {/* TidyCal Booking Management Section */}
-            {activeSection === "meetings" && (
-              <TidyCalManagement />
             )}
 
             {/* Application Management Section */}

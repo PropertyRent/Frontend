@@ -24,7 +24,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, activeSection, setActiveSection 
     { key: "applications", label: "Applications", icon: FiUsers },
     { key: "pre-screening", label: "Pre-Screening", icon: FiFileText },
     { key: "notices", label: "Notice Management", icon: FiBell },
-    { key: "meetings", label: "TidyCal Booking", icon: FiCalendar },
     { key: "team", label: "Team Management", icon: FiUsers },
     { key: "contacts", label: "Contact Messages", icon: FiMail },
     { key: "settings", label: "Settings", icon: FiSettings }
