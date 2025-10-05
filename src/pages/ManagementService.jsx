@@ -45,7 +45,7 @@ export default function ManagementPage() {
           <h1 className="text-3xl sm:text-4xl font-extrabold mb-3">Management & Services</h1>
           <p className="max-w-3xl mx-auto text-[var(--color-darker)]">
             We provide full-service property management tailored to landlords and tenants.
-            From marketing and leasing to maintenance and compliance — PropertyRent handles the
+            From marketing and leasing to maintenance and compliance — GMP Rentals handles the
             details so you don’t have to.
           </p>
         </header>
@@ -83,7 +83,7 @@ export default function ManagementPage() {
         {/* Info strip */}
         <section className="rounded-xl p-6 border border-[var(--color-secondary)] bg-white flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <h3 className="text-lg font-semibold">Why choose PropertyRent?</h3>
+            <h3 className="text-lg font-semibold">Why choose GMP Rentals?</h3>
             <p className="text-sm text-[var(--color-darker)] mt-1">
               Local expertise, transparent fees and responsive support — we treat your property as
               our own.

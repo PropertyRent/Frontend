@@ -58,7 +58,7 @@ export default function HeroSection() {
 
       <div className="relative z-10 flex flex-col gap-4 items-center justify-center h-full px-4">
         <h1 className="px-2 text-3xl sm:text-4xl md:text-6xl text-center font-bold text-white">
-          Welcome to PropertyRent
+          Welcome to GMP Rentals
         </h1>
         <Link to="/properties" className="px-8 py-2 text-xl font-semibold text-white bg-transparent hover:bg-white hover:text-[var(--color-darkest)] transition duration-300 border-2 border-white rounded-full cursor-pointer">
           Get Started

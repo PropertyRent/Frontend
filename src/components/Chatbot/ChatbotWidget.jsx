@@ -240,7 +240,7 @@ const ChatbotWidget = () => {
     <>
       {/* Chat Widget */}
       {isOpen && (
-        <div className={`fixed bottom-8 right-8 z-50 bg-white rounded-2xl shadow-2xl border border-gray-200 transition-all duration-300 ${
+        <div className={`fixed bottom-22 right-8 z-50 bg-white rounded-2xl shadow-2xl border border-gray-200 transition-all duration-300 ${
           isMinimized ? 'h-16 w-80' : 'min-h-96 w-80 md:w-96 md:min-h-[500px]'
         }`}>
           {/* Header */}
@@ -338,7 +338,7 @@ const ChatbotWidget = () => {
       {!isOpen && (
         <button
           onClick={toggleWidget}
-          className="fixed bottom-4 right-4 z-50 w-14 h-14 bg-gray-700 border border-white text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group cursor-pointer"
+          className="fixed bottom-6 right-24 z-50 w-14 h-14 bg-gray-700 border border-white text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group cursor-pointer"
         >
           <FiMessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
         </button>

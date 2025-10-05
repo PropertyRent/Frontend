@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen flex flex-col items-center bg-[var(--color-bg)] text-[var(--color-darkest)]">
         <HeroSection />
-        <UtilitySection/>
+        <UtilitySection mediaSrc="/Home1.jpg"/>
         <ServiceSection/>
         <PropertySearchSection/>
         <PropertyGallery/>

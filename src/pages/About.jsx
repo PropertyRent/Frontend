@@ -9,9 +9,9 @@ export default function AboutPage() {
       <div className="max-w-6xl mx-auto space-y-10">
         {/* Hero / Intro */}
         <section className="text-center">
-          <h1 className="text-3xl sm:text-4xl font-extrabold mb-3">About PropertyRent</h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold mb-3">About GMP Rentals</h1>
           <p className="max-w-3xl mx-auto text-[var(--color-darker)]">
-            PropertyRent connects tenants and landlords with a focus on trust, simplicity and a
+            GMP Rentals connects tenants and landlords with a focus on trust, simplicity and a
             nature-inspired design — blue water accents, soft cloud backgrounds and warm wood tones.
             We help people find homes they love and make listing properties effortless.
           </p>
@@ -70,7 +70,7 @@ export default function AboutPage() {
 
         {/* Footer mini info */}
         <section className="text-center text-sm text-[var(--color-darker)]">
-          <p>PropertyRent • Built with care • © {new Date().getFullYear()}</p>
+          <p>GMP Rentals • Built with care • © {new Date().getFullYear()}</p>
         </section>
       </div>
     </div>

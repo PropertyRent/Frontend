@@ -6,7 +6,7 @@ export default function NotFound() {
   const primaryBtnRef = useRef(null);
 
   useEffect(() => {
-    document.title = "404 — Page not found | PropertyRent";
+    document.title = "404 — Page not found | GMP Rentals";
     primaryBtnRef.current?.focus();
   }, []);
 
@@ -74,7 +74,7 @@ export default function NotFound() {
       </section>
 
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-[var(--color-darker)]/60">
-        PropertyRent • Need help? <Link to="/contact" className="underline">Contact us</Link>
+        GMP Rentals • Need help? <Link to="/contact" className="underline">Contact us</Link>
       </div>
     </main>
   );

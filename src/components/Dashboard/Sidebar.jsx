@@ -48,7 +48,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, activeSection, setActiveSection 
             </div>
             {sidebarOpen && (
               <div>
-                <h1 className="text-xl font-bold">PropertyRent</h1>
+                <h1 className="text-xl font-bold">GMP Rentals</h1>
                 <p className="text-sm opacity-70">Admin Panel</p>
               </div>
             )}

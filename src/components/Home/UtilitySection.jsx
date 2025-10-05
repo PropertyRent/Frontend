@@ -58,14 +58,6 @@ export default function UtilitySection({ mediaType, mediaSrc, onApply, onTour, o
                 View Availability
               </button>
 
-              <button onClick={() => handle(onFaqs, "/faqs")} aria-label="Read faqs" className="flex items-center gap-3 px-4 py-3 rounded-lg font-medium bg-transparent text-[var(--color-darkest)] border border-transparent hover:underline focus:outline-none">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                  <path d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 2.5-3 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-                  <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.2" />
-                </svg>
-                FAQs
-              </button>
-
             </div>
 
             <div className="mt-4 text-xs text-[var(--color-darker)] text-center">You can complete the application online — typical processing time is 24–72 hours. For immediate questions, use the contact option in the header.</div>

@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
  */
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ loading: false, ok: null, msg: "" });
 
@@ -19,8 +19,10 @@ export default function ContactPage() {
     const e = {};
     if (!form.name.trim()) e.name = "Please enter your name.";
     if (!form.email.trim()) e.email = "Please enter your email.";
+
     else if (!/^\S+@\S+\.\S+$/.test(form.email))
       e.email = "Please enter a valid email.";
+    if (!form.phone.trim()) e.phone = "Please enter your phone number.";
     if (!form.message.trim() || form.message.trim().length < 10)
       e.message = "Message must be at least 10 characters.";
     setErrors(e);
@@ -36,6 +38,7 @@ export default function ContactPage() {
     try {
       const contactData = {
         full_name: form.name.trim(),
+        phone: form.phone.trim(),
         email: form.email.trim(),
         message: form.message.trim(),
       };
@@ -48,7 +51,7 @@ export default function ContactPage() {
           ok: true,
           msg: response.message || "Your message has been sent successfully!",
         });
-        setForm({ name: "", email: "", message: "" });
+        setForm({ name: "", email: "", phone: "", message: "" });
         setErrors({});
         toast.success("Message sent successfully! We'll get back to you soon.");
       } else {
@@ -76,7 +79,7 @@ export default function ContactPage() {
             Get in touch
           </h1>
           <p className="max-w-2xl mx-auto text-sm sm:text-base text-[var(--color-darker)]">
-            Have questions about a property or want to list with PropertyRent?
+            Have questions about a property or want to list with GMP Rentals?
             Drop us a message or reach out via call/email — we’ll reply as soon
             as possible.
           </p>
@@ -201,6 +204,28 @@ export default function ContactPage() {
                     {errors.email && (
                       <p id="email-error" className="mt-1 text-xs text-red-600">
                         {errors.email}
+                      </p>
+                    )}
+                  </label>
+                  <label className="block">
+                    <span className="text-sm font-medium">Phone</span>
+                    <input
+                      type="number"
+                      name="phone"
+                      value={form.phone}
+                      onChange={(e) =>
+                        setForm((s) => ({ ...s, phone: e.target.value }))
+                      }
+                      className={`${inputClasses} mt-1 focus:ring-[3px] focus:ring-[var(--color-accent)]`}
+                      placeholder="(315) 834-0010"
+                      aria-invalid={!!errors.phone}
+                      aria-describedby={
+                        errors.phone ? "phone-error" : undefined
+                      }
+                    />
+                    {errors.phone && (
+                      <p id="phone-error" className="mt-1 text-xs text-red-600">
+                        {errors.phone}
                       </p>
                     )}
                   </label>

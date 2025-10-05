@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import AuthProvider from "./stores/authStore";
 import PropertyProvider from "./stores/propertyStore";
 import ChatbotWidget from "./components/Chatbot/ChatbotWidget";
+import SupportBoardIntegration from "./components/SupportBoardIntegration";
 
 const App = () => {
   return (
@@ -18,6 +19,8 @@ const App = () => {
           <Footer />
           {/* Chatbot Widget - Available on all pages */}
           <ChatbotWidget />
+          {/* Support Board Chatbot Integration */}
+          <SupportBoardIntegration />
         </div>
         <Toaster
           position="bottom-right"

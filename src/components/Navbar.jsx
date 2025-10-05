@@ -58,14 +58,14 @@ export default function Navbar() {
             <Link to="/" className="flex items-center gap-3">
               <img
                 src="/Logo_1.png"
-                alt="PropertyRent logo"
+                alt="GMP Rentals logo"
                 className="w-14 h-14 object-contain rounded-md"
               />
               <div>
                 <h1 className="text-2xl md:text-4xl font-extrabold text-[var(--color-darker)]">
-                  PropertyRent
+                  GMP Rentals
                 </h1>
-                <p className="text-xs -mt-1 text-[var(--color-darker)]/70">
+                <p className="text-xs  text-[var(--color-darker)]/70">
                   Find your next home
                 </p>
               </div>

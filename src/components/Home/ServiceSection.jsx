@@ -4,7 +4,7 @@ export default function ServiceSection() {
   return (
     <section>
         <div className="container mx-auto py-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl text-center font-bold mb-2">PropertyRent Services</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl text-center font-bold mb-2">GMP Rentals Services</h2>
             <p className="text-center text-lg md:text-xl text-gray-600 mb-8">We offer a range of services to help you find your perfect property.</p>
             <p className="text-center px-2 max-w-3xl text-gray-600 mb-8">Our management service covers end-to-end operations: proactive tenant sourcing and screening, lease administration, automated rent collection, coordinated repairs with vetted vendors, and transparent monthly financial statements. We act as your local partner to protect your asset and maximize returns.</p>
             <div className='flex justify-center gap-2 mt-4'>

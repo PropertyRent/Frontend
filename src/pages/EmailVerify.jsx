@@ -47,7 +47,7 @@ export default function EmailVerify() {
         <div className="flex justify-center mb-6">
           <img 
             src="/Logo_1.png" 
-            alt="PropertyRent" 
+            alt="GMP Rentals" 
             className="w-16 h-16 object-contain"
           />
         </div>

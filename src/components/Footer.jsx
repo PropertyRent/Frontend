@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Company Info */}
         <div>
-          <h2 className="text-lg font-semibold mb-3">Property Rent</h2>
+          <h2 className="text-lg font-semibold mb-3">GMP Rentals</h2>
           <p className="text-sm text-[var(--color-darker)]">
             Providing reliable real estate solutions to help you find the
             property that feels like home.
@@ -92,7 +92,7 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className=" w-full mt-10 border-t bg-[var(--color-darker)] border-[var(--color-tan)]/30 py-8 text-center text-lg text-white">
-        © {new Date().getFullYear()} Property Rent. All rights reserved.
+        © {new Date().getFullYear()} GMP Rentals. All rights reserved.
       </div>
     </footer>
   );

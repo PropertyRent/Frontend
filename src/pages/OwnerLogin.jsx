@@ -104,7 +104,7 @@ export default function OwnerPortalAuth() {
       <div className="w-full max-w-lg bg-white rounded-xl shadow-2xl p-10">
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <img src="/" alt="PropertyRent" />
+          <img src="/" alt="GMP Rentals" />
         </div>
 
         {/* Title */}
