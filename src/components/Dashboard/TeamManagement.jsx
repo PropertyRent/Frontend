@@ -18,6 +18,7 @@ import {
 } from 'react-icons/fi';
 import TeamService from '../../services/teamService';
 import toast from 'react-hot-toast';
+import ConfirmationModal from '../ConfirmationModal';
 
 const TeamManagement = () => {
   // State management
@@ -51,6 +52,12 @@ const TeamManagement = () => {
     offset: 0,
     has_next: false,
     has_prev: false
+  });
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    memberId: null,
+    memberName: '',
+    isLoading: false
   });
 
   // Statistics state
@@ -134,20 +141,35 @@ const TeamManagement = () => {
     setShowModal(true);
   };
 
-  const handleDelete = async (memberId) => {
+  const handleDeleteClick = (member) => {
+    setConfirmModal({
+      isOpen: true,
+      memberId: member.id,
+      memberName: member.name,
+      isLoading: false
+    });
+  };
 
+  const handleConfirmDelete = async () => {
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
     try {
-        toast.loading('Deleting team member...');
-      const response = await TeamService.deleteTeamMember(memberId);
+      const response = await TeamService.deleteTeamMember(confirmModal.memberId);
       if (response.success) {
-        toast.dismiss();
         toast.success('Team member deleted successfully');
         loadTeamMembers();
         loadStats();
+        setConfirmModal({ isOpen: false, memberId: null, memberName: '', isLoading: false });
       }
     } catch (error) {
       console.error('Error deleting team member:', error);
       toast.error('Failed to delete team member');
+      setConfirmModal(prev => ({ ...prev, isLoading: false }));
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (!confirmModal.isLoading) {
+      setConfirmModal({ isOpen: false, memberId: null, memberName: '', isLoading: false });
     }
   };
 
@@ -436,7 +458,7 @@ const TeamManagement = () => {
                           <FiEdit2 className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => handleDelete(member.id)}
+                          onClick={() => handleDeleteClick(member)}
                           className="text-red-600 hover:text-red-900 p-1"
                           title="Delete Member"
                         >
@@ -684,6 +706,18 @@ const TeamManagement = () => {
           </div>
         </div>
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        title="Delete Team Member"
+        message={`Are you sure you want to delete "${confirmModal.memberName}"? This action cannot be undone.`}
+        confirmText="Delete"
+        type="danger"
+        isLoading={confirmModal.isLoading}
+      />
     </div>
   );
 };

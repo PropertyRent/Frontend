@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FiMail, FiPhone, FiMapPin, FiSend, FiCheck } from "react-icons/fi";
 import ContactService from "../services/contactService";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 /**
  * ContactPage.jsx
@@ -19,7 +19,8 @@ export default function ContactPage() {
     const e = {};
     if (!form.name.trim()) e.name = "Please enter your name.";
     if (!form.email.trim()) e.email = "Please enter your email.";
-    else if (!/^\S+@\S+\.\S+$/.test(form.email)) e.email = "Please enter a valid email.";
+    else if (!/^\S+@\S+\.\S+$/.test(form.email))
+      e.email = "Please enter a valid email.";
     if (!form.message.trim() || form.message.trim().length < 10)
       e.message = "Message must be at least 10 characters.";
     setErrors(e);
@@ -36,16 +37,16 @@ export default function ContactPage() {
       const contactData = {
         full_name: form.name.trim(),
         email: form.email.trim(),
-        message: form.message.trim()
+        message: form.message.trim(),
       };
 
       const response = await ContactService.submitContact(contactData);
-      
+
       if (response.success) {
-        setStatus({ 
-          loading: false, 
-          ok: true, 
-          msg: response.message || "Your message has been sent successfully!" 
+        setStatus({
+          loading: false,
+          ok: true,
+          msg: response.message || "Your message has been sent successfully!",
         });
         setForm({ name: "", email: "", message: "" });
         setErrors({});
@@ -54,8 +55,9 @@ export default function ContactPage() {
         throw new Error(response.message || "Failed to send message");
       }
     } catch (error) {
-      console.error('Contact form error:', error);
-      const errorMsg = error.message || "Failed to send message. Please try again.";
+      console.error("Contact form error:", error);
+      const errorMsg =
+        error.message || "Failed to send message. Please try again.";
       setStatus({ loading: false, ok: false, msg: errorMsg });
       toast.error(errorMsg);
     }
@@ -70,10 +72,13 @@ export default function ContactPage() {
       <div className="max-w-7xl mx-auto">
         {/* Hero */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl sm:text-4xl font-extrabold mb-2">Get in touch</h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold mb-2">
+            Get in touch
+          </h1>
           <p className="max-w-2xl mx-auto text-sm sm:text-base text-[var(--color-darker)]">
-            Have questions about a property or want to list with PropertyRent? Drop us a message or
-            reach out via call/email — we’ll reply as soon as possible.
+            Have questions about a property or want to list with PropertyRent?
+            Drop us a message or reach out via call/email — we’ll reply as soon
+            as possible.
           </p>
         </div>
 
@@ -92,8 +97,10 @@ export default function ContactPage() {
                   <FiMapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="font-medium">Office</p>
-                  <p className="text-sm text-[var(--color-darker)]">24 Riverside Ave, Green Park, Cityname</p>
+                  <p className="font-medium">Address</p>
+                  <p className="text-sm text-[var(--color-darker)]">
+                    PO box 17, Watertown, NY 13601
+                  </p>
                 </div>
               </div>
 
@@ -103,8 +110,11 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-medium">Phone</p>
-                  <a href="tel:+911234567890" className="text-sm block mt-1 hover:underline text-[var(--color-accent)]">
-                    +91 12345 67890
+                  <a
+                    href="tel:+13158340010"
+                    className="text-sm block mt-1 hover:underline text-[var(--color-accent)]"
+                  >
+                    (315) 834-0010
                   </a>
                 </div>
               </div>
@@ -115,8 +125,11 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-medium">Email</p>
-                  <a href="mailto:hello@propertyrent.example" className="text-sm block mt-1 hover:underline text-[var(--color-accent)]">
-                    hello@propertyrent.example
+                  <a
+                    href="mailto:admin@gmprentals.com"
+                    className="text-sm block mt-1 hover:underline text-[var(--color-accent)]"
+                  >
+                    admin@gmprentals.com
                   </a>
                 </div>
               </div>
@@ -125,17 +138,19 @@ export default function ContactPage() {
             {/* Map: replace src with real embed */}
             <div className="overflow-hidden rounded-2xl h-64 shadow-sm border border-[var(--color-secondary)]">
               <iframe
-                title="office-map"
-                src="https://maps.google.com/maps?q=Central%20Park%20NYC&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                className="w-full h-full border-0"
+                width="600"
+                height="450"
                 loading="lazy"
-                aria-hidden="false"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d9511.045800440756!2d-75.9377668!3d43.9830887!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d87028d9af5981%3A0x7c97e9ecac8fc053!2sPo%20Valley%20Rd%2C%20Watertown%2C%20NY%2013601!5e0!3m2!1sen!2sus!4v1696500000000!5m2!1sen!2sus"
               />
             </div>
 
             <div className="text-sm text-[var(--color-darker)]">
               <p>
-                Office hours: <span className="font-medium">Mon–Fri, 9:00 AM — 6:00 PM</span>
+                Office hours:{" "}
+                <span className="font-medium">Mon–Fri, 9:00 AM — 6:00 PM</span>
               </p>
               <p className="mt-1">We usually reply within 1 business day.</p>
             </div>
@@ -152,7 +167,9 @@ export default function ContactPage() {
                       type="text"
                       name="name"
                       value={form.name}
-                      onChange={(e) => setForm((s) => ({ ...s, name: e.target.value }))}
+                      onChange={(e) =>
+                        setForm((s) => ({ ...s, name: e.target.value }))
+                      }
                       className={`${inputClasses} mt-1 focus:ring-[3px] focus:ring-[var(--color-accent)]`}
                       placeholder="Jane Doe"
                       aria-invalid={!!errors.name}
@@ -171,11 +188,15 @@ export default function ContactPage() {
                       type="email"
                       name="email"
                       value={form.email}
-                      onChange={(e) => setForm((s) => ({ ...s, email: e.target.value }))}
+                      onChange={(e) =>
+                        setForm((s) => ({ ...s, email: e.target.value }))
+                      }
                       className={`${inputClasses} mt-1 focus:ring-[3px] focus:ring-[var(--color-accent)]`}
                       placeholder="you@example.com"
                       aria-invalid={!!errors.email}
-                      aria-describedby={errors.email ? "email-error" : undefined}
+                      aria-describedby={
+                        errors.email ? "email-error" : undefined
+                      }
                     />
                     {errors.email && (
                       <p id="email-error" className="mt-1 text-xs text-red-600">
@@ -191,15 +212,22 @@ export default function ContactPage() {
                     <textarea
                       name="message"
                       value={form.message}
-                      onChange={(e) => setForm((s) => ({ ...s, message: e.target.value }))}
+                      onChange={(e) =>
+                        setForm((s) => ({ ...s, message: e.target.value }))
+                      }
                       rows={6}
                       className={`${inputClasses} mt-1 resize-y focus:ring-[3px] focus:ring-[var(--color-accent)]`}
                       placeholder="Tell us about your requirements..."
                       aria-invalid={!!errors.message}
-                      aria-describedby={errors.message ? "message-error" : undefined}
+                      aria-describedby={
+                        errors.message ? "message-error" : undefined
+                      }
                     />
                     {errors.message && (
-                      <p id="message-error" className="mt-1 text-xs text-red-600">
+                      <p
+                        id="message-error"
+                        className="mt-1 text-xs text-red-600"
+                      >
                         {errors.message}
                       </p>
                     )}
@@ -248,8 +276,11 @@ export default function ContactPage() {
               <div className="mt-6 text-sm text-[var(--color-darker)]">
                 <p>
                   For urgent inquiries, call us at{" "}
-                  <a href="tel:+911234567890" className="font-medium text-[var(--color-accent)]">
-                    +91 12345 67890
+                  <a
+                    href="tel:+911234567890"
+                    className="font-medium text-[var(--color-accent)]"
+                  >
+                    (315) 834-0010
                   </a>
                   .
                 </p>
@@ -262,7 +293,9 @@ export default function ContactPage() {
         <div className="mt-12 rounded-xl p-6 text-center border-dashed border border-[var(--color-light-brown)] bg-[var(--color-bg)]">
           <p className="text-sm">
             Prefer talking? Schedule a call with our agent —{" "}
-            <strong className="text-[var(--color-accent)]">free 15-min consult</strong>
+            <strong className="text-[var(--color-accent)]">
+              free 15-min consult
+            </strong>
           </p>
         </div>
       </div>

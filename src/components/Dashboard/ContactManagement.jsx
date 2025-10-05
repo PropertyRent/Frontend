@@ -18,6 +18,7 @@ import {
 import { FaReply } from 'react-icons/fa';
 import ContactService from '../../services/contactService';
 import toast from 'react-hot-toast';
+import ConfirmationModal from '../ConfirmationModal';
 
 const ContactManagement = () => {
   // State management
@@ -27,6 +28,12 @@ const ContactManagement = () => {
   const [showReplyModal, setShowReplyModal] = useState(false);
   const [replyMessage, setReplyMessage] = useState('');
   const [replyLoading, setReplyLoading] = useState(false);
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    contactId: null,
+    contactName: '',
+    isLoading: false
+  });
   
   // Filter and pagination state
   const [filters, setFilters] = useState({
@@ -139,24 +146,38 @@ const ContactManagement = () => {
     }
   };
 
-  const handleDelete = async (contactId) => {
-    if (!window.confirm('Are you sure you want to delete this contact message?')) {
-      return;
-    }
+  const handleDeleteClick = (contact) => {
+    setConfirmModal({
+      isOpen: true,
+      contactId: contact.id,
+      contactName: contact.name,
+      isLoading: false
+    });
+  };
 
+  const handleConfirmDelete = async () => {
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
     try {
-      const response = await ContactService.deleteContact(contactId);
+      const response = await ContactService.deleteContact(confirmModal.contactId);
       if (response.success) {
         toast.success('Contact deleted successfully');
         loadContacts();
         loadStats();
-        if (selectedContact && selectedContact.id === contactId) {
+        if (selectedContact && selectedContact.id === confirmModal.contactId) {
           setSelectedContact(null);
         }
+        setConfirmModal({ isOpen: false, contactId: null, contactName: '', isLoading: false });
       }
     } catch (error) {
       console.error('Error deleting contact:', error);
       toast.error('Failed to delete contact');
+      setConfirmModal(prev => ({ ...prev, isLoading: false }));
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (!confirmModal.isLoading) {
+      setConfirmModal({ isOpen: false, contactId: null, contactName: '', isLoading: false });
     }
   };
 
@@ -457,7 +478,7 @@ const ContactManagement = () => {
                 )}
 
                 <button
-                  onClick={() => handleDelete(selectedContact.id)}
+                  onClick={() => handleDeleteClick(selectedContact)}
                   className="flex items-center gap-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
                 >
                   <FiTrash2 className="w-4 h-4" />
@@ -534,6 +555,19 @@ const ContactManagement = () => {
           </div>
         </div>
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        title="Delete Contact Message"
+        message={`Are you sure you want to delete the message from "${confirmModal.contactName}"? This action cannot be undone.`}
+        confirmText="Yes, Delete"
+        cancelText="Cancel"
+        isLoading={confirmModal.isLoading}
+        type="danger"
+      />
     </div>
   );
 };

@@ -20,6 +20,7 @@ import {
 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import NoticeService from '../../services/noticeService';
+import ConfirmationModal from '../ConfirmationModal';
 
 const NoticeManagement = () => {
   const [notices, setNotices] = useState([]);
@@ -53,6 +54,12 @@ const NoticeManagement = () => {
     total: 0,
     active: 0,
     inactive: 0
+  });
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    noticeId: null,
+    noticeTitle: '',
+    isLoading: false
   });
 
   useEffect(() => {
@@ -190,23 +197,38 @@ const NoticeManagement = () => {
     }
   };
 
-  const handleDelete = async (notice) => {
-    if (!confirm(`Are you sure you want to delete "${notice.title}"? This action cannot be undone.`)) {
-      return;
-    }
+  const handleDeleteClick = (notice) => {
+    setConfirmModal({
+      isOpen: true,
+      noticeId: notice.id,
+      noticeTitle: notice.title,
+      isLoading: false
+    });
+  };
 
+  const handleConfirmDelete = async () => {
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
     try {
-      const response = await NoticeService.deleteNotice(notice.id);
+      const response = await NoticeService.deleteNotice(confirmModal.noticeId);
       
       if (response.success) {
         toast.success('Notice deleted successfully');
         fetchNotices();
+        setConfirmModal({ isOpen: false, noticeId: null, noticeTitle: '', isLoading: false });
       } else {
         toast.error(response.message);
+        setConfirmModal(prev => ({ ...prev, isLoading: false }));
       }
     } catch (error) {
       console.error('Error deleting notice:', error);
       toast.error('Failed to delete notice');
+      setConfirmModal(prev => ({ ...prev, isLoading: false }));
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (!confirmModal.isLoading) {
+      setConfirmModal({ isOpen: false, noticeId: null, noticeTitle: '', isLoading: false });
     }
   };
 
@@ -518,7 +540,7 @@ const NoticeManagement = () => {
                         )}
                         
                         <button
-                          onClick={() => handleDelete(notice)}
+                          onClick={() => handleDeleteClick(notice)}
                           className="text-red-600 hover:text-red-900 p-1 rounded"
                           title="Delete Notice"
                         >
@@ -737,6 +759,19 @@ const NoticeManagement = () => {
           </div>
         </div>
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        title="Delete Notice"
+        message={`Are you sure you want to delete "${confirmModal.noticeTitle}"? This action cannot be undone.`}
+        confirmText="Yes, Delete"
+        cancelText="Cancel"
+        isLoading={confirmModal.isLoading}
+        type="danger"
+      />
     </div>
   );
 };

@@ -22,6 +22,7 @@ import {
 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import ApplicationService from '../../services/applicationService';
+import ConfirmationModal from '../ConfirmationModal';
 
 const ApplicationManagement = () => {
   const [applications, setApplications] = useState([]);
@@ -54,6 +55,12 @@ const ApplicationManagement = () => {
     approved: 0,
     rejected: 0,
     completed: 0
+  });
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    applicationId: null,
+    applicantName: '',
+    isLoading: false
   });
 
   useEffect(() => {
@@ -163,22 +170,37 @@ const ApplicationManagement = () => {
     }
   };
 
-  const handleDeleteApplication = async (applicationId) => {
-    if (!confirm('Are you sure you want to delete this application? This action cannot be undone.')) {
-      return;
-    }
+  const handleDeleteClick = (application) => {
+    setConfirmModal({
+      isOpen: true,
+      applicationId: application.id,
+      applicantName: application.personal_information?.full_name || 'Unknown Applicant',
+      isLoading: false
+    });
+  };
 
+  const handleConfirmDelete = async () => {
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
     try {
-      const response = await ApplicationService.deleteApplication(applicationId);
+      const response = await ApplicationService.deleteApplication(confirmModal.applicationId);
       if (response.success) {
         toast.success(response.message);
         fetchApplications();
+        setConfirmModal({ isOpen: false, applicationId: null, applicantName: '', isLoading: false });
       } else {
         toast.error(response.message);
+        setConfirmModal(prev => ({ ...prev, isLoading: false }));
       }
     } catch (error) {
       console.error('Error deleting application:', error);
       toast.error('Failed to delete application');
+      setConfirmModal(prev => ({ ...prev, isLoading: false }));
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (!confirmModal.isLoading) {
+      setConfirmModal({ isOpen: false, applicationId: null, applicantName: '', isLoading: false });
     }
   };
 
@@ -422,7 +444,7 @@ const ApplicationManagement = () => {
                           </div>
                         </div>
                         <button
-                          onClick={() => handleDeleteApplication(application.id)}
+                          onClick={() => handleDeleteClick(application)}
                           className="text-red-600 hover:text-red-900 p-1 rounded"
                           title="Delete Application"
                         >
@@ -587,6 +609,19 @@ const ApplicationManagement = () => {
           </div>
         </div>
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        title="Delete Application"
+        message={`Are you sure you want to delete the application from "${confirmModal.applicantName}"? This action cannot be undone.`}
+        confirmText="Yes, Delete"
+        cancelText="Cancel"
+        isLoading={confirmModal.isLoading}
+        type="danger"
+      />
     </div>
   );
 };

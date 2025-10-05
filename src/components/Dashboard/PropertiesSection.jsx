@@ -342,10 +342,10 @@ const PropertiesSection = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold text-[var(--color-darkest)]">
-            Properties
+            Property Management
           </h2>
           <p className="text-[var(--color-muted)] mt-1">
-            Manage your property listings
+            View and manage your property listings
           </p>
         </div>
         <button

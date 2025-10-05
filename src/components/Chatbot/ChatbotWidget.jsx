@@ -233,15 +233,15 @@ const ChatbotWidget = () => {
 
   // Get the last bot message for input handling
   const lastBotMessage = messages.filter(msg => msg.type === 'bot').pop();
-  const inputType = lastBotMessage?.inputType || 'text';
-  const hasOptions = lastBotMessage?.options && lastBotMessage.options.length > 0;
+  const hasOptions = lastBotMessage?.options ? lastBotMessage.options.length > 0 : false;
 
+  console.log("Last Bot Message:", lastBotMessage);
   return (
     <>
       {/* Chat Widget */}
       {isOpen && (
-        <div className={`fixed bottom-4 right-4 z-50 bg-white rounded-2xl shadow-2xl border border-gray-200 transition-all duration-300 ${
-          isMinimized ? 'h-16 w-80' : 'h-96 w-80 md:w-96 md:h-[500px]'
+        <div className={`fixed bottom-8 right-8 z-50 bg-white rounded-2xl shadow-2xl border border-gray-200 transition-all duration-300 ${
+          isMinimized ? 'h-16 w-80' : 'min-h-96 w-80 md:w-96 md:min-h-[500px]'
         }`}>
           {/* Header */}
           <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-600 to-gray-400 text-white rounded-t-2xl">
@@ -313,7 +313,7 @@ const ChatbotWidget = () => {
                         type="text"
                         value={userInput}
                         onChange={(e) => setUserInput(e.target.value)}
-                        onKeyPress={handleKeyPress}
+                        onKeyDown={handleKeyPress}
                         placeholder="Type your message..."
                         className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                         disabled={isLoading}

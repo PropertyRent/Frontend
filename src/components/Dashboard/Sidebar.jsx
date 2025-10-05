@@ -9,7 +9,9 @@ import {
   FiSettings,
   FiMail,
   FiCalendar,
-  FiBell
+  FiBell,
+  FiTool,
+  FiMessageSquare
 } from "react-icons/fi";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import { AuthContext } from "../../stores/authStore";
@@ -23,6 +25,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, activeSection, setActiveSection 
     { key: "properties", label: "Properties", icon: FiHome },
     { key: "applications", label: "Applications", icon: FiUsers },
     { key: "pre-screening", label: "Pre-Screening", icon: FiFileText },
+    { key: "maintenance", label: "Maintenance", icon: FiTool },
+    { key: "chatbot", label: "Chatbot Analytics", icon: FiMessageSquare },
     { key: "notices", label: "Notice Management", icon: FiBell },
     { key: "team", label: "Team Management", icon: FiUsers },
     { key: "contacts", label: "Contact Messages", icon: FiMail },
@@ -33,7 +37,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, activeSection, setActiveSection 
     <>
       {/* Sidebar */}
       <aside
-        className={`transition-all duration-200 h-screen sticky top-0 ${
+        className={`transition-all duration-200 min-h-screen sticky top-0 ${
           sidebarOpen ? "w-64" : "w-23"
         } bg-[var(--color-darker)] text-[var(--color-bg)] shadow-xl`}
       >

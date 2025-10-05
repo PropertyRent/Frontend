@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Company Info */}
         <div>
-          <h2 className="text-lg font-semibold mb-3">Company Name</h2>
+          <h2 className="text-lg font-semibold mb-3">Property Rent</h2>
           <p className="text-sm text-[var(--color-darker)]">
             Providing reliable real estate solutions to help you find the
             property that feels like home.
@@ -20,13 +20,13 @@ export default function Footer() {
           <h3 className="text-lg font-semibold mb-3">Contact Us</h3>
           <ul className="space-y-2 text-sm">
             <li className="flex items-center gap-2">
-              <FaEnvelope className="text-[var(--color-darker)]" /> info@example.com
+              <FaEnvelope className="text-[var(--color-darker)]" /> admin@gmprentals.com
             </li>
             <li className="flex items-center gap-2">
-              <FaPhoneAlt className="text-[var(--color-darker)]" /> +1 234 567 890
+              <FaPhoneAlt className="text-[var(--color-darker)]" /> (315) 834-0010
             </li>
             <li className="flex items-center gap-2">
-              <FaMapMarkerAlt className="text-[var(--color-darker)]" /> 123 Main Street, New York, USA
+              <FaMapMarkerAlt className="text-[var(--color-darker)]" /> PO box 17, Watertown, NY 13601
             </li>
           </ul>
         </div>
@@ -92,7 +92,7 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className=" w-full mt-10 border-t bg-[var(--color-darker)] border-[var(--color-tan)]/30 py-8 text-center text-lg text-white">
-        © {new Date().getFullYear()} Company Name. All rights reserved.
+        © {new Date().getFullYear()} Property Rent. All rights reserved.
       </div>
     </footer>
   );

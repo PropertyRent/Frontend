@@ -16,6 +16,8 @@ import TeamManagement from "../components/Dashboard/TeamManagement";
 import ApplicationManagement from "../components/Dashboard/ApplicationManagement";
 import ScreeningManagement from "../components/Dashboard/ScreeningManagement";
 import NoticeManagement from "../components/Dashboard/NoticeManagement";
+import MaintenanceManagement from "../components/Dashboard/MaintenanceManagement";
+import ChatbotManagement from "../components/Dashboard/ChatbotManagement";
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -252,23 +254,6 @@ export default function AdminDashboard() {
     }
   };
 
-
-  // Use real properties from PropertyContext, fallback to local mock data for other sections
-  // const currentProperties = activeSection === "properties" ? properties : [];
-  // console.log("Current Properties:", currentProperties);
-
-  
-
-
-  // Filter properties based on search query
-  // const filtered = currentProperties.filter(
-  //   (p) =>
-  //     p.title.toLowerCase().includes(query.toLowerCase()) ||
-  //     (p.location && p.location.toLowerCase().includes(query.toLowerCase())) ||
-  //     (p.city && p.city.toLowerCase().includes(query.toLowerCase())) ||
-  //     (p.address && p.address.toLowerCase().includes(query.toLowerCase()))
-  // );
-
   return (
     <div className="min-h-screen font-sans bg-[var(--color-bg)]">
       <div className="flex">
@@ -325,6 +310,16 @@ export default function AdminDashboard() {
             {/* Notice Management Section */}
             {activeSection === "notices" && (
               <NoticeManagement />
+            )}
+
+            {/* Maintenance Management Section */}
+            {activeSection === "maintenance" && (
+              <MaintenanceManagement />
+            )}
+
+            {/* Chatbot Management Section */}
+            {activeSection === "chatbot" && (
+              <ChatbotManagement />
             )}
 
             {/* Settings Section */}

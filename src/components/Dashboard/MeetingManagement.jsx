@@ -20,6 +20,7 @@ import {
 } from 'react-icons/fi';
 import ScheduleMeetingService from '../../services/scheduleMeetingService';
 import toast from 'react-hot-toast';
+import ConfirmationModal from '../ConfirmationModal';
 
 const MEETING_STATUSES = {
   pending: { color: 'yellow', label: 'Pending' },
@@ -48,6 +49,12 @@ const MeetingManagement = () => {
   const [replyForm, setReplyForm] = useState({
     message: '',
     action: null // 'approved', 'rejected', or null for just reply
+  });
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    meetingId: null,
+    meetingTitle: '',
+    isLoading: false
   });
   const [replyLoading, setReplyLoading] = useState(false);
 
@@ -183,21 +190,38 @@ const MeetingManagement = () => {
     }
   };
 
-  const handleDeleteMeeting = async (meetingId) => {
-    if (!confirm('Are you sure you want to delete this meeting? This action cannot be undone.')) return;
+  const handleDeleteClick = (meeting) => {
+    setConfirmModal({
+      isOpen: true,
+      meetingId: meeting.id,
+      meetingTitle: `${meeting.user_name}'s meeting`,
+      isLoading: false
+    });
+  };
 
+  const handleConfirmDelete = async () => {
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
     try {
-      const response = await ScheduleMeetingService.adminDeleteMeeting(meetingId);
+      const response = await ScheduleMeetingService.adminDeleteMeeting(confirmModal.meetingId);
       if (response.success) {
         toast.success('Meeting deleted successfully');
         loadMeetings();
         loadStats();
+        setConfirmModal({ isOpen: false, meetingId: null, meetingTitle: '', isLoading: false });
       } else {
         toast.error(response.message || 'Failed to delete meeting');
+        setConfirmModal(prev => ({ ...prev, isLoading: false }));
       }
     } catch (error) {
       console.error('Error deleting meeting:', error);
       toast.error(error.message || 'Failed to delete meeting');
+      setConfirmModal(prev => ({ ...prev, isLoading: false }));
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (!confirmModal.isLoading) {
+      setConfirmModal({ isOpen: false, meetingId: null, meetingTitle: '', isLoading: false });
     }
   };
 
@@ -436,7 +460,7 @@ const MeetingManagement = () => {
                           </button>
                         )}
                         <button
-                          onClick={() => handleDeleteMeeting(meeting.id)}
+                          onClick={() => handleDeleteClick(meeting)}
                           className="text-red-600 hover:text-red-900 p-1"
                           title="Delete Meeting"
                         >
@@ -649,6 +673,19 @@ const MeetingManagement = () => {
           </div>
         </div>
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        title="Delete Meeting"
+        message={`Are you sure you want to delete "${confirmModal.meetingTitle}"? This action cannot be undone.`}
+        confirmText="Yes, Delete"
+        cancelText="Cancel"
+        isLoading={confirmModal.isLoading}
+        type="danger"
+      />
     </div>
   );
 };

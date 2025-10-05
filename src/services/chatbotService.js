@@ -158,7 +158,7 @@ class ChatbotService {
         params.append('status', status);
       }
       
-      const response = await chatbotAPI.get(`/admin/chatbot/conversations?${params}`);
+      const response = await chatbotAPI.get(`/admin/chatbot/conversations?${params}`, {withCredentials: true});
       return response;
     } catch (error) {
       console.error('Error fetching conversations:', error);
@@ -173,7 +173,7 @@ class ChatbotService {
    */
   static async getConversationDetails(conversationId) {
     try {
-      const response = await chatbotAPI.get(`/admin/chatbot/conversations/${conversationId}`);
+      const response = await chatbotAPI.get(`/admin/chatbot/conversations/${conversationId}`, {withCredentials: true});
       return response;
     } catch (error) {
       console.error('Error fetching conversation details:', error);
@@ -187,7 +187,7 @@ class ChatbotService {
    */
   static async getStats() {
     try {
-      const response = await chatbotAPI.get('/admin/chatbot/stats');
+      const response = await chatbotAPI.get('/admin/chatbot/stats', {withCredentials: true});
       return response;
     } catch (error) {
       console.error('Error fetching chatbot stats:', error);

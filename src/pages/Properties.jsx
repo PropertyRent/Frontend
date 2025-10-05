@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
 import PropertyCard from "../components/Properties/PropertyCard";
 import PropertySearchFilters from "../components/Properties/PropertySearchFilters";
 import { PropertyContext } from "../stores/propertyStore";
@@ -19,8 +19,10 @@ export default function Properties() {
     clearPropertiesError
   } = useContext(PropertyContext);
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [hasProcessedURLParams, setHasProcessedURLParams] = useState(false);
   const [activeFilters, setActiveFilters] = useState({
     keyword: "",
     propertyType: "any",
@@ -48,6 +50,8 @@ export default function Properties() {
       status: searchParams.get('status') || "all"
     };
 
+
+
     return filters;
   };
 
@@ -66,6 +70,9 @@ export default function Properties() {
 
   // Initialize - fetch properties when component mounts and handle URL parameters
   useEffect(() => {
+    // Only process URL parameters once on initial mount
+    if (hasProcessedURLParams) return;
+    
     let isMounted = true;
     const urlFilters = getFiltersFromURL();
     setActiveFilters(urlFilters);
@@ -74,16 +81,22 @@ export default function Properties() {
     if (hasURLParams()) {
       setIsSearchActive(true);
       searchProperties(urlFilters);
+      
+      // Clear URL parameters after extracting them
+      navigate('/properties', { replace: true });
     } else {
       // Otherwise fetch all properties
       fetchProperties();
     }
 
+    // Mark that we've processed the initial URL parameters
+    setHasProcessedURLParams(true);
+
     return () => {
       // Cleanup function if needed
       isMounted = false;
     };
-  }, [searchParams]);
+  }, [hasProcessedURLParams]);
 
   const handleApplyFilters = async (filters) => {
     setActiveFilters(filters);

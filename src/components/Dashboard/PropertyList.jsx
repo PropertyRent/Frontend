@@ -1,7 +1,40 @@
+import React, { useState } from 'react';
 import { FiHome, FiEdit3, FiTrash2, FiMapPin, FiDollarSign } from "react-icons/fi";
 import PropertyListSkeleton from "../skeleton/PropertyListSkeleton";
+import ConfirmationModal from '../ConfirmationModal';
 
 const PropertyList = ({ filtered, deleteProperty, onEditProperty }) => {
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    propertyId: null,
+    propertyTitle: '',
+    isLoading: false
+  });
+
+  const handleDeleteClick = (property) => {
+    setConfirmModal({
+      isOpen: true,
+      propertyId: property.id,
+      propertyTitle: property.title,
+      isLoading: false
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
+    try {
+      await deleteProperty(confirmModal.propertyId);
+      setConfirmModal({ isOpen: false, propertyId: null, propertyTitle: '', isLoading: false });
+    } catch (error) {
+      setConfirmModal(prev => ({ ...prev, isLoading: false }));
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (!confirmModal.isLoading) {
+      setConfirmModal({ isOpen: false, propertyId: null, propertyTitle: '', isLoading: false });
+    }
+  };
   return (
     <div className="w-full">
       <div className="bg-white rounded-xl shadow-sm border border-[var(--color-tan)]/20 overflow-hidden">
@@ -38,7 +71,7 @@ const PropertyList = ({ filtered, deleteProperty, onEditProperty }) => {
                             <FiEdit3 className="w-4 h-4" />
                           </button>
                           <button 
-                            onClick={() => deleteProperty(property.id)}
+                            onClick={() => handleDeleteClick(property)}
                             className="p-2 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-colors"
                             title="Delete property"
                           >
@@ -80,6 +113,19 @@ const PropertyList = ({ filtered, deleteProperty, onEditProperty }) => {
           )}
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        title="Delete Property"
+        message={`Are you sure you want to delete "${confirmModal.propertyTitle}"? This action cannot be undone.`}
+        confirmText="Yes, Delete"
+        cancelText="Cancel"
+        isLoading={confirmModal.isLoading}
+        type="danger"
+      />
     </div>
   );
 };

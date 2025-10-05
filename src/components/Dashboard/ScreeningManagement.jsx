@@ -26,6 +26,7 @@ import {
 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import ScreeningService from '../../services/screeningService';
+import ConfirmationModal from '../ConfirmationModal';
 
 const ScreeningManagement = () => {
   const [responses, setResponses] = useState([]);
@@ -37,6 +38,13 @@ const ScreeningManagement = () => {
   const [selectedResponse, setSelectedResponse] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState('responses'); // 'responses', 'questions'
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    itemId: null,
+    itemType: '',
+    itemName: '',
+    isLoading: false
+  });
 
   // Pagination state
   const [pagination, setPagination] = useState({
@@ -58,9 +66,7 @@ const ScreeningManagement = () => {
       question_text: '',
       question_type: 'text',
       is_required: true,
-      order: 1,
       placeholder_text: '',
-      is_active: true
     }]
   });
 
@@ -181,41 +187,75 @@ const ScreeningManagement = () => {
     }
   };
 
-  const handleDeleteResponse = async (responseId) => {
-    if (!confirm('Are you sure you want to delete this response? This action cannot be undone.')) {
-      return;
-    }
+  const handleDeleteResponseClick = (response) => {
+    setConfirmModal({
+      isOpen: true,
+      itemId: response.id,
+      itemType: 'response',
+      itemName: response.user_name || 'Unknown User',
+      isLoading: false
+    });
+  };
 
+  const handleDeleteResponse = async () => {
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
     try {
-      const response = await ScreeningService.deleteResponse(responseId);
+      const response = await ScreeningService.deleteResponse(confirmModal.itemId);
       if (response.success) {
         toast.success('Response deleted successfully');
         fetchResponses();
+        setConfirmModal({ isOpen: false, itemId: null, itemType: '', itemName: '', isLoading: false });
       } else {
         toast.error(response.message);
+        setConfirmModal(prev => ({ ...prev, isLoading: false }));
       }
     } catch (error) {
       console.error('Error deleting response:', error);
       toast.error('Failed to delete response');
+      setConfirmModal(prev => ({ ...prev, isLoading: false }));
     }
   };
 
-  const handleDeleteQuestion = async (questionId) => {
-    if (!confirm('Are you sure you want to delete this question? This will also delete all associated answers.')) {
-      return;
-    }
+  const handleDeleteQuestionClick = (question) => {
+    setConfirmModal({
+      isOpen: true,
+      itemId: question.id,
+      itemType: 'question',
+      itemName: question.question_text,
+      isLoading: false
+    });
+  };
 
+  const handleDeleteQuestion = async () => {
+    setConfirmModal(prev => ({ ...prev, isLoading: true }));
     try {
-      const response = await ScreeningService.deleteQuestion(questionId);
+      const response = await ScreeningService.deleteQuestion(confirmModal.itemId);
       if (response.success) {
         toast.success('Question deleted successfully');
         fetchQuestions();
+        setConfirmModal({ isOpen: false, itemId: null, itemType: '', itemName: '', isLoading: false });
       } else {
         toast.error(response.message);
+        setConfirmModal(prev => ({ ...prev, isLoading: false }));
       }
     } catch (error) {
       console.error('Error deleting question:', error);
       toast.error('Failed to delete question');
+      setConfirmModal(prev => ({ ...prev, isLoading: false }));
+    }
+  };
+
+  const handleConfirmDelete = () => {
+    if (confirmModal.itemType === 'response') {
+      handleDeleteResponse();
+    } else if (confirmModal.itemType === 'question') {
+      handleDeleteQuestion();
+    }
+  };
+
+  const handleCloseModal = () => {
+    if (!confirmModal.isLoading) {
+      setConfirmModal({ isOpen: false, itemId: null, itemType: '', itemName: '', isLoading: false });
     }
   };
 
@@ -229,6 +269,7 @@ const ScreeningManagement = () => {
 
     setSubmitting(true);
     try {
+      console.log('Submitting questions:', validQuestions);
       const response = await ScreeningService.bulkCreateQuestions({
         questions: validQuestions
       });
@@ -241,9 +282,7 @@ const ScreeningManagement = () => {
             question_text: '',
             question_type: 'text',
             is_required: true,
-            order: 1,
             placeholder_text: '',
-            is_active: true
           }]
         });
         fetchQuestions();
@@ -264,9 +303,7 @@ const ScreeningManagement = () => {
         question_text: '',
         question_type: 'text',
         is_required: true,
-        order: prev.questions.length + 1,
         placeholder_text: '',
-        is_active: true
       }]
     }));
   };
@@ -514,7 +551,7 @@ const ScreeningManagement = () => {
                               <FiSend className="w-4 h-4" />
                             </button>
                             <button
-                              onClick={() => handleDeleteResponse(response.id)}
+                              onClick={() => handleDeleteResponseClick(response)}
                               className="text-red-600 hover:text-red-900 p-1 rounded"
                               title="Delete Response"
                             >
@@ -637,7 +674,7 @@ const ScreeningManagement = () => {
                     </div>
                     <div className="flex items-center space-x-2">
                       <button
-                        onClick={() => handleDeleteQuestion(question.id)}
+                        onClick={() => handleDeleteQuestionClick(question)}
                         className="text-red-600 hover:text-red-900 p-1 rounded"
                         title="Delete Question"
                       >
@@ -796,7 +833,7 @@ const ScreeningManagement = () => {
                           </select>
                         </div>
                         
-                        <div>
+                        {/* <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">Order</label>
                           <input
                             type="number"
@@ -805,7 +842,7 @@ const ScreeningManagement = () => {
                             min="1"
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           />
-                        </div>
+                        </div> */}
                         
                         <div className="md:col-span-2">
                           <label className="block text-sm font-medium text-gray-700 mb-2">Placeholder Text</label>
@@ -829,7 +866,7 @@ const ScreeningManagement = () => {
                             <span className="text-sm text-gray-700">Required</span>
                           </label>
                           
-                          <label className="flex items-center space-x-2">
+                          {/* <label className="flex items-center space-x-2">
                             <input
                               type="checkbox"
                               checked={question.is_active}
@@ -837,7 +874,7 @@ const ScreeningManagement = () => {
                               className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <span className="text-sm text-gray-700">Active</span>
-                          </label>
+                          </label> */}
                         </div>
                       </div>
                     </div>
@@ -903,6 +940,18 @@ const ScreeningManagement = () => {
           </div>
         </div>
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        title={`Delete ${confirmModal.itemType === 'response' ? 'Response' : 'Question'}`}
+        message={`Are you sure you want to delete ${confirmModal.itemType === 'response' ? 'the response from' : 'the question:'} "${confirmModal.itemName}"? This action cannot be undone.`}
+        confirmText="Delete"
+        type="danger"
+        isLoading={confirmModal.isLoading}
+      />
     </div>
   );
 };

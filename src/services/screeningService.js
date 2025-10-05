@@ -172,10 +172,10 @@ class ScreeningService {
    */
   async bulkCreateQuestions(questionsData) {
     try {
-      const token = localStorage.getItem('adminToken');
       const response = await this.api.post('/admin/screening/questions/bulk', questionsData, {
-        headers: { Authorization: `Bearer ${token}` }
+        withCredentials: true,
       });
+      console.log('Bulk create response:', response);
 
       return {
         success: true,
@@ -196,9 +196,8 @@ class ScreeningService {
    */
   async deleteQuestion(questionId) {
     try {
-      const token = localStorage.getItem('adminToken');
       const response = await this.api.delete(`/admin/screening/questions/${questionId}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        withCredentials: true,
       });
 
       return {
