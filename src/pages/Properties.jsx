@@ -207,20 +207,16 @@ export default function Properties() {
           {/* Properties Grid */}
           {!propertiesLoading && !propertiesError && properties.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {properties.map(property => (
+              {properties.map(property => (property.status === 'available' && (
                 <PropertyCard key={property.id} property={property} />
-              ))}
+              )))}
             </div>
           )}
 
           {/* No Properties State */}
           {!propertiesLoading && !propertiesError && properties.length === 0 && isSearchActive && (
-            <div className="text-center py-12">
-              <div className="text-[var(--color-medium)] text-6xl mb-4">🔍</div>
-              <h3 className="text-xl font-semibold mb-2">No Properties Match Your Search</h3>
-              <p className="text-[var(--color-medium)] mb-4">
-                Try adjusting your filters or search terms to see more properties
-              </p>
+            <div className="flex flex-col text-center w-full justify-center items-center py-12">
+              <h3 className="text-xl md:text-2xl max-w-xl font-semibold mb-4">We are sorry, there are no vacancies at this time, please check later or please contact us to join our waitlist!</h3>
               <button
                 onClick={() => handleApplyFilters({
                   keyword: "",
@@ -241,12 +237,9 @@ export default function Properties() {
 
           {/* Empty State */}
           {!propertiesLoading && !propertiesError && properties.length === 0 && !isSearchActive && (
-            <div className="text-center py-12">
+            <div className="text-center flex flex-col justify-center items-center py-12">
               <FaHome className="text-[var(--color-medium)] text-6xl mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No Properties Available</h3>
-              <p className="text-[var(--color-medium)] mb-4">
-                There are currently no properties listed. Please check back later.
-              </p>
+              <h3 className="text-xl md:text-2xl max-w-xl font-semibold mb-4">We are sorry, there are no vacancies at this time, please check later or please contact us to join our waitlist!</h3>
               <button
                 onClick={handleRefresh}
                 className="px-6 py-2 bg-[var(--color-secondary)] text-white rounded-lg hover:bg-[var(--color-darker)] transition-colors"

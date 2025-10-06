@@ -18,7 +18,7 @@ const App = () => {
           </main>
           <Footer />
           {/* Chatbot Widget - Available on all pages */}
-          <ChatbotWidget />
+          {/* <ChatbotWidget /> */}
           {/* Support Board Chatbot Integration */}
           <SupportBoardIntegration />
         </div>

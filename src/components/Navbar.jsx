@@ -59,15 +59,12 @@ export default function Navbar() {
               <img
                 src="/Logo_1.png"
                 alt="GMP Rentals logo"
-                className="w-14 h-14 object-contain rounded-md"
+                className="w-10 h-10 md:w-14 md:h-14 object-contain rounded-md"
               />
               <div>
                 <h1 className="text-2xl md:text-4xl font-extrabold text-[var(--color-darker)]">
                   GMP Rentals
                 </h1>
-                <p className="text-xs  text-[var(--color-darker)]/70">
-                  Find your next home
-                </p>
               </div>
             </Link>
           </div>
@@ -78,14 +75,14 @@ export default function Navbar() {
               onClick={goToRedirectUrl}
               role="button"
               tabIndex={0}
-              className="px-3 py-1 text-md text-[var(--color-primary)] border border-[var(--color-primary)] rounded-full font-medium hover:bg-[var(--color-primary)] hover:text-[var(--color-bg)] transition"
+              className="px-3 py-1 text-xl font-bold text-[var(--color-secondary)] border-2 border-[var(--color-secondary)] rounded-2xl hover:bg-[var(--color-secondary)] hover:text-[var(--color-bg)] cursor-pointer transition"
             >
               Pay Rent
             </div>
             {localStorage.getItem("adminUser") && (
               <Link
                 to="/admin"
-                className="px-3 py-1 text-md bg-[var(--color-dark)] text-[var(--color-bg)] rounded-full font-medium hover:opacity-95 transition"
+                className="px-3 py-1 text-xl bg-[var(--color-dark)] text-[var(--color-bg)] rounded-2xl font-medium hover:bg-[var(--color-dark)]/80 transition"
               >
                 Dashboard
               </Link>
@@ -97,13 +94,13 @@ export default function Navbar() {
             <button
               aria-label="Toggle menu"
               onClick={() => setMobileOpen((s) => !s)}
-              className="p-2 rounded-md focus:outline-none"
+              className="p-1 rounded-md focus:outline-none"
             >
               {/* simple hamburger icon */}
               {mobileOpen ? (
-                <IoMdClose className="h-6 w-6 text-[var(--color-darker)]" />
+                <IoMdClose className="h-7 w-7 text-[var(--color-darker)]" />
               ) : (
-                <IoMdMenu className="h-6 w-6 text-[var(--color-darker)]" />
+                <IoMdMenu className="h-7 w-7 text-[var(--color-darker)]" />
               )}
             </button>
           </div>
@@ -161,7 +158,7 @@ export default function Navbar() {
               ))}
 
               <li>
-                <div onClick={goToRedirectUrl} className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-white after:transition-all after:duration-300 after:w-0">
+                <div onClick={goToRedirectUrl} className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-white after:transition-all after:duration-300 after:w-0 cursor-pointer">
                   Resident
                 </div>
               </li>
@@ -179,7 +176,7 @@ export default function Navbar() {
                 to="/contact"
                 className="text-sm px-4 py-2 rounded-full bg-white text-[var(--color-darker)] font-semibold shadow-sm hover:bg-[var(--color-light)] transition-colors"
               >
-                Contact
+                Contact Us
               </Link>
             </div>
           </div>
@@ -225,14 +222,14 @@ export default function Navbar() {
                 </div>
               ))}
 
-              <div onClick={goToRedirectUrl} className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[var(--color-bg)]/10">
+              <div onClick={goToRedirectUrl} className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[var(--color-bg)]/10 cursor-pointer">
                 Resident
               </div>
               <Link to="/about" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[var(--color-bg)]/10">
                 About
               </Link>
               <Link to="/contact" className="block px-3 py-3 rounded-md text-base font-semibold bg-[var(--color-bg)] text-[var(--color-darker)] text-center">
-                Contact
+                Contact Us
               </Link>
             </div>
           </div>

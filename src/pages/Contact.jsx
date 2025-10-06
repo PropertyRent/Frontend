@@ -313,16 +313,6 @@ export default function ContactPage() {
             </div>
           </div>
         </div>
-
-        {/* Bottom CTA */}
-        <div className="mt-12 rounded-xl p-6 text-center border-dashed border border-[var(--color-light-brown)] bg-[var(--color-bg)]">
-          <p className="text-sm">
-            Prefer talking? Schedule a call with our agent —{" "}
-            <strong className="text-[var(--color-accent)]">
-              free 15-min consult
-            </strong>
-          </p>
-        </div>
       </div>
     </div>
   );

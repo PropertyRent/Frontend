@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export default function PropertyCard({ property }) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
   const {
     id,
     title,
@@ -50,31 +52,75 @@ export default function PropertyCard({ property }) {
   // Combine all amenities for display
   const allAmenities = [...parsedUtilities, ...parsedAmenities, ...parsedAppliances];
   
-  // Get the first image or use a default
-  const image = media && media.length > 0 ? media[0].url : '/Home1.jpg';
+  // Prepare images array for carousel
+  const images = media && media.length > 0 ? media.map(item => item.url) : ['/Home1.jpg'];
+  
+  // Carousel navigation functions
+  const nextImage = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+  
+  const prevImage = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
   
   // Check if property is available
   const available = status === 'available';
 
-  const [isFavorite, setIsFavorite] = React.useState(false);
-
-  const handleFavoriteClick = (e) => {
-    e.preventDefault();
-    setIsFavorite(!isFavorite);
-  };
 
   return (
     <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-[var(--color-light-brown)]/20">
-      {/* Property Image */}
-      <div className="relative h-48 overflow-hidden">
+      {/* Property Image Carousel */}
+      <div className="relative h-48 overflow-hidden group">
         <img
-          src={image}
-          alt={title}
+          src={images[currentImageIndex]}
+          alt={`${title} - Image ${currentImageIndex + 1}`}
           className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
         />
         
+        {/* Carousel Navigation - Show only if multiple images */}
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={prevImage}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
+            >
+              <FaChevronLeft className="w-3 h-3" />
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
+            >
+              <FaChevronRight className="w-3 h-3" />
+            </button>
+            
+            {/* Image Indicators */}
+            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1 z-10">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setCurrentImageIndex(index);
+                  }}
+                  className={`w-2 h-2 rounded-full transition-colors duration-200 ${
+                    index === currentImageIndex
+                      ? 'bg-white'
+                      : 'bg-white/50 hover:bg-white/70'
+                  }`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+        
         {/* Availability Badge */}
-        <div className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold ${
+        <div className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold z-20 ${
           available 
             ? 'bg-green-500 text-white' 
             : 'bg-red-500 text-white'
@@ -83,21 +129,16 @@ export default function PropertyCard({ property }) {
         </div>
 
         {/* Property Type Badge */}
-        <div className="absolute top-3 right-12 px-2 py-1 bg-[var(--color-secondary)] text-white rounded-full text-xs font-semibold capitalize">
+        <div className="absolute top-3 right-3 px-2 py-1 bg-[var(--color-secondary)] border border-white text-white rounded-full text-xs font-semibold z-20">
           {type}
         </div>
-
-        {/* Favorite Button */}
-        <button
-          onClick={handleFavoriteClick}
-          className="absolute top-3 right-3 p-2 bg-white/80 rounded-full hover:bg-white transition-colors duration-200"
-        >
-          {isFavorite ? (
-            <FaHeart className="text-red-500" />
-          ) : (
-            <FaRegHeart className="text-[var(--color-medium)]" />
-          )}
-        </button>
+        
+        {/* Image Counter - Show only if multiple images */}
+        {images.length > 1 && (
+          <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-xs z-20">
+            {currentImageIndex + 1} / {images.length}
+          </div>
+        )}
       </div>
 
       {/* Property Details */}
@@ -168,10 +209,10 @@ export default function PropertyCard({ property }) {
           </Link>
           <Link
             to={`/contact`}
-            className="flex-1 text-center border-2 border-[var(--color-secondary)] text-[var(--color-secondary)] py-2 px-4 rounded-lg hover:bg-[var(--color-secondary)] hover:text-white transition-colors duration-200 text-sm font-semibold"
+            className="flex-1 text-center border-2 border-[var(--color-secondary)]/80 text-[var(--color-secondary)] py-2 px-4 rounded-lg hover:bg-[var(--color-secondary)]/80 hover:text-white transition-colors duration-200 text-sm font-semibold"
             disabled={!available}
           >
-            {available ? 'Contact' : 'Unavailable'}
+            {available ? 'Contact Us' : 'Unavailable'}
           </Link>
         </div>
       </div>

@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaArrowLeft, FaHeart, FaRegHeart, FaPhone, FaEnvelope, FaHome, FaCalendarAlt, FaCar, FaPaw } from 'react-icons/fa';
-import { FiLoader, FiAlertCircle, FiRefreshCw } from 'react-icons/fi';
+import { FiAlertCircle, FiRefreshCw } from 'react-icons/fi';
 import { PropertyContext } from '../stores/propertyStore';
 import PropertyDetailSkeleton from '../components/skeleton/PropertyDetailSkeleton';
 import ScheduleVisitModal from '../components/ScheduleVisitModal';
+import {IoMdArrowBack, IoMdArrowForward} from 'react-icons/io';
 
 
 export default function PropertyDetail() {
@@ -186,15 +187,15 @@ export default function PropertyDetail() {
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors duration-200"
+                    className="absolute pr-20 pl-4 h-full top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-black/60 to-transparent text-white p-2 font-bold hover:text-white/50 transition-colors duration-200 cursor-pointer"
                   >
-                    ←
+                    <IoMdArrowBack size={30} />
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors duration-200"
+                    className="absolute pl-20 pr-4 h-full right-0 top-1/2 transform -translate-y-1/2 bg-gradient-to-l from-black/60 to-transparent text-white p-2 font-bold hover:text-white/50 transition-colors duration-200 cursor-pointer"
                   >
-                    →
+                    <IoMdArrowForward size={30} />
                   </button>
                 </>
               )}
@@ -236,16 +237,6 @@ export default function PropertyDetail() {
                     </span>
                   </div>
                 </div>
-                <button
-                  onClick={handleFavoriteClick}
-                  className="p-3 bg-[var(--color-bg)] rounded-full border hover:bg-gray-50 transition-colors duration-200"
-                >
-                  {isFavorite ? (
-                    <FaHeart className="text-red-500 text-xl" />
-                  ) : (
-                    <FaRegHeart className="text-[var(--color-medium)] text-xl" />
-                  )}
-                </button>
               </div>
 
               {/* Property Stats */}
@@ -274,25 +265,18 @@ export default function PropertyDetail() {
                 </div>
               </div>
 
-              {/* Description */}
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold text-[var(--color-darkest)] mb-3">Description</h3>
-                <p className="text-[var(--color-dark)] leading-relaxed">{processedProperty.description}</p>
-              </div>
-
               {/* Amenities & Features */}
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-[var(--color-darkest)] mb-3">Amenities & Features</h3>
+                <h3 className="text-xl font-semibold text-[var(--color-darkest)] mb-3">Amenities & Features</h3>
                 
                 {/* Utilities */}
                 {processedProperty.parsedUtilities.length > 0 && (
                   <div className="mb-4">
-                    <h4 className="text-md font-medium text-[var(--color-darkest)] mb-2">Utilities Included</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    <h4 className="text-lg font-medium text-[var(--color-darkest)] mb-2">Utilities Included</h4>
+                    <div className="flex gap-2 flex-wrap">
                       {processedProperty.parsedUtilities.map((utility, index) => (
-                        <div key={index} className="flex items-center p-2 bg-blue-50 rounded-lg">
-                          <span className="text-blue-500 mr-2">⚡</span>
-                          <span className="text-[var(--color-darkest)] text-sm capitalize">{utility}</span>
+                        <div key={index} className="flex items-center p-2 bg-gray-100 rounded-md">
+                          <span className="text-[var(--color-darkest)] text-md capitalize">{utility}</span>
                         </div>
                       ))}
                     </div>
@@ -302,12 +286,11 @@ export default function PropertyDetail() {
                 {/* Amenities */}
                 {processedProperty.parsedAmenities.length > 0 && (
                   <div className="mb-4">
-                    <h4 className="text-md font-medium text-[var(--color-darkest)] mb-2">Property Amenities</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    <h4 className="text-lg font-medium text-[var(--color-darkest)] mb-2">Property Amenities</h4>
+                    <div className="flex gap-2 flex-wrap">
                       {processedProperty.parsedAmenities.map((amenity, index) => (
-                        <div key={index} className="flex items-center p-2 bg-green-50 rounded-lg">
-                          <span className="text-green-500 mr-2">✓</span>
-                          <span className="text-[var(--color-darkest)] text-sm capitalize">{amenity}</span>
+                        <div key={index} className="flex items-center p-2 bg-gray-100 rounded-md">
+                          <span className="text-[var(--color-darkest)] text-md capitalize">{amenity}</span>
                         </div>
                       ))}
                     </div>
@@ -317,17 +300,22 @@ export default function PropertyDetail() {
                 {/* Appliances */}
                 {processedProperty.parsedAppliances.length > 0 && (
                   <div>
-                    <h4 className="text-md font-medium text-[var(--color-darkest)] mb-2">Appliances Included</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    <h4 className="text-lg font-medium text-[var(--color-darkest)] mb-2">Appliances Included</h4>
+                    <div className="flex gap-2 flex-wrap">
                       {processedProperty.parsedAppliances.map((appliance, index) => (
-                        <div key={index} className="flex items-center p-2 bg-purple-50 rounded-lg">
-                          <FaHome className="text-purple-500 mr-2" />
-                          <span className="text-[var(--color-darkest)] text-sm capitalize">{appliance}</span>
+                        <div key={index} className="flex items-center p-2 bg-gray-100 rounded-md">
+                          <span className="text-[var(--color-darkest)] text-md capitalize">{appliance}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
+              </div>
+
+              {/* Description */}
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-[var(--color-darkest)] mb-3">Description</h3>
+                <p className="text-[var(--color-dark)] leading-relaxed">{processedProperty.description}</p>
               </div>
 
               {/* Additional Details */}
@@ -345,14 +333,6 @@ export default function PropertyDetail() {
                   )}
                   {processedProperty.lease_term && (
                     <div className="md:col-span-2"><strong>Lease Terms:</strong> {processedProperty.lease_term}</div>
-                  )}
-                  {processedProperty.website && (
-                    <div className="md:col-span-2">
-                      <strong>Website:</strong> 
-                      <a href={processedProperty.website} target="_blank" rel="noopener noreferrer" className="text-[var(--color-secondary)] hover:underline ml-1">
-                        {processedProperty.website}
-                      </a>
-                    </div>
                   )}
                 </div>
               </div>
@@ -376,32 +356,6 @@ export default function PropertyDetail() {
                 {processedProperty.deposit && (
                   <div className="text-sm text-[var(--color-muted)] mt-2">
                     Security Deposit: ${processedProperty.deposit.toLocaleString()}
-                  </div>
-                )}
-              </div>
-
-              {/* Contact Information */}
-              <div className="mb-6">
-                <h4 className="text-lg font-semibold text-[var(--color-darkest)] mb-3">Property Management</h4>
-                {processedProperty.property_management_contact ? (
-                  <div className="space-y-3">
-                    <div className="p-3 bg-[var(--color-bg)] rounded-lg">
-                      <div className="text-sm text-[var(--color-darkest)] whitespace-pre-line">
-                        {processedProperty.property_management_contact}
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    <div className="flex items-center">
-                      <div className="w-12 h-12 bg-[var(--color-secondary)] rounded-full flex items-center justify-center text-white font-semibold mr-3">
-                        PM
-                      </div>
-                      <div>
-                        <div className="font-medium text-[var(--color-darkest)]">Property Manager</div>
-                        <div className="text-sm text-[var(--color-medium)]">Contact for details</div>
-                      </div>
-                    </div>
                   </div>
                 )}
               </div>

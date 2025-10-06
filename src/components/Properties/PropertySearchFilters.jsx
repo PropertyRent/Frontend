@@ -323,8 +323,9 @@ export default function PropertySearchFilters({
 
       {/* Filters - Expandable on Mobile */}
       <div className={`${isExpanded ? "block" : "hidden lg:block"}`}>
-        <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-4 mb-4">
-          <div className="md:col-span-3 lg:col-span-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 h-1">
+        <div className="space-y-4 mb-4">
+          {/* Filter Controls Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             <CustomDropdown
               label="Property Type"
               value={filters.propertyType}
@@ -385,8 +386,9 @@ export default function PropertySearchFilters({
               icon={FaDollarSign}
             />
           </div>
-          {/* Price Range and Status */}
-          <div className="col-span-2  gap-4 mb-4">
+          
+          {/* Price Range - Separate Row */}
+          <div className="w-full">
             <PriceRangeSlider
               value={filters.priceRange}
               onChange={(value) => handleFilterChange("priceRange", value)}

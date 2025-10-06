@@ -5,10 +5,10 @@ import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaFacebookF, FaTwitter, FaLinke
 export default function Footer() {
   return (
     <footer className="bg-[var(--color-light)] text-[var(--color-darker)] border-t border-[var(--color-tan)]/30 pt-10">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 not-md:text-center gap-8 p-4">
         {/* Company Info */}
         <div>
-          <h2 className="text-lg font-semibold mb-3">GMP Rentals</h2>
+          <h2 className="text-2xl font-semibold mb-3">GMP Rentals</h2>
           <p className="text-sm text-[var(--color-darker)]">
             Providing reliable real estate solutions to help you find the
             property that feels like home.
@@ -16,16 +16,16 @@ export default function Footer() {
         </div>
 
         {/* Contact Info */}
-        <div>
+        <div className="w-full text-center md:text-left">
           <h3 className="text-lg font-semibold mb-3">Contact Us</h3>
           <ul className="space-y-2 text-sm">
-            <li className="flex items-center gap-2">
+            <li className="flex justify-center md:justify-start items-center gap-2">
               <FaEnvelope className="text-[var(--color-darker)]" /> admin@gmprentals.com
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex justify-center md:justify-start items-center gap-2">
               <FaPhoneAlt className="text-[var(--color-darker)]" /> (315) 834-0010
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex justify-center md:justify-start items-center gap-2">
               <FaMapMarkerAlt className="text-[var(--color-darker)]" /> PO box 17, Watertown, NY 13601
             </li>
           </ul>
@@ -52,7 +52,7 @@ export default function Footer() {
             </li>
             <li>
               <Link to="/contact" className="hover:underline">
-                Contact
+                Contact Us
               </Link>
             </li>
           </ul>
@@ -72,8 +72,8 @@ export default function Footer() {
               </Link>
             )}
           </div>
-          <h3 className="text-lg font-semibold my-3">Follow Us</h3>
-          <div className="flex gap-3">
+          <h3 className="flex justify-center items-center text-lg font-semibold my-3">Follow Us</h3>
+          <div className="flex justify-center gap-3">
             <Link to="#" className="p-2 bg-[var(--color-secondary)] rounded-full hover:bg-[var(--color-darker)] transition-colors">
               <FaFacebookF className="text-white" />
             </Link>
