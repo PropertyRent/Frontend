@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  property-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_APP_URL: ${VITE_APP_URL:-http://localhost:8001}
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8001/api}
+        VITE_REDIRECT_URL: ${VITE_REDIRECT_URL:-https://landlord-studio.us.auth0.com/login?state=hKFo2SA5ZzlaZndoOHNldjR4VVFxSk9vbmlfZ3A4c0ZmMlRBNaFupWxvZ2luo3RpZNkgdUhxNTFUVWlqaVdmb1RvVXRobUNGdnZIRWhfY003WFCjY2lk2SBpdkxXVHJXaTZTaDMzMDJRUlMzUW8xc2pMQUpGeTk0Rw&client=ivLWTrWi6Sh3302QRS3Qo1sjLAJFy94G&protocol=oauth2&scope=openid%20email%20profile%20offline_access&response_type=code&redirect_uri=https%3A%2F%2Ftenant.landlordstudio.com%2Fapi%2Fauth%2Fcallback&audience=https%3A%2F%2Ftenant.landlordstudio.com&nonce=MEWEphC3aJ1ZaswwNZ8sa5Pln9fqPbnPLHdrifneklY&code_challenge_method=S256&code_challenge=MvnhtEHI9SMLBUSeRPk4FGSlXRKWNzLIyBsgHoH-Wfk}
+        VITE_CHATBOT_ENABLED: ${VITE_CHATBOT_ENABLED:-true}
+        VITE_CHATBOT_DEBUG: ${VITE_CHATBOT_DEBUG:-false}
+        VITE_DEV_MODE: ${VITE_DEV_MODE:-true}
+        VITE_LOG_LEVEL: ${VITE_LOG_LEVEL:-info}
+    ports:
+      - "80:80"
+      - "443:443"  # For HTTPS if needed
+    restart: unless-stopped
+    container_name: property-frontend
+    networks:
+      - property-network
+
+  # Optional: Add SSL/TLS with Let's Encrypt using nginx-proxy
+  # Uncomment this section if you need automatic HTTPS
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - nginx-certs:/etc/nginx/certs
+      - nginx-vhost:/etc/nginx/vhost.d
+      - nginx-html:/usr/share/nginx/html
+    networks:
+      - property-network
+
+  letsencrypt:
+    image: nginxproxy/acme-companion
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - nginx-certs:/etc/nginx/certs
+      - nginx-vhost:/etc/nginx/vhost.d
+      - nginx-html:/usr/share/nginx/html
+      - acme:/etc/acme.sh
+    environment:
+      - DEFAULT_EMAIL=your-email@example.com
+    networks:
+      - property-network
+
+networks:
+  property-network:
+    driver: bridge
+
+volumes:
+  nginx-certs:
+  nginx-vhost:
+  nginx-html:
+  acme:
