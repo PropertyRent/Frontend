@@ -19,6 +19,7 @@ export default function Properties() {
     clearPropertiesError
   } = useContext(PropertyContext);
 
+  const propertyLen = properties.filter(p => p.status === 'available').length;
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -155,7 +156,7 @@ export default function Properties() {
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-4">
               <h2 className="text-xl font-semibold">
-                {!propertiesLoading && `${properties.length} Properties Found`}
+                {!propertiesLoading && `${propertyLen} Properties Found`}
                 {isSearchActive && (
                   <span className="ml-2 px-2 py-1 bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] text-sm font-medium rounded-full">
                     Search Results
@@ -236,7 +237,7 @@ export default function Properties() {
           )}
 
           {/* Empty State */}
-          {!propertiesLoading && !propertiesError && properties.length === 0 && !isSearchActive && (
+          {!propertiesLoading && !propertiesError && propertyLen === 0 && !isSearchActive && (
             <div className="text-center flex flex-col justify-center items-center py-12">
               <FaHome className="text-[var(--color-medium)] text-6xl mb-4" />
               <h3 className="text-xl md:text-2xl max-w-xl font-semibold mb-4">We are sorry, there are no vacancies at this time, please check later or please contact us to join our waitlist!</h3>

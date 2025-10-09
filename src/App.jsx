@@ -18,9 +18,9 @@ const App = () => {
           </main>
           <Footer />
           {/* Chatbot Widget - Available on all pages */}
-          {/* <ChatbotWidget /> */}
+          <ChatbotWidget />
           {/* Support Board Chatbot Integration */}
-          <SupportBoardIntegration />
+          {/* <SupportBoardIntegration /> */}
         </div>
         <Toaster
           position="bottom-right"

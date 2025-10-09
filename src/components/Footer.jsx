@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/fa";
 
@@ -7,7 +6,7 @@ export default function Footer() {
     <footer className="bg-[var(--color-light)] text-[var(--color-darker)] border-t border-[var(--color-tan)]/30 pt-10">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 not-md:text-center gap-8 p-4">
         {/* Company Info */}
-        <div>
+        <div className="flex flex-col items-center text-center">
           <h2 className="text-2xl font-semibold mb-3">GMP Rentals</h2>
           <p className="text-sm text-[var(--color-darker)]">
             Providing reliable real estate solutions to help you find the
@@ -16,23 +15,23 @@ export default function Footer() {
         </div>
 
         {/* Contact Info */}
-        <div className="w-full text-center md:text-left">
+        <div className="flex flex-col items-center w-full text-center">
           <h3 className="text-lg font-semibold mb-3">Contact Us</h3>
           <ul className="space-y-2 text-sm">
-            <li className="flex justify-center md:justify-start items-center gap-2">
+            <li className="flex justify-center items-center gap-2">
               <FaEnvelope className="text-[var(--color-darker)]" /> admin@gmprentals.com
             </li>
-            <li className="flex justify-center md:justify-start items-center gap-2">
+            <li className="flex justify-center items-center gap-2">
               <FaPhoneAlt className="text-[var(--color-darker)]" /> (315) 834-0010
             </li>
-            <li className="flex justify-center md:justify-start items-center gap-2">
+            <li className="flex justify-center items-center gap-2">
               <FaMapMarkerAlt className="text-[var(--color-darker)]" /> PO box 17, Watertown, NY 13601
             </li>
           </ul>
         </div>
 
         {/* Quick Links */}
-        <div>
+        <div className="flex flex-col items-center text-center">
           <h3 className="text-lg font-semibold mb-3">Quick Links</h3>
           <ul className="space-y-2 text-sm">
             <li>
@@ -59,7 +58,7 @@ export default function Footer() {
         </div>
 
         {/* Social Links */}
-        <div>
+        <div className="flex flex-col items-center ">
           <h3 className="text-2xl font-semibold mt-1">Admin Portal</h3>
           <div>
             {localStorage.getItem("adminUser") ? (

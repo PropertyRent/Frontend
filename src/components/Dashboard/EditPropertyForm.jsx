@@ -99,9 +99,10 @@ const EditPropertyForm = ({ property, onCancel }) => {
   };
 
   const handleArrayChange = (fieldName, value) => {
+    const arrayValue = value.split(',').map(item => item.trim()).filter(item => item.length > 0);
     setForm(prev => ({
       ...prev,
-      [fieldName]: value
+      [fieldName]: arrayValue
     }));
 
     if (fieldName === 'utilities') {

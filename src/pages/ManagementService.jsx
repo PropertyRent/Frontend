@@ -67,14 +67,6 @@ export default function ManagementPage() {
 
                 <p className="mt-4 text-sm text-[var(--color-darker)]">{s.desc}</p>
 
-                <div className="mt-6 flex items-center justify-between">
-                  <span className="inline-flex items-center gap-2 text-xs font-medium text-[var(--color-secondary)]">
-                    Learn more
-                    <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                  </span>
-
-                  <span className="text-xs text-[var(--color-darker)]">Trusted • Secure</span>
-                </div>
               </article>
             ))}
           </div>

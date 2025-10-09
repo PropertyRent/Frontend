@@ -75,7 +75,7 @@ export default function Navbar() {
               onClick={goToRedirectUrl}
               role="button"
               tabIndex={0}
-              className="px-3 py-1 text-xl font-bold text-[var(--color-secondary)] border-2 border-[var(--color-secondary)] rounded-2xl hover:bg-[var(--color-secondary)] hover:text-[var(--color-bg)] cursor-pointer transition"
+              className="px-3 py-1 text-xl font-bold text-[var(--color-darkest)] border-2 border-[var(--color-darkest)] rounded-2xl hover:bg-[var(--color-darkest)] hover:text-[var(--color-bg)] cursor-pointer transition"
             >
               Pay Rent
             </div>
@@ -109,11 +109,11 @@ export default function Navbar() {
 
       {/* Navigation bar (dark row) */}
       <div className="bg-[var(--color-darker)] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center gap-6">
             {/* Desktop menu */}
-            <ul className="hidden md:flex items-center gap-6 py-2">
-              <li>
+            <ul className="hidden md:flex items-center gap-10 py-4">
+              <li className="relative">
                 <Link to="/" className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-white after:transition-all after:duration-300 after:w-0">
                   Home
                 </Link>
@@ -121,24 +121,25 @@ export default function Navbar() {
 
               {menus.map((m) => (
                 <li key={m.key} className="relative">
-                  <button
-                    onClick={() => setOpenMenu((cur) => (cur === m.key ? null : m.key))}
-                    onKeyDown={(e) => {
-                      if (e.key === "Escape") setOpenMenu(null);
-                    }}
+                  <Link
+                    to="#"
+                    onMouseEnter={() => setOpenMenu((cur) => (cur === m.key ? null : m.key))}
                     aria-expanded={openMenu === m.key}
                     aria-controls={`${m.key}-menu`}
-                    className="flex items-center gap-2 text-base font-medium px-3 py-2 rounded-full hover:bg-black/20 cursor-pointer"
+                    className=" text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-white after:transition-all after:duration-300 after:w-0 cursor-pointer"
                   >
+                    <div className="flex items-center gap-1">
                     {m.label}
                     <IoMdArrowDropdown className={`h-4 w-4 transform transition-transform duration-300 ${openMenu === m.key ? "rotate-180" : "rotate-0"}`} />
-                  </button>
+                    </div>
+                  </Link>
 
                   {/* dropdown */}
                   {openMenu === m.key && (
                     <div
                       id={`${m.key}-menu`}
                       role="menu"
+                      onMouseLeave={() => setOpenMenu(null)}
                       className="absolute left-0 mt-2 w-48 bg-white text-[var(--color-darker)] rounded-md shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden z-50"
                     >
                       {m.items.map((it) => (
@@ -159,7 +160,7 @@ export default function Navbar() {
 
               <li>
                 <div onClick={goToRedirectUrl} className="text-base font-medium hover:after:w-full after:block after:h-0.5 after:bg-white after:transition-all after:duration-300 after:w-0 cursor-pointer">
-                  Resident
+                  Residents
                 </div>
               </li>
 
@@ -223,7 +224,7 @@ export default function Navbar() {
               ))}
 
               <div onClick={goToRedirectUrl} className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[var(--color-bg)]/10 cursor-pointer">
-                Resident
+                Residents
               </div>
               <Link to="/about" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[var(--color-bg)]/10">
                 About
