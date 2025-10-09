@@ -43,11 +43,6 @@ export default function ManagementPage() {
         {/* Hero */}
         <header className="text-center">
           <h1 className="text-3xl sm:text-4xl font-extrabold mb-3">Management & Services</h1>
-          <p className="max-w-3xl mx-auto text-[var(--color-darker)]">
-            We provide full-service property management tailored to landlords and tenants.
-            From marketing and leasing to maintenance and compliance — GMP Rentals handles the
-            details so you don’t have to.
-          </p>
         </header>
 
         {/* Services grid */}
@@ -72,39 +67,16 @@ export default function ManagementPage() {
           </div>
         </section>
 
-        {/* Info strip */}
-        <section className="rounded-xl p-6 border border-[var(--color-secondary)] bg-white flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <h3 className="text-lg font-semibold">Why choose GMP Rentals?</h3>
-            <p className="text-sm text-[var(--color-darker)] mt-1">
-              Local expertise, transparent fees and responsive support — we treat your property as
-              our own.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="px-3 py-2 rounded-full bg-[var(--color-secondary)] text-white font-medium animate-pulse">Featured</span>
-            <a
-              href="/contact"
-              className="inline-block px-4 py-2 rounded-md bg-[var(--color-darker)] hover:bg-[var(--color-secondary)] text-white font-semibold transition-colors"
-            >
-              Talk to our team
-            </a>
-          </div>
-        </section>
+       
 
         {/* Bottom CTA */}
         <section className="text-center">
-          <p className="text-[var(--color-darker)] max-w-2xl mx-auto">
-            Ready to streamline your property management? Get a free consultation and tailored
-            plan from our experts.
-          </p>
           <div className="mt-6">
             <a
               href="/contact"
               className="inline-block px-6 py-3 rounded-full bg-[var(--color-secondary)] hover:bg-[var(--color-darker)] text-white font-semibold shadow-lg hover:scale-105 transform transition-all"
             >
-              Request a demo
+              Contact Us
             </a>
           </div>
         </section>
