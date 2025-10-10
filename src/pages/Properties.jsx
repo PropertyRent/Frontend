@@ -6,6 +6,7 @@ import { PropertyContext } from "../stores/propertyStore";
 import { FiLoader, FiAlertCircle, FiRefreshCw } from "react-icons/fi";
 import PropertiesSkeleton from "../components/skeleton/PropertiesSkeleton";
 import { FaHome } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function Properties() {
   const {
@@ -241,12 +242,12 @@ export default function Properties() {
             <div className="text-center flex flex-col justify-center items-center py-12">
               <FaHome className="text-[var(--color-medium)] text-6xl mb-4" />
               <h3 className="text-xl md:text-2xl max-w-xl font-semibold mb-4">We are sorry, there are no vacancies at this time, please check later or please contact us to join our waitlist!</h3>
-              <button
-                onClick={handleRefresh}
+              <Link
+                to="/contact"
                 className="px-6 py-2 bg-[var(--color-secondary)] text-white rounded-lg hover:bg-[var(--color-darker)] transition-colors"
               >
-                Refresh
-              </button>
+                Contact Us
+              </Link>
             </div>
           )}
         </main>
